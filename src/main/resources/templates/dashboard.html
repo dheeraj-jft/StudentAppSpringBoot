@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Welcome to DashBoard</title>
+</head>
+<body>
+<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+<br>
+<br />
+<table border="1">
+    <tr>
+        <td>Student ID</td>
+        <td>Student Name</td>
+        <td>Student Address</td>
+        <td>Student Phone</td>
+
+    </tr>
+    <tr th:each="std : ${stdList}">
+        <td th:text="${std.id}">Id</td>
+        <td th:text="${std.name}">Name</td>
+        <td th:text="${std.address}">Address</td>
+        <td th:text="${std.phone}">Phone</td>
+    </tr>
+</table>
+<br>
+
+<button type="button">Add Student</button> <br>
+<button type="button">Edit Student</button> <br>
+<button type="button">Delete Student</button> <br>
+
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Sign Out"/>
+
+</form>
+</body>
+</html>

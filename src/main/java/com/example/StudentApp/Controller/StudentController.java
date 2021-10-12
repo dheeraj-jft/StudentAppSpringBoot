@@ -3,9 +3,12 @@ package com.example.StudentApp.Controller;
 import com.example.StudentApp.Repositories.StudentRepo;
 import com.example.StudentApp.datamodel.Student;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @RestController
+@RequestMapping("student")
 public class StudentController {
     @Autowired
     StudentRepo studentRepo;
@@ -19,8 +22,10 @@ public class StudentController {
         studentRepo.save(st);
         return "saved";
     }
-    @GetMapping(path="/getStudents")
-    public @ResponseBody Iterable<Student> getAllStudents() {
-        return studentRepo.findAll();
+    @GetMapping(path="/dashboard")
+    public ModelAndView getAllStudents(ModelAndView mv) {
+        mv.addObject("stdList",studentRepo.findAll());
+        mv.setViewName("dashboard.html");
+        return mv;
     }
-}
+}d
