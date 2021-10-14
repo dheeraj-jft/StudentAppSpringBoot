@@ -118,14 +118,14 @@ body {
 
   <div class="form">
     <div><h3>Welcome to Student App</h3> </div>
-    <form  name= "f" class="register-form" th:action="@{/login}" method="post">
+<!--    <form  name= "f" class="register-form" th:action="@{/login}" method="post">-->
 
-      <input type="text" placeholder="name"/>
-      <input type="password" placeholder="password"/>
-      <input type="text" placeholder="email address"/>
-      <button>create</button>
-      <p class="message">Already registered? <a href="#">Sign In</a></p>
-    </form>
+<!--      <input type="text" placeholder="name"/>-->
+<!--      <input type="password" placeholder="password"/>-->
+<!--      <input type="text" placeholder="email address"/>-->
+<!--      <button>create</button>-->
+<!--      <p class="message">Already registered? <a href="#">Sign In</a></p>-->
+<!--    </form>-->
     <form  name="f" class="login-form" th:action="@{/login}" method="post">
       <div th:if="${param.error}" class="alert alert-error" style="color:red">
         Check credentials.
@@ -136,7 +136,7 @@ body {
       <input type="text" id="username" name="username" placeholder="username"/>
       <input type="password" placeholder="password" id="password" name="password"/>
       <button type="submit">login</button>
-      <p class="message">Not registered? <a href="#">Create an account</a></p>
+<!--      <p class="message">Not registered? <a href="#">Create an account</a></p>-->
     </form>
   </div>
 </div>

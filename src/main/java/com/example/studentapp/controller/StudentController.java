@@ -24,7 +24,7 @@ public class StudentController {
      public String login(){
          return "login";
      }
-        @GetMapping("/student/dashboard")
+     @GetMapping("/student/dashboard")
         public String dashboard(){
         return "dashboard";
     }
