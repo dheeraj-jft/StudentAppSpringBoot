@@ -1,41 +1,18 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<!--<link th:href="@{/styles/main.css}" rel="stylesheet" />-->
 <head>
   <title>Spring Security Example </title>
-
-
-
-  <style>
-.alert {
-  padding: 20px;
-  background-color: #f44336;
-  color: white;
-}
-
-.closebtn {
-  margin-left: 15px;
-  color: white;
-  font-weight: bold;
-  float: right;
-  font-size: 22px;
-  line-height: 20px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.closebtn:hover {
-  color: black;
-}
-</style>
-
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 
 <body>
 
 <div th:if="${param.error}" class="alert">
-  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-  <strong>Invalid Credentials</strong> Check username and password.
+Check credentials
 </div>
 <div th:if="${param.logout}">
   You have been logged out.
@@ -44,6 +21,18 @@
   <div><label> User Name : <input type="text" name="username"/> </label></div>
   <div><label> Password: <input type="password" name="password"/> </label></div>
   <div><input type="submit" value="Sign In"/></div>
+  <div th:if="${param.e}"></div>
+</form>
+<form th:action="@{/login}" method="post">
+  <div class="form-group">
+    <label for="exampleInputUsername">Email address</label>
+    <input type="text" class="form-control" id="exampleInputUsername" aria-describedby="emailHelp" placeholder="Enter username" name="username">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="password">
+  </div>
+  <button type="submit" class="btn btn-primary">Sign In</button>
   <div th:if="${param.e}"></div>
 </form>
 </body>

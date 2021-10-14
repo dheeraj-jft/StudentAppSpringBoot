@@ -1,4 +1,4 @@
-package com.example.StudentApp.datamodel;
+package com.example.studentapp.datamodel;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,8 +8,10 @@ import javax.persistence.Id;
 @Entity
 public class Student {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
+    //active
+    //role
 
     private String name;
     private String address;
@@ -33,6 +35,16 @@ public class Student {
 
     public String getAddress() {
         return address;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", phone=" + phone +
+                '}';
     }
 
     public void setAddress(String address) {

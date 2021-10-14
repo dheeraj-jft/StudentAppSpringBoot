@@ -1,37 +1,274 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
 <head>
-    <title>Welcome to DashBoard</title>
+    <title>Student DashBoard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Student DashBoard</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a th:href="@{/logout}">Logout</a></li>
+        </ul>
+    </div>
+</nav>
 <br>
-<br />
-<table border="1">
-    <tr>
-        <td>Student ID</td>
-        <td>Student Name</td>
-        <td>Student Address</td>
-        <td>Student Phone</td>
+<h4>Add new Student</h4>
+<br>
+<button type="button" class="btn btn-info btn-lg float-right" data-toggle="modal" data-target="#myModal">add student</button>
 
-    </tr>
-    <tr th:each="std : ${stdList}">
-        <td th:text="${std.id}">Id</td>
-        <td th:text="${std.name}">Name</td>
-        <td th:text="${std.address}">Address</td>
-        <td th:text="${std.phone}">Phone</td>
-    </tr>
-</table>
+<div class="modal-popup" >
+    <div class="container">
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Add Student Details</h4>
+
+                    </div>
+                    <div class="modal-body">
+                        <form action="/add" id="form" method="post">
+                            <div class="form-group">
+                                <label for="name">Student Name:</label>
+                                <input type="text" class="form-control" id="name" placeholder="Enter Name" name="name">
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Address</label>
+                                <input type="text" class="form-control" id="address" placeholder="Enter Address" name="address">
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone number</label>
+                                <input type="number" class="form-control" id="phone" placeholder="Enter Phone" name="phone">
+                            </div>
+                            <button type="submit" id="addNew" class="btn btn-default">Submit</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+<!-- Modal -->
+<!-- Modal -->
+<div class="modal fade" id="modal_edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit this record</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label for="name">Student Name:</label>
+                <input type="text" class="form-control" id="name_edit" placeholder="Enter Name" name="name">
+            </div>
+            <div class="form-group">
+                <label>Id</label>
+                <input type="text" class="form-control" id="id_edit" placeholder="Id" name="id" readonly>
+            </div>
+            <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" class="form-control" id="address_edit" placeholder="Enter Address" name="address">
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone number</label>
+                <input type="number" class="form-control" id="phone_edit" placeholder="Enter Phone" name="phone">
+            </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button"  id="save" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="container" id="table">
+
+
+</div>
 <br>
 
-<button type="button">Add Student</button> <br>
-<button type="button">Edit Student</button> <br>
-<button type="button">Delete Student</button> <br>
 
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Sign Out"/>
 
-</form>
+<script type="text/javascript">
+//initial
+$(document).ready(function() {
+        showStudentTable();
+    });
+
+//auto refresh
+$(document).ready(function() {
+    setInterval(function(){showStudentTable();},20000);
+    });
+
+
+
+    function showStudentTable(){
+    $("#studentTableData").remove();
+    htmlForTable= '<table class ="table table-striped" id="studentTableData"><thead><tr><th>Id</th><th>Student Name</th><th>Address</th><th>Phone</th><th>Actions</th></tr></thead><tbody>';
+    htmlForTableData='';
+    $.getJSON('http://localhost:8080/student/studentlist', function(json) {
+				var tr=[];
+
+				for (var i = 0; i < json.length; i++) {
+				    htmlForTableData+= '<tr>'+'<td>' + json[i].id + '</td>'+'<td>' + json[i].name + '</td>'+'<td>' + json[i].address + '</td>'+'<td>' + json[i].phone + '</td>'+'<td><button class=\'edit\'>Edit</button>&nbsp;&nbsp;<button  class=\'delete\' id=' + json[i].id + '>Delete</button></td>'+'</tr>';
+					tr.push('<tr>');
+					tr.push('<td>' + json[i].id + '</td>');
+					tr.push('<td>' + json[i].name + '</td>');
+					tr.push('<td>' + json[i].address + '</td>');
+					tr.push('<td>' + json[i].phone + '</td>');
+					tr.push('<td><button class=\'edit\'>Edit</button>&nbsp;&nbsp;<button  class=\'delete\' id=' + json[i].id + '>Delete</button></td>');
+					tr.push('</tr>');
+				}
+				htmlForTable= htmlForTable+ htmlForTableData+'</tbody></table>';
+
+				$('#table').append(htmlForTable);
+			});
+}
+
+//add student call
+    $(document).delegate('#addNew', 'click', function(event) {
+				event.preventDefault();
+
+				var name = $('#name').val();
+				var address = $('#address').val();
+				var phone = $('#phone').val();
+
+				$.ajax({
+					type: "POST",
+					contentType: "application/json; charset=utf-8",
+					url: "http://localhost:8080/student/add",
+					data: JSON.stringify({'name': name,'address': address,'phone': phone}),
+					cache: false,
+					success: function(result) {
+						alert("Record Added Successfully");
+						showStudentTable();
+						console.log("Succesfull")
+					},
+					error: function(err) {
+						console.log("Error")
+					}
+				});
+			});
+
+$(".modal").on("hidden.bs.modal", function(){
+    $(this).find('form').trigger('reset');
+});
+
+
+$(document).delegate('.delete', 'click', function() {
+				if (confirm('Do you really want to delete record?')) {
+					var id = $(this).attr('id');
+					var parent = $(this).parent().parent();
+					$.ajax({
+						type: "DELETE",
+						url: "http://localhost:8080/student/delete/" + id,
+						cache: false,
+						success: function() {
+							parent.fadeOut('slow', function() {
+								$(this).remove();
+							});
+							showStudentTable();
+						},
+						error: function() {
+							$('#err').html('<span style=\'color:red; font-weight: bold; font-size: 30px;\'>Error deleting record').fadeIn().fadeOut(4000, function() {
+								$(this).remove();
+							});
+						}
+					});
+				}
+			});
+
+
+
+
+$(document).delegate('.edit', 'click', function() {
+                let id,phone,name, address;
+                var $row = $(this).closest("tr");
+                var $tds = $row.find("td:nth-child(1)");
+                $.each($tds, function() {
+                 id=$(this).text();
+                console.log($(this).text());
+                });
+                var $tds = $row.find("td:nth-child(2)");
+                $.each($tds, function() {
+                 name=$(this).text();
+                console.log($(this).text());
+                });
+                var $tds = $row.find("td:nth-child(3)");
+                $.each($tds, function() {
+                 address=$(this).text();
+                console.log($(this).text());
+                });
+                var $tds = $row.find("td:nth-child(4)");
+
+                $.each($tds, function() {
+                phone=$(this).text();
+                console.log($(this).text());
+                });
+
+				$('#modal_edit').modal('show')
+				$('#name_edit').val(name);
+				$('#address_edit').val(address);
+				$('#phone_edit').val(phone);
+				$('#id_edit').val(id);
+
+			});
+
+			$(document).delegate('#save', 'click', function() {
+				    console.log("Save");
+				    var name= $('#name_edit').val();
+				    var address= $('#address_edit').val();
+				    var phone= $('#phone_edit').val();
+				    var id=$('#id_edit').val();
+
+
+				$.ajax({
+					type: "PUT",
+					contentType: "application/json; charset=utf-8",
+					url: "http://localhost:8080/student/save",
+					data: JSON.stringify({'id': id, 'name': name,'address': address,'phone': phone}),
+					cache: false,
+					success: function() {
+					    showStudentTable();
+						alert("Successfully Updated");
+					},
+					error: function() {
+						$('#err').html('<span style=\'color:red; font-weight: bold; font-size: 30px;\'>Error updating record').fadeIn().fadeOut(4000, function() {
+							$(this).remove();
+						});
+					}
+				});
+			});
+
+
+
+</script>
+
 </body>
 </html>
