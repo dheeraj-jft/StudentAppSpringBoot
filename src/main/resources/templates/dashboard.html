@@ -3,50 +3,46 @@
 >
 
 <head>
-    <title>Student DashBoard</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}" />
-    <script type="text/javascript" th:src="@{/assets/js/jqeryAjaxCaller.js}"></script>
-
+   <div th:replace="header :: myheader"></div>
 </head>
 <body>
-<nav class="navbar navbar-default">
-
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#" style="align:center">Student DashBoard</a>
-        </div>
-        <ul class="nav navbar-nav navbar-right">
-            <li><a th:href="@{/logout}">Logout</a></li>
-        </ul>
-</nav>
+<!--navbar-->
+<div th:replace="header :: mynavbar"></div>
+<!--add Student Modal-->
 <div>
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
+
             <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">Add Student Details</h4>
-
                     </div>
                     <div class="modal-body">
-                        <form action="/add" id="form" method="post">
+                        <div id="err"></div>
+                        <form id="add_student_form" >
                             <div class="form-group">
-                                <label for="name">Student Name:</label>
-                                <input type="text" class="form-control" id="name" placeholder="Enter Name" name="name">
+                                <label for="form_rollno">Student Roll No.:</label>
+                                <input type="number" class="form-control" id="form_rollno" placeholder="Enter Roll No." name="rollno">
+                                <span class="error_form" id="rollno_error_message"></span>
                             </div>
                             <div class="form-group">
-                                <label for="address">Address</label>
-                                <input type="text" class="form-control" id="address" placeholder="Enter Address" name="address">
+                                <label for="form_name">Student Name:</label>
+                                <input type="text" class="form-control" id="form_name" placeholder="Enter Name" name="name">
+                                <span class="error_form" id="name_error_message"></span>
                             </div>
                             <div class="form-group">
-                                <label for="phone">Phone number</label>
-                                <input type="number" class="form-control" id="phone" placeholder="Enter Phone" name="phone">
+                                <label for="form_address">Address</label>
+                                <input type="text" class="form-control" id="form_address" placeholder="Enter Address" name="address">
+                                <span class="error_form" id="address_error_message"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="form_phone">Phone number</label>
+                                <input type="number" class="form-control" id="form_phone" placeholder="Enter Phone" name="phone">
+                                <span class="error_form" id="phone_error_message"></span>
                             </div>
                             <div class="modal-footer">
-                            <button type="submit" id="addNew" class="save-btn">Submit</button>
+                            <button type="button" id="add_form_button" class="save-btn">Submit</button>
                             <button type="button" class="close-btn" data-dismiss="modal">Close</button>
                             </div>
                         </form>
@@ -58,52 +54,104 @@
 
         </div>
 </div>
-</div>
-<!-- Modal -->
-<!-- Modal -->
-<div class="modal fade" id="modal_edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit this record</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+
+<!--Edit Student Modal-->
+<div>
+    <div class="modal fade" id="edit_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit Student Details</h4>
+                </div>
+
             <div class="modal-body">
-                <label for="name">Student Name:</label>
-                <input type="text" class="form-control" id="name_edit" placeholder="Enter Name" name="name">
-
-                    <label>Id</label>
-                    <input type="text" class="form-control" id="id_edit" placeholder="Id" name="id" readonly>
-
-
-                    <label for="address">Address</label>
-                    <input type="text" class="form-control" id="address_edit" placeholder="Enter Address" name="address">
-
-
-                    <label for="phone">Phone number</label>
-                    <input type="number" class="form-control" id="phone_edit" placeholder="Enter Phone" name="phone">
-
-                <button type="button" class="close-btn" data-dismiss="modal">Close</button>
-                <button type="button"  id="save" class="save">Save</button>
+                <form id="edit_student_form" >
+                    <div class="form-group">
+                        <label>sr.no.</label>
+                        <input type="text" class="form-control" id="edit_sr" placeholder="sr.no." name="sr" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Roll no.</label>
+                        <input type="text" class="form-control" id="edit_rollno" placeholder="roll no." name="rollno" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_name">Student Name:</label>
+                        <input type="text" class="form-control" id="edit_name" placeholder="Enter Name" name="name">
+                        <span class="error_form" id="edit_name_error_message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_address">Student Address:</label>
+                        <input type="text" class="form-control" id="edit_address" placeholder="Enter Address" name="address">
+                        <span class="error_form" id="edit_address_error_message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_phone">Student Phone number:</label>
+                        <input type="number" class="form-control" id="edit_phone" placeholder="Enter Phone" name="phone">
+                        <span class="error_form" id="edit_phone_error_message"></span>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button"  id="edit_details_button" class="save">Save</button>
+                        <button type="button" class="close-btn" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
             </div>
 
             </div>
+
         </div>
     </div>
+
+
+
 </div>
 
+<!--Delete Student Modal-->
+<div>
+    <div class="modal fade" id="delete_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Do you want to delete this record?</h4>
+                </div>
+
+                <div class="modal-body">
+                    <form id="delete_student_form" >
+
+                        <div class="form-group">
+                            <label>Roll no.</label>
+                            <input type="text" class="form-control" id="delete_rollno" placeholder="roll no." name="rollno" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_name">Student Name:</label>
+                            <input type="text" class="form-control" id="delete_name" placeholder="Enter Name" name="name" readonly>
+                        <div class="modal-footer">
+                            <button type="button"  id="delete_details_button" class="save">Delete</button>
+                            <button type="button" class="close-btn" data-dismiss="modal">Close</button>
+                        </div>
+                        </div>
+                        </form>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
 
 
+
+</div>
 <div class="container" >
-    <button type="button" class="btn" data-toggle="modal" data-target="#myModal"><i class="fa fa-home"></i>add student</button>
+
+    <button type="button" id="addButton"class="btn" data-toggle="modal" data-target="#addModal"><i class="fa fa-home"></i>add student</button>
+
+<!--Table div    -->
 <div  id="table">
-
-
+<!--table data    -->
 </div>
 </div>
-<br>
+
 
 
 

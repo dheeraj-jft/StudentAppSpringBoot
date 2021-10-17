@@ -18,6 +18,9 @@
   margin: 0 auto;
   background: aliceblue;
 }
+.button{
+    overflow: hidden;
+}
 .table{
   width:100%;
   table-layout: fixed;
@@ -65,7 +68,6 @@ td{
   text-transform: uppercase;
   outline: 0;
   background: #4CAF50;
-  width: 20%;
   border: 0;
   padding: 15px;
   color: #FFFFFF;
@@ -79,9 +81,7 @@ td{
   text-transform: uppercase;
   outline: 0;
   background: #2B89AE;
-  width: 48%;
   border: 0;
-  padding: 15px;
   color: #FFFFFF;
   font-size: 14px;
   -webkit-transition: all 0.3 ease;
@@ -93,9 +93,7 @@ td{
   text-transform: uppercase;
   outline: 0;
   background: #AE2B2B;
-  width: 48%;
   border: 0;
-  padding: 15px;
   color: #FFFFFF;
   font-size: 14px;
   -webkit-transition: all 0.3 ease;
@@ -165,6 +163,16 @@ td{
   font-weight: 300;
   color: #1a1a1a;
 }
+.buttonContainer th{
+  cursor: pointer; /* Pointer/hand icon */
+  float: left; /* Float the buttons side by side */
+}
+
+.buttonContainer:after{
+clear: both;
+display: table;
+}
+
 .container .info span {
   color: #4d4d4d;
   font-size: 12px;
@@ -184,6 +192,17 @@ td{
 }
 .navbar-brand {float:none;}
 
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
 body {
   background: #76b852; /* fallback for old browsers */
   background: -webkit-linear-gradient(right, #76b852, #8DC26F);

@@ -1,21 +1,23 @@
 package com.example.studentapp.datamodel;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class Student {
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+
+
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
     //active
     //role
+    @Id
+    @Column(unique = true)
+    private int rollno;
 
     private String name;
     private String address;
-    private Integer phone;
+    private String phone;
 
     public Integer getId() {
         return id;
@@ -37,26 +39,35 @@ public class Student {
         return address;
     }
 
-    @Override
-    public String toString() {
-        return "Student{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", address='" + address + '\'' +
-                ", phone=" + phone +
-                '}';
+
+    public int getRollno() {
+        return rollno;
+    }
+
+    public void setRollno(int rollno) {
+        this.rollno = rollno;
     }
 
     public void setAddress(String address) {
         this.address = address;
     }
 
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", rollno='" + rollno + '\'' +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", phone=" + phone +
+                '}';
+    }
 }
