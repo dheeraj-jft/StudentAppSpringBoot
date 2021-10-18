@@ -67,7 +67,6 @@ $(function() {
             check_retype_password();
 
             if (error_name === false && error_password === false  && error_retype_password=== false) {
-                console.log("Inside form register");
                 register();
             } else {
                 alert("Please Fill the form Correctly");
@@ -81,7 +80,6 @@ $(function() {
         var username = $("#registerName").val();
         var password = $("#registerPassword").val();
         var role = $("#registerRole").val();
-        console.log("Inside add user funcition");
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
@@ -93,13 +91,15 @@ $(function() {
                 'role': role
             }),
             success: function(result) {
-                console.log("Successful registeration");
                 alert("Successful Registeration");
+                $('#registerUserform').each(function() {
+                  this.reset();
+                });
                 window.location = "http://localhost:8080/";
+
             },
             error: function(err) {
                 alert("Error: Registration, UserName Already exists");
-                console.log("Error");
             }
         });
         }

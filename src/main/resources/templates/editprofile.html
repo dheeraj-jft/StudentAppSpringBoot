@@ -19,11 +19,15 @@
         <ul class="nav navbar-nav">
             <li class="inactive"><a th:href="@{/}">Home</a></li>
 
-            <li id="addUserNav" class="inactive">
-                <a th:href="@{/register}">Add Users</a>
+            <li  id="addUserNav"  th:if="${role}==[ADMIN]" class="inactive">
+                <a  th:href="@{/register}">Add Users</a>
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
+
+            <li>
+                <a  id="editprofile" class=" active dropdown-item" th:href="@{/edit/profile}"><span class="glyphicon glyphicon-user"></span> Edit profile</a>
+            </li>
             <li class="inactive"><a th:href="@{/mylogout}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
         </ul>
     </div>

@@ -1,17 +1,10 @@
-//initial
+
 var roleUser=false;
 
 $(document).ready(function() {
-   checkRoleforUser();
+checkRoleforUser();
 });
 
-
-//auto refresh
-//$(document).ready(function() {
-//    setInterval(function() {
-//        showStudentTable();
-//    }, 200000);
-//});
 $(function(){
     $("name_error_message").hide();
     $("address_error_message").hide();
@@ -170,14 +163,12 @@ $(function(){
         check_rollno();
 
         if (error_name === false && error_address === false && error_phone === false && error_rollno === false) {
-            console.log("Inside form");
             addNewStudentToDB();
+            return true;
         } else {
             alert("Please Fill the form Correctly");
             return false;
         }
-
-
     });
 
 
@@ -190,43 +181,32 @@ $(function(){
         check_edit_name();
         check_edit_address();
         check_edit_phone();
-        console.log("edit button");
         if (error_edit_name === false && error_edit_address === false && error_edit_phone === false) {
             editStudentDetails();
-
         } else {
             alert("Please Fill the form Correctly to save details");
             return false;
         }
-
-
-    });
-    });
+     });
+ });
   function checkRoleforUser() {
-
-    console.log("Inside role check function");
     $.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
         url: "http://localhost:8080/userrole",
         cache: false,
         success: function(result) {
-            console.log(result);
             if(result.includes("[USER]")){
                 roleUser=true;
                 $(".buttonContainer").hide();
                 $("#addButton").hide();
                 $("#actionshead").hide();
-                $("#addUserNav").hide();
-
               }
-            console.log("Successful")
             showStudentTable();
             return true;
         },
         error: function(err,xhr) {
-            console.log("Error")
-            console.log(xhr.status);
+            alert("Error: checking role");
             return false;
         }
 
@@ -265,17 +245,11 @@ function showStudentTable() {
     });
 };
 
-
-
-
-
-//add student call
 function addNewStudentToDB() {
     var name = $("#form_name").val();
     var address = $("#form_address").val();
     var phone = $("#form_phone").val();
     var rollno = $("#form_rollno").val();
-    console.log("Inside add funcit");
     $.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -293,19 +267,15 @@ function addNewStudentToDB() {
             $('#add_student_form').each(function() {
                 this.reset();
             });
-            console.log("Successful")
 
             return true;
         },
         error: function(err,xhr) {
             alert("Error: Roll no. already exists!!");
-            console.log("Error")
-            console.log(xhr.status);
             return false;
         }
     });
 };
-
 
 $(document).delegate('#delete_details_button', 'click', function() {
 
@@ -316,13 +286,11 @@ $(document).delegate('#delete_details_button', 'click', function() {
             url: "http://localhost:8080/student/delete/" + rollno,
             cache: false,
             success: function() {
-                console.log("Record deleted")
                 showStudentTable();
                 $('#delete_modal').modal('hide');
             },
             error: function(xhr) {
-                console.log(xhr.status);
-
+                alert("Error: record delete");
             }
         });
 });
@@ -334,12 +302,11 @@ $(document).delegate('.delete', 'click', function() {
     var $tds = $row.find("td:nth-child(2)");
     $.each($tds, function() {
         rollno = $(this).text();
-        console.log($(this).text());
+
     });
     var $tds = $row.find("td:nth-child(3)");
     $.each($tds, function() {
         name = $(this).text();
-        console.log($(this).text());
     });
     $('#delete_modal').modal('show')
     $('#delete_name').val(name);
@@ -355,27 +322,22 @@ $(document).delegate('.edit', 'click', function() {
     var $tds = $row.find("td:nth-child(1)");
     $.each($tds, function() {
         sr = $(this).text();
-        console.log($(this).text());
     });
     var $tds = $row.find("td:nth-child(2)");
     $.each($tds, function() {
         rollno = $(this).text();
-        console.log($(this).text());
     });
     var $tds = $row.find("td:nth-child(3)");
     $.each($tds, function() {
         name = $(this).text();
-        console.log($(this).text());
     });
     var $tds = $row.find("td:nth-child(4)");
     $.each($tds, function() {
         address = $(this).text();
-        console.log($(this).text());
     });
     var $tds = $row.find("td:nth-child(5)");
     $.each($tds, function() {
         phone = $(this).text();
-        console.log($(this).text());
     });
 
     $('#edit_modal').modal('show')
@@ -393,11 +355,6 @@ function editStudentDetails() {
     var address = $('#edit_address').val();
     var phone = $('#edit_phone').val();
     var rollno = $('#edit_rollno').val();
-    console.log(name);
-    console.log(address);
-    console.log(phone);
-    console.log(rollno);
-
 
     $.ajax({
         type: "PUT",
@@ -412,14 +369,10 @@ function editStudentDetails() {
         }),
         success: function() {
             showStudentTable();
-            console.log("Save");
             $('#edit_modal').modal('hide');
         },
         error: function() {
-            console.log("Error edit");
-            $('#err').html('<span style=\'color:red; font-weight: bold; font-size: 30px;\'>Error updating record').fadeIn().fadeOut(4000, function() {
-                $(this).remove();
-            });
+           alert("Error: edit student data");
         }
     });
 }

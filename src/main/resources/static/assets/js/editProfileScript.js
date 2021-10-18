@@ -1,27 +1,6 @@
-//$(document).ready(function() {
-//console.log("Inside role check function");
-//    $.ajax({
-//        type: "GET",
-//        contentType: "application/json; charset=utf-8",
-//        url: "http://localhost:8080/edit/get/profile",
-//        cache: false,
-//        success: function(result) {
-//            console.log("Successful")
-//            return true;
-//        },
-//        error: function(err,xhr) {
-//            console.log("Error")
-//            console.log(xhr.status);
-//            return false;
-//        }
-//
-//    });
-//
-//});
 
 $(function() {
 
-    checkRoleforUser();
     $("change_name_error_message").hide();
     $("change_password_error_message").hide();
     $("change_retype_password_error_message").hide();
@@ -30,7 +9,7 @@ $(function() {
     var error_password = false;
     var error_retype_password=false;
 
-    $("#changUsername").focusout(function() {
+    $("#changeUsername").focusout(function() {
         check_name();
     });
     $("#changePassword").focusout(function() {
@@ -92,7 +71,6 @@ $(function() {
             check_retype_password();
 
             if (error_name === false && error_password === false  && error_retype_password === false) {
-                console.log("Inside edit details form ");
                 updateDetails();
             } else {
                 alert("Please Fill the form Correctly");
@@ -102,7 +80,6 @@ $(function() {
         });
 
     function updateDetails(){
-    console.log("update details");
     event.preventDefault();
            var username = $("#changeUsername").val();
            var password = $("#changePassword").val();
@@ -116,41 +93,13 @@ $(function() {
                }),
                cache: false,
                success: function(result) {
-               console.log("update details");
                   alert("Details updated Successfully");
                   window.location = "http://localhost:8080/";
-                   return true;
+                  return true;
                },
                error: function(err,xhr) {
-               console.log("update details");
-                   alert("Error: update details ");
-                   console.log("Error")
+                   alert("Error: update details, UserName Already exists");
                    return false;
                }
            });
   }
-  function checkRoleforUser() {
-
-      console.log("Inside role check function");
-      $.ajax({
-          type: "GET",
-          contentType: "application/json; charset=utf-8",
-          url: "http://localhost:8080/userrole",
-          cache: false,
-          success: function(result) {
-              console.log(result);
-              if(result.includes("[USER]")){
-                  $("#addUserNav").hide();
-
-                }
-              console.log("Successful")
-              return true;
-          },
-          error: function(err,xhr) {
-              console.log("Error")
-              console.log(xhr.status);
-              return false;
-          }
-
-      });
-      }

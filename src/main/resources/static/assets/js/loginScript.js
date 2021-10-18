@@ -1,11 +1,9 @@
 $(function() {
     $("name_error_message").hide();
     $("password_error_message").hide();
-    $("retype_password_error_message").hide();
 
     var error_name = false;
     var error_password = false;
-    var error_retype_password=false;
 
     $("#username").focusout(function() {
         check_name();
@@ -13,9 +11,6 @@ $(function() {
     $("#password").focusout(function() {
         check_password();
     });
-    $("#retype_password").focusout(function() {
-            check_retype_password();
-        });
 
 
     function check_name() {
@@ -46,46 +41,20 @@ $(function() {
         }
     }
 
-function check_retype_password() {
-            var password=$("#password").val();
-            var retypepassword = $("#retype_password").val();
-            if (retypepassword === password && password !== '') {
-                $("#retype_password_error_message").hide();
-                $("#retype_password").css("border-bottom", "2px solid #34F458");
-            } else {
-                $("#retype_password_error_message").html("Password not matched");
-                $("#retype_password_error_message").show();
-                $("#retype_password").css("border-bottom", "2px solid #F90A0A");
-                error_retype_password = true;
-            }
-        }
-
-
-
-
          $('#loginUser').click (function(e) {
                            e.preventDefault();
                            error_name = false;
                            error_password = false;
-                           error_retype_password=false;
-
                            check_name();
                            check_password();
-                           check_retype_password();
 
-                           if (error_name === false && error_password === false  && error_retype_password=== false) {
-                               console.log("Inside form register");
+                           if (error_name === false && error_password === false) {
                                $("#loginForm").submit();
                            } else {
 
                                alert("Please Fill the form Correctly");
                                return false;
                            }
-
-
                });
-
-
-
   });
 
