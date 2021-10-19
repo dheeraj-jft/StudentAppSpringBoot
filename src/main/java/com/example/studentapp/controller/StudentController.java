@@ -5,6 +5,7 @@ import com.example.studentapp.datamodel.User;
 import com.example.studentapp.repositories.StudentRepository;
 import com.example.studentapp.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -15,7 +16,7 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
-public class MyController {
+public class StudentController {
 
     @Autowired
     StudentRepository studentRepository;
@@ -65,7 +66,7 @@ public class MyController {
 
     @GetMapping("/studentlist")
     public ResponseEntity<List<Student>> getStudentList() {
-        return new ResponseEntity<>(studentRepository.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(studentRepository.findAll(Sort.by(Sort.Direction.ASC,"rollno")), HttpStatus.OK);
     }
 
     @DeleteMapping("/student/delete/{rollno}")
@@ -76,7 +77,11 @@ public class MyController {
 
     @PutMapping("/student/save")
     public ResponseEntity<Void> saveOrUpdateStudent(@RequestBody Student student) {
+        Student student1 =studentRepository.findByRollno(student.getRollno());
+        student1.setName(student.getName());
+        studentRepository.save(student1);
         studentRepository.updateStudentDetails(student.getRollno(), student.getName(), student.getAddress(), student.getPhone());
+
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
