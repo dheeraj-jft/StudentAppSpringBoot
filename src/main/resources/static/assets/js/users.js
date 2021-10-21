@@ -3,6 +3,7 @@ $(document).ready(function() {
 showUserTable();
 });
 
+
 function showUserTable() {
 
     $("#userTable").remove();
@@ -24,239 +25,307 @@ function showUserTable() {
     });
 }
 
-
-
-$(function(){
-    $("name_error_message").hide();
-    $("address_error_message").hide();
-    $("phone_error_message").hide();
-    $("rollno_error_message").hide();
-
-
-    $("edit_name_error_message").hide();
-    $("edit_address_error_message").hide();
-    $("edit_phone_error_message").hide();
+$(function() {
+    $("register_name_error_message").hide();
+    $("register_password_error_message").hide();
+    $("register_retype_password_error_message").hide();
 
     var error_name = false;
-    var error_address = false;
-    var error_phone = false;
-    var error_rollno = false;
+    var error_password = false;
+    var error_retype_password=false;
 
-    var error_edit_name = false;
-    var error_edit_address = false;
-    var error_edit_phone = false;
-
-
-
-    $("#form_name").focusout(function() {
+    $("#registerName").focusout(function() {
         check_name();
     });
-    $("#form_address").focusout(function() {
-        check_address();
+    $("#registerPassword").focusout(function() {
+        check_password();
     });
-    $("#form_phone").focusout(function() {
-        check_phone();
+    $("#registerRetypePassword").focusout(function() {
+            check_retype_password();
     });
-    $("#form_rollno").focusout(function() {
-        check_rollno();
-    });
-
-    $("#edit_name").focusout(function() {
-        check_edit_name();
-    });
-    $("#edit_address").focusout(function() {
-        check_edit_address();
-    });
-    $("#edit_phone").focusout(function() {
-        check_edit_phone();
-    });
-
 
     function check_name() {
         var pattern = /^[a-zA-Z ]*$/;
-        var name = $("#form_name").val().trim();
+        var name = $("#registerName").val().trim();
         if (pattern.test(name) && name !== '') {
-            $("#name_error_message").hide();
-            $("#form_name").css("border-bottom", "2px solid #34F458");
+            $("#register_name_error_message").hide();
+            $("#registerName").css("border-bottom", "2px solid #34F458");
         } else {
-            $("#name_error_message").html("Should contain only Characters");
-            $("#name_error_message").show();
-            $("#form_name").css("border-bottom", "2px solid #F90A0A");
+            $("#register_name_error_message").html("Should contain only Characters");
+            $("#register_name_error_message").show();
+            $("#registerName").css("border-bottom", "2px solid #F90A0A");
             error_name = true;
         }
     }
 
-    function check_address() {
-        var pattern = /^[a-zA-Z0-9, ./]*$/;
-        var address = $("#form_address").val().trim();
-        if (pattern.test(address) && address !== '') {
-            $("#address_error_message").hide();
-            $("#form_address").css("border-bottom", "2px solid #34F458");
+    function check_password() {
+        var pattern = /^[a-zA-Z0-9,.@:;! ]*$/;
+        var password = $("#registerPassword").val();
+        if (pattern.test(password) && password !== '') {
+            $("#register_password_error_message").hide();
+            $("#registerPassword").css("border-bottom", "2px solid #34F458");
         } else {
-            $("#address_error_message").html("Enter a valid address");
-            $("#address_error_message").show();
-            $("#form_address").css("border-bottom", "2px solid #F90A0A");
-            error_address = true;
+            $("#register_password_error_message").html("Enter a valid password.(a-z,A_Z,0-9,@!:;");
+            $("#register_password_error_message").show();
+            $("#registerPassword").css("border-bottom", "2px solid #F90A0A");
+            error_password = true;
         }
     }
-
-    function check_phone() {
-        var pattern = /^[0-9]*$/;
-        var phone = $("#form_phone").val();
-        if (pattern.test(phone) && phone !== '' && phone.length==10) {
-            $("#phone_error_message").hide();
-            $("#form_phone").css("border-bottom", "2px solid #34F458");
-        } else {
-            $("#phone_error_message").html("Should contains 10 digits ");
-            $("#phone_error_message").show();
-            $("#form_phone").css("border-bottom", "2px solid #F90A0A");
-            error_phone = true;
+    function check_retype_password() {
+            var password=$("#registerPassword").val();
+            var retypepassword = $("#registerRetypePassword").val();
+            if (retypepassword === password && password !== '') {
+                $("#register_retype_password_error_message").hide();
+                $("#registerRetypePassword").css("border-bottom", "2px solid #34F458");
+            } else {
+                $("#register_retype_password_error_message").html("Password not matched");
+                $("#register_retype_password_error_message").show();
+                $("#registerRetypePassword").css("border-bottom", "2px solid #F90A0A");
+                error_retype_password = true;
+            }
         }
-    }
 
-    function check_rollno() {
-        var pattern = /^[0-9]*$/;
-        var rollno = $("#form_rollno").val();
-        if (pattern.test(rollno) && rollno !== '' && rollno.length<=10) {
-            $("#rollno_error_message").hide();
-            $("#form_rollno").css("border-bottom", "2px solid #34F458");
-        } else {
-            $("#rollno_error_message").html("Should contain 10 or less number of digits");
-            $("#rollno_error_message").show();
-            $("#form_rollno").css("border-bottom", "2px solid #F90A0A");
-            error_rollno = true;
-        }
-    }
+     $("#createUser").click(function() {
+            error_name = false;
+            error_password = false;
+            error_retype_password=false;
 
-    function check_edit_phone() {
-        var pattern = /^[0-9]*$/;
-        var phone = $("#edit_phone").val();
-        if (pattern.test(phone) && phone !== ''&& phone.length==10) {
-            $("#edit_phone_error_message").hide();
-            $("#edit_phone").css("border-bottom", "2px solid #34F458");
-        } else {
-            $("#edit_phone_error_message").html("Should contains 10 digits");
-            $("#edit_phone_error_message").show();
-            $("#edit_phone").css("border-bottom", "2px solid #F90A0A");
-            error_edit_phone = true;
-        }
-    }
+            check_name();
+            check_password();
+            check_retype_password();
 
-    function check_edit_address() {
-        var pattern = /^[a-zA-Z0-9, ./]*$/;
-        var address = $("#edit_address").val().trim();
-        if (pattern.test(address) && address !== '') {
-            $("#edit_address_error_message").hide();
-            $("#edit_address").css("border-bottom", "2px solid #34F458");
-        } else {
-            $("#edit_address_error_message").html("Enter a valid address");
-            $("#edit_address_error_message").show();
-            $("#edit_address").css("border-bottom", "2px solid #F90A0A");
-            error_edit_address = true;
-        }
-    }
+            if (error_name === false && error_password === false  && error_retype_password=== false) {
+                register();
+            } else {
+                alert("Please Fill the form Correctly");
+                return false;
+            }
+
+        });
+
+    function register(){
+    event.preventDefault();
+        var username = $("#registerName").val().trim();
+        var password = $("#registerPassword").val();
+        var role = $("#registerRole").val();
+        $.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: "http://localhost:8080/users/register",
+            cache: false,
+            data: JSON.stringify({
+                'username': username,
+                'password': password,
+                'role': role
+            }),
+            success: function(result) {
+                alert("Successful Registeration");
+                showUserTable();
+                $('#addModal_form').modal('hide');
+                 $('#registerUserform').each(function() {
+                      this.reset();
+                  });
+
+            },
+            error: function(err) {
+                alert("Error: Registration, UserName Already exists");
+            }
+        });
+      }
+
+  });
+
+$(document).on('hide.bs.modal','#addModal_form',function(e){
+  $('#registerUserform').each(function() {
+  this.reset();
+  });
+    $("#register_name_error_message").hide();
+    $("#register_password_error_message").hide();
+    $("#register_retype_password_error_message").hide();
+
+    $("#registerPassword").css("border-bottom", "none");
+    $("#registerName").css("border-bottom", "none");
+    $("#registerRetypePassword").css("border-bottom", "none");
+ });
+ $(document).on('shown.bs.modal','#addModal_form',function(e){
+   $('#registerUserform').each(function() {
+   this.reset();
+   });
+       $("#registerPassword").css("border-bottom", "none");
+       $("#registerName").css("border-bottom", "none");
+       $("#registerRetypePassword").css("border-bottom", "none");
+  });
 
 
-    function check_edit_name() {
+
+
+
+$(function() {
+    $("edit_name_error_message").hide();
+    $("edit_password_error_message").hide();
+    $("edit_retype_password_error_message").hide();
+
+    var error_name = false;
+    var error_password = false;
+    var error_retype_password=false;
+
+
+    function check_name() {
         var pattern = /^[a-zA-Z ]*$/;
-        var name = $("#edit_name").val().trim();
+        var name = $("#editName").val().trim();
         if (pattern.test(name) && name !== '') {
             $("#edit_name_error_message").hide();
-            $("#edit_name").css("border-bottom", "2px solid #34F458");
+            $("#editName").css("border-bottom", "2px solid #34F458");
         } else {
             $("#edit_name_error_message").html("Should contain only Characters");
             $("#edit_name_error_message").show();
-            $("#edit_name").css("border-bottom", "2px solid #F90A0A");
-            error_edit_name = true;
+            $("#editName").css("border-bottom", "2px solid #F90A0A");
+            error_name = true;
         }
     }
 
-
-    $("#add_form_button").click(function() {
-        error_name = false;
-        error_address = false;
-        error_phone = false;
-        error_rollno = false;
-
-        check_name();
-        check_address();
-        check_phone();
-        check_rollno();
-
-        if (error_name === false && error_address === false && error_phone === false && error_rollno === false) {
-            addNewStudentToDB();
-            return true;
+    function check_password() {
+        var pattern = /^[a-zA-Z0-9,.@:;! ]*$/;
+        var password = $("#editPassword").val();
+        if (pattern.test(password) && password !== '') {
+            $("#edit_password_error_message").hide();
+            $("#editPassword").css("border-bottom", "2px solid #34F458");
         } else {
-            alert("Please Fill the form Correctly");
-            return false;
+            $("#edit_password_error_message").html("Enter a valid password.(a-z,A_Z,0-9,@!:;)");
+            $("#edit_password_error_message").show();
+            $("#editPassword").css("border-bottom", "2px solid #F90A0A");
+            error_password = true;
         }
+    }
+    function check_retype_password() {
+            var password=$("#editPassword").val();
+            var retypepassword = $("#editRetypePassword").val();
+            if (retypepassword === password ) {
+                $("#edit_retype_password_error_message").hide();
+                $("#editRetypePassword").css("border-bottom", "2px solid #34F458");
+            } else {
+                $("#edit_retype_password_error_message").html("Password not matched");
+                $("#edit_retype_password_error_message").show();
+                $("#editRetypePassword").css("border-bottom", "2px solid #F90A0A");
+                error_retype_password = true;
+            }
+        }
+
+     $("#edit_user_button").click(function() {
+            error_name = false;
+            error_password = false;
+            error_retype_password=false;
+            var name = $("#editName").val().trim();
+            var password=$("#editPassword").val();
+            var retypepassword = $("#editRetypePassword").val();
+            var role=$("#editRole").val();
+                if(password!=""){
+                   check_password();
+                }else{
+                    error_password===false;
+                 }
+            check_name();
+            check_retype_password();
+            if(error_name === false && name===oldname && oldrole==role && password==="" && error_password===false && error_retype_password===false){
+                     alert("Nothing to update!!");
+                     $('#edit_modal_form').modal('hide');
+                     return true;
+             }
+
+            if (error_name === false && error_password === false  && error_retype_password=== false) {
+                editDetails();
+            } else {
+                alert("Please Fill the form Correctly");
+                return false;
+            }
+
+        });
+
+    function editDetails(){
+    event.preventDefault();
+        var username = $("#editName").val().trim();
+        var password = $("#editPassword").val();
+        var role = $("#editRole").val();
+        $.ajax({
+            type: "PUT",
+            contentType: "application/json; charset=utf-8",
+            url: "http://localhost:8080/users/register/"+oldname,
+            cache: false,
+            data: JSON.stringify({
+                'username': username,
+                'password': password,
+                'role': role,
+                'oldname':oldname
+            }),
+            success: function(result) {
+                alert("User details saved successfully");
+                showUserTable();
+                $('#edit_modal_form').modal('hide');
+                 $('#edit_user_form').each(function() {
+                      this.reset();
+                  });
+
+            },
+            error: function(err) {
+                alert("Error: Saving Details, Username: "+username+" already associated with another account");
+            }
+        });
+      }
+
+  });
+  $(document).on('hide.bs.modal','#edit_modal_form',function(e){
+    $('#edit_user_form').each(function() {
+    this.reset();
+    });
+      $("#edit_name_error_message").hide();
+      $("#edit_password_error_message").hide();
+      $("#edit_retype_password_error_message").hide();
+
+      $("#editPassword").css("border-bottom", "none");
+      $("#editName").css("border-bottom", "none");
+      $("#editRetypePassword").css("border-bottom", "none");
+   });
+
+var oldname,oldrole;
+$(document).delegate('.edit', 'click', function() {
+    let name, role;
+    var $row = $(this).closest("tr");
+
+    var $tds = $row.find("td:nth-child(2)");
+    $.each($tds, function() {
+        name = $(this).text();
+        oldname=name;
+    });
+    var $tds = $row.find("td:nth-child(3)");
+    $.each($tds, function() {
+        role = $(this).text();
     });
 
+    $('#edit_modal_form').modal('show')
+    $('#editName').val(name);
+    $('#editPassword').val('');
+    $('#editRole').val(role);
+    oldrole=role;
+    $("#editPassword").css("border-bottom", "none");
 
 
-    $("#edit_details_button").click(function() {
-        error_edit_name = false;
-        error_edit_address = false;
-        error_edit_phone = false;
-
-        check_edit_name();
-        check_edit_address();
-        check_edit_phone();
-        if (error_edit_name === false && error_edit_address === false && error_edit_phone === false) {
-            editStudentDetails();
-        } else {
-            alert("Please Fill the form Correctly to save details");
-            return false;
-        }
-     });
- });
+});
 
 
 
 
 
-function addNewStudentToDB() {
-    var name = $("#form_name").val();
-    var address = $("#form_address").val();
-    var phone = $("#form_phone").val();
-    var rollno = $("#form_rollno").val();
-    $.ajax({
-        type: "POST",
-        contentType: "application/json; charset=utf-8",
-        url: "http://localhost:8080/student/save",
-        data: JSON.stringify({
-            'name': name,
-            'rollno': rollno,
-            'address': address,
-            'phone': phone
-        }),
-        cache: false,
-        success: function(result) {
-            showStudentTable();
-            $('#addModal').modal('hide');
-            $('#add_student_form').each(function() {
-                this.reset();
-            });
-
-            return true;
-        },
-        error: function(err,xhr) {
-            alert("Error: Roll no. already exists!!");
-            return false;
-        }
-    });
-};
 
 $(document).delegate('#delete_details_button', 'click', function() {
 
-        var rollno=$('#delete_rollno').val();
+        var username=$('#delete_username').val();
 
         $.ajax({
             type: "DELETE",
-            url: "http://localhost:8080/student/delete/" + rollno,
+            url: "http://localhost:8080/users/delete/" +username,
             cache: false,
             success: function() {
-                showStudentTable();
+                showUserTable();
                 $('#delete_modal').modal('hide');
             },
             error: function(xhr) {
@@ -266,109 +335,24 @@ $(document).delegate('#delete_details_button', 'click', function() {
 });
 
 $(document).delegate('.delete', 'click', function() {
-    let rollno, name;
+    let  name, role;
     var $row = $(this).closest("tr");
 
     var $tds = $row.find("td:nth-child(2)");
     $.each($tds, function() {
-        rollno = $(this).text();
+        name = $(this).text();
 
     });
     var $tds = $row.find("td:nth-child(3)");
     $.each($tds, function() {
-        name = $(this).text();
+        role = $(this).text();
     });
     $('#delete_modal').modal('show')
-    $('#delete_name').val(name);
-    $('#delete_rollno').val(rollno);
+    $('#delete_username').val(name);
+    $('#delete_role').val(role);
 
 });
 
-
-
-$(document).delegate('.edit', 'click', function() {
-    let sr, rollno, name, address, phone;
-    var $row = $(this).closest("tr");
-    var $tds = $row.find("td:nth-child(1)");
-    $.each($tds, function() {
-        sr = $(this).text();
-    });
-    var $tds = $row.find("td:nth-child(2)");
-    $.each($tds, function() {
-        rollno = $(this).text();
-    });
-    var $tds = $row.find("td:nth-child(3)");
-    $.each($tds, function() {
-        name = $(this).text();
-    });
-    var $tds = $row.find("td:nth-child(4)");
-    $.each($tds, function() {
-        address = $(this).text();
-    });
-    var $tds = $row.find("td:nth-child(5)");
-    $.each($tds, function() {
-        phone = $(this).text();
-    });
-
-    $('#edit_modal').modal('show')
-    $('#edit_name').val(name);
-    $('#edit_address').val(address);
-    $('#edit_phone').val(phone);
-    $('#edit_sr').val(sr);
-    $('#edit_rollno').val(rollno);
-
-});
-
-function editStudentDetails() {
-
-    var name = $('#edit_name').val();
-    var address = $('#edit_address').val();
-    var phone = $('#edit_phone').val();
-    var rollno = $('#edit_rollno').val();
-
-    $.ajax({
-        type: "PUT",
-        contentType: "application/json; charset=utf-8",
-        url: "http://localhost:8080/student/save",
-        cache: false,
-        data: JSON.stringify({
-            'name': name,
-            'rollno': rollno,
-            'address': address,
-            'phone': phone
-        }),
-        success: function() {
-            showStudentTable();
-            $('#edit_modal').modal('hide');
-        },
-        error: function() {
-           alert("Error: edit student data");
-        }
-    });
-}
- $(document).on('hide.bs.modal','#addModal',function(e){
-  $('#add_student_form').each(function() {
-  this.reset();
-  });
-    $("#form_rollno").css("border-bottom", "none");
-    $("#form_name").css("border-bottom", "none");
-    $("#form_address").css("border-bottom", "none");
-    $("#form_phone").css("border-bottom", "none");
-    $("#name_error_message").hide();
-    $("#address_error_message").hide();
-    $("#phone_error_message").hide();
-    $("#rollno_error_message").hide();
- });
- $(document).on('hide.bs.modal','#edit_modal',function(e){
-
-     $("#edit_name").css("border-bottom", "none");
-     $("#edit_address").css("border-bottom", "none");
-     $("#edit_phone").css("border-bottom", "none");
-
-     $("#edit_name_error_message").hide();
-     $("#edit_address_error_message").hide();
-     $("#edit_phone_error_message").hide();
-  });
 
 
 

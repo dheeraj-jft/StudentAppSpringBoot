@@ -6,13 +6,15 @@
 <body>
 <div th:fragment="myheader">
 
-    <title>Student DashBoard</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}" />
-    <script type="text/javascript" th:src="@{/assets/js/main.js}"></script>
+
+    <link rel="stylesheet" href=" https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 
 </div>
 <div th:fragment="mynavbar">
@@ -23,7 +25,8 @@
             </div>
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Home</a></li>
-                <li id ="addUserNav" th:if="${role}==[ADMIN]" class="inactive"><a th:href="@{/register}">Add Users</a></li>
+                <li id ="coursesControl"  class="inactive"><a th:href="@{/courses}">Courses</a></li>
+                <li id ="usersControl" th:if="${role}==[ADMIN]" class="inactive"><a th:href="@{/users}">Users</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>

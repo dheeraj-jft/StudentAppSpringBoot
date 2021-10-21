@@ -26,21 +26,5 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new CustomUserDetails(user);
     }
 
-    public User saveUser(User user){
-        User userModel =popluateData(user);
-        return userRepository.save(userModel);
-    }
-    public void updateUser(User user,String oldName){
-        User userModel =popluateData(user);
-        userRepository.updateUserDetails(userModel.getUsername(),userModel.getPassword(), oldName);
-    }
-
-    private User popluateData(User user) {
-        User userModel =new User();
-        userModel.setPassword(passwordEncoder.encode(user.getPassword()));
-        userModel.setUsername(user.getUsername());
-        userModel.setRole(user.getRole());
-        return userModel;
-    }
 
 }

@@ -1,28 +1,26 @@
 package com.example.studentapp.controller;
 
-import com.example.studentapp.datamodel.Student;
+
 import com.example.studentapp.datamodel.User;
-import com.example.studentapp.repositories.StudentRepository;
-import com.example.studentapp.service.CustomUserDetailsService;
+
+import com.example.studentapp.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import java.security.Principal;
 import java.util.List;
 
 @Controller
-public class StudentController {
+public class UserController {
+
 
     @Autowired
-    StudentRepository studentRepository;
-
-    @Autowired
-    CustomUserDetailsService customUserDetailsService;
+    UserServiceImpl userService;
 
     @GetMapping("/login")
     public String login() {
@@ -47,53 +45,45 @@ public class StudentController {
         return "editprofile";
     }
 
-    @PutMapping("/edit/profile/update")
+    @PutMapping("/edit/profile")
     public ResponseEntity<Void> editUserDetails(@RequestBody User user, Principal principal) {
-        customUserDetailsService.updateUser(user, principal.getName());
+        userService.updateUser(user, principal.getName());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    @GetMapping("/users")
+    public String userDashBoard(Model model, Authentication authentication){
+        model.addAttribute("role", authentication.getAuthorities().toString());
+        return "users";
+    }
+
+    @GetMapping("/users/userslist")
+    public ResponseEntity<List<User>> getUsersList(){
+        return new ResponseEntity<>(userService.getUsersList(),HttpStatus.OK);
+    }
+
+    @PostMapping("/users/register")
+    public ResponseEntity<Void> addUser(@RequestBody User user) {
+        userService.addUser(user);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/users/register/{oldname}")
+    public ResponseEntity<Void> updateUser(@RequestBody User user, @PathVariable("oldname") String oldname) {
+        userService.updateUser(user,oldname);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("users/delete/{username}")
+    public ResponseEntity<Void> deleteUser(@PathVariable("username") String username){
+        userService.deleteUser(username);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/userrole")
-    public ResponseEntity<String> currentUserName(Authentication principal) {
+    public ResponseEntity<String> currentUserRole(Authentication principal) {
         return new ResponseEntity<>(principal.getAuthorities().toString(), HttpStatus.OK);
-    }
-
-    @PostMapping("/student/add")
-    public ResponseEntity<Void> addStudent(@RequestBody Student student) {
-        studentRepository.save(student);
-        return new ResponseEntity<Void>(HttpStatus.OK);
-    }
-
-    @GetMapping("/studentlist")
-    public ResponseEntity<List<Student>> getStudentList() {
-        return new ResponseEntity<>(studentRepository.findAll(Sort.by(Sort.Direction.ASC,"rollno")), HttpStatus.OK);
-    }
-
-    @DeleteMapping("/student/delete/{rollno}")
-    public ResponseEntity<Void> deleteStudent(@PathVariable Integer rollno) {
-        studentRepository.deleteStudentByRollno(rollno);
-        return new ResponseEntity<Void>(HttpStatus.OK);
-    }
-
-    @PutMapping("/student/save")
-    public ResponseEntity<Void> saveOrUpdateStudent(@RequestBody Student student) {
-        Student student1 =studentRepository.findByRollno(student.getRollno());
-        student1.setName(student.getName());
-        studentRepository.save(student1);
-        studentRepository.updateStudentDetails(student.getRollno(), student.getName(), student.getAddress(), student.getPhone());
-
-        return new ResponseEntity<Void>(HttpStatus.OK);
-    }
-
-    @GetMapping("/register")
-    public String registerUser() {
-        return "register";
-    }
-
-    @PostMapping("/register/user")
-    public ResponseEntity<Void> registerUser(@RequestBody User user) {
-        customUserDetailsService.saveUser(user);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

@@ -27,9 +27,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/assets/**").permitAll()
-                .antMatchers("/","/studentlist","/edit/profile,edit/profile/update").hasAnyAuthority("ADMIN","USER")
-                .antMatchers("/student/**","/register","/register/user").hasAuthority("ADMIN")
-                .anyRequest().authenticated()
+                .antMatchers("/","/studentDetails/**","/studentlist","/courses","/course/list","/edit/profile").hasAnyAuthority("ADMIN","USER")
+                .antMatchers("/student/**","/users/**").hasAuthority("ADMIN")
                 .and()
                 .formLogin()
                 .loginPage("/login")
@@ -40,9 +39,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/login?logout")
                 .logoutUrl("/mylogout")
                 .permitAll();
-
-
-
     }
 
     @Override
@@ -61,9 +57,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
-
-
-
 
 }

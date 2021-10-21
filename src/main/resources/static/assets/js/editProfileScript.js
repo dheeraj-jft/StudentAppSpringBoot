@@ -1,23 +1,13 @@
-
+var oldName="";
 $(function() {
-
     $("change_name_error_message").hide();
     $("change_password_error_message").hide();
     $("change_retype_password_error_message").hide();
-
+    oldName=$("#changeUsername").val();
     var error_name = false;
     var error_password = false;
     var error_retype_password=false;
 
-    $("#changeUsername").focusout(function() {
-        check_name();
-    });
-    $("#changePassword").focusout(function() {
-        check_password();
-    });
-    $("#changeRetypePassword").focusout(function() {
-            check_retype_password();
-    });
 });
     function check_name() {
         var pattern = /^[a-zA-Z ]*$/;
@@ -49,7 +39,7 @@ $(function() {
     function check_retype_password() {
             var password=$("#changePassword").val();
             var retypepassword = $("#changeRetypePassword").val();
-            if (retypepassword === password && password !== '') {
+            if (retypepassword === password ) {
                 $("#change_retype_password_error_message").hide();
                 $("#changeRetypePassword").css("border-bottom", "2px solid #34F458");
             } else {
@@ -66,11 +56,22 @@ $(function() {
             error_password = false;
             error_retype_password=false;
 
+            var name = $("#changeUsername").val().trim();
+            var password=$("#changePassword").val();
+            var retypepassword = $("#changeRetypePassword").val();
+            if(password!=""){
+                check_password();
+            }else{
+                error_password===false;
+            }
             check_name();
-            check_password();
             check_retype_password();
+            if(error_name === false && name===oldName && password==="" && error_password===false && error_retype_password===false){
+                alert("Nothing to update!!");
+                return true;
+            }
 
-            if (error_name === false && error_password === false  && error_retype_password === false) {
+            if ( error_name === false && error_password === false  && error_retype_password === false) {
                 updateDetails();
             } else {
                 alert("Please Fill the form Correctly");
@@ -83,13 +84,15 @@ $(function() {
     event.preventDefault();
            var username = $("#changeUsername").val();
            var password = $("#changePassword").val();
+
            $.ajax({
                type: "PUT",
                contentType: "application/json; charset=utf-8",
-               url: "http://localhost:8080/edit/profile/update",
+               url: "http://localhost:8080/edit/profile",
                data: JSON.stringify({
                    'password': password,
-                   'username': username
+                   'username': username,
+                   'role':""
                }),
                cache: false,
                success: function(result) {
@@ -103,3 +106,6 @@ $(function() {
                }
            });
   }
+  $(document).ready(function() {
+        $("#changePassword").val("");
+  });

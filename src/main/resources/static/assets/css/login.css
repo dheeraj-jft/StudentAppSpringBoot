@@ -26,6 +26,8 @@
   box-sizing: border-box;
   font-size: 14px;
 }
+
+
 .form button {
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
@@ -54,6 +56,9 @@
 }
 .form .register-form {
   display: block;
+}
+.far fa-eye{
+    cursor: pointer;
 }
 .container {
   position: relative;

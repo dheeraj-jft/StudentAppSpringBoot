@@ -3,7 +3,10 @@
 >
 
 <head>
+    <title>Student DashBoard</title>
    <div th:replace="header :: myheader"></div>
+    <script type="text/javascript" th:src="@{/assets/js/main.js}"></script>
+
 </head>
 <body>
 <!--navbar-->
@@ -40,6 +43,21 @@
                                 <label for="form_phone">Phone number</label>
                                 <input type="number" class="form-control" id="form_phone" placeholder="Enter Phone" name="phone">
                                 <span class="error_form" id="phone_error_message"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="courseSelect">
+                                <div class="form-check form-check-inline">
+                                    <h5>Available Courses</h5>
+                                    <input class="form-check-input" type="checkbox" id="mathematicsCheckBox" value="Mathematics">
+                                    <label class="form-check-label" for="mathematicsCheckBox">Mathematics</label>
+
+                                    <input class="form-check-input" type="checkbox" id="DataStructuresCheckBox" value="Data Structures">
+                                    <label class="form-check-label" for="DataStructuresCheckBox">Data Structures</label>
+
+                                </div>
+                                </div>
+
                             </div>
                             <div class="modal-footer">
                             <button type="button" id="add_form_button" class="save-btn">Submit</button>
@@ -90,6 +108,22 @@
                         <input type="number" class="form-control" id="edit_phone" placeholder="Enter Phone" name="phone">
                         <span class="error_form" id="edit_phone_error_message"></span>
                     </div>
+
+                    <div class="form-group">
+                        <div class="courseSelect">
+                            <div class="form-check form-check-inline">
+                                <h5>Available Courses</h5>
+                                <input class="form-check-input" type="checkbox" id="editmathematicsCheckBox" value="Mathematics">
+                                <label class="form-check-label" for="editmathematicsCheckBox">Mathematics</label>
+
+                                <input class="form-check-input" type="checkbox" id="editDataStructuresCheckBox" value="Data Structures">
+                                <label class="form-check-label" for="editDataStructuresCheckBox">Data Structures</label>
+
+                            </div>
+                        </div>
+
+                    </div>
+
                     <div class="modal-footer">
                         <button type="button"  id="edit_details_button" class="save">Save</button>
                         <button type="button" class="close-btn" data-dismiss="modal">Close</button>
@@ -142,13 +176,19 @@
 
 
 </div>
+
+<!--View More-->
+
 <div class="container" >
 
     <button type="button" id="addButton" class="btn" data-toggle="modal" data-target="#addModal"><i class="fa fa-home"></i>add student</button>
 
 <!--Table div    -->
-<div  id="table">
+<div  id="tableContainer">
 <!--table data    -->
+    <table id="studentTable">
+
+    </table>
 </div>
 </div>
 </body>
