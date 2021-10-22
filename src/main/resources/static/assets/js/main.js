@@ -1,11 +1,10 @@
-
-var roleUser=false;
+var roleUser = false;
 
 $(document).ready(function() {
-checkRoleforUser();
+    checkRoleforUser();
 });
 
-$(function(){
+$(function() {
     $("name_error_message").hide();
     $("address_error_message").hide();
     $("phone_error_message").hide();
@@ -82,7 +81,7 @@ $(function(){
     function check_phone() {
         var pattern = /^[0-9]*$/;
         var phone = $("#form_phone").val();
-        if (pattern.test(phone) && phone !== '' && phone.length==10) {
+        if (pattern.test(phone) && phone !== '' && phone.length == 10) {
             $("#phone_error_message").hide();
             $("#form_phone").css("border-bottom", "2px solid #34F458");
         } else {
@@ -96,7 +95,7 @@ $(function(){
     function check_rollno() {
         var pattern = /^[0-9]*$/;
         var rollno = $("#form_rollno").val();
-        if (pattern.test(rollno) && rollno !== '' && rollno.length<=10) {
+        if (pattern.test(rollno) && rollno !== '' && rollno.length <= 10) {
             $("#rollno_error_message").hide();
             $("#form_rollno").css("border-bottom", "2px solid #34F458");
         } else {
@@ -110,7 +109,7 @@ $(function(){
     function check_edit_phone() {
         var pattern = /^[0-9]*$/;
         var phone = $("#edit_phone").val();
-        if (pattern.test(phone) && phone !== ''&& phone.length==10) {
+        if (pattern.test(phone) && phone !== '' && phone.length == 10) {
             $("#edit_phone_error_message").hide();
             $("#edit_phone").css("border-bottom", "2px solid #34F458");
         } else {
@@ -135,7 +134,6 @@ $(function(){
         }
     }
 
-
     function check_edit_name() {
         var pattern = /^[a-zA-Z ]*$/;
         var name = $("#edit_name").val().trim();
@@ -149,7 +147,6 @@ $(function(){
             error_edit_name = true;
         }
     }
-
 
     $("#add_form_button").click(function() {
         error_name = false;
@@ -171,8 +168,6 @@ $(function(){
         }
     });
 
-
-
     $("#edit_details_button").click(function() {
         error_edit_name = false;
         error_edit_address = false;
@@ -187,25 +182,26 @@ $(function(){
             alert("Please Fill the form Correctly to save details");
             return false;
         }
-     });
- });
-  function checkRoleforUser() {
+    });
+});
+
+function checkRoleforUser() {
     $.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
         url: "/userrole",
         cache: false,
         success: function(result) {
-            if(result.includes("[USER]")){
-                roleUser=true;
+            if (result.includes("[USER]")) {
+                roleUser = true;
                 $(".buttonContainer").hide();
                 $("#addButton").hide();
                 $("#actionshead").hide();
-              }
+            }
             showStudentTable();
             return true;
         },
-        error: function(err,xhr) {
+        error: function(err, xhr) {
             alert("Error: checking role");
             return false;
         }
@@ -213,50 +209,48 @@ $(function(){
     });
 
 }
-
-
-
 function showStudentTable() {
 
     $("#studentTableData").remove();
     $("#studentTableData_wrapper").remove();
 
-     htmlForTable = '<table class ="table" id="studentTableData"><thead><tr><th>sr.</th><th>roll no.</th><th>Student Name</th><th>Address</th><th>Phone</th><th>Courses Enrolled</th><th id="actionshead">Actions</th></tr></thead><tbody>';
+    htmlForTable = '<table class ="table" id="studentTableData"><thead><tr><th>Sr.</th><th>Roll no.</th><th>Student Name</th><th>Address</th><th>Phone</th><th>Courses Enrolled</th><th id="actionshead">Actions</th></tr></thead><tbody>';
 
     htmlForTableData = '';
     $.getJSON('/studentlist', function(json) {
 
         for (var i = 0; i < json.length; i++) {
             var sr = i + 1;
-            htmlForTableData += '<tr>'  +'<td>' + sr + '</td>' + '<td>' + json[i].rollno + '</td>' + '<td>' + json[i].name + '</td>' + '<td>' + json[i].address + '</td>' + '<td>' + json[i].phone + '</td>';
+            htmlForTableData += '<tr>' + '<td>' + sr + '</td>' + '<td>' + json[i].rollno + '</td>' + '<td>' + json[i].name + '</td>' + '<td>' + json[i].address + '</td>' + '<td>' + json[i].phone + '</td>';
 
             var coursesName = "";
 
-            if(json[i].coursesList.length==0){
-                coursesName="Not enrolled in any course"
-
-                }else{
-                        for(let j=0; j<json[i].coursesList.length;j++)
-                        {
-                             if(j==0){
-                                coursesName= json[i].coursesList[j].courseName;
-                             }
-                             else{
-                                coursesName= coursesName+", "+json[i].coursesList[j].courseName;
-                             }
-
-                        }
-               }
-            htmlForTableData+= '<td>'+coursesName+'</td>'
-
-            if(roleUser===true){
-            htmlForTableData +='<td class=\'buttonContainer\'><button  class=\'view\' >view</button></td>';
+            if (json[i].coursesList.length == 0) {
+                coursesName = '<td style="color:red">' + "Not enrolled in any course."
+            } else {
+            coursesName = '<td>';
+                for(let j=0;j<json[i].coursesList.length;j++){
+                    if(j==0){
+                     coursesName+=json[i].coursesList[j].courseName;
+                     }
+                     else{
+                     coursesName+=', '+json[i].coursesList[j].courseName ;
+                     }
+                    if(coursesName.length>30){
+                        coursesName+=',..'
+                        break;
+                    }
+                }
             }
-            else{
-                htmlForTableData +='<td class=\'buttonContainer\'><button class=\'edit\'>Edit</button>&nbsp;&nbsp;<button  class=\'delete\' id=' + json[i].id + '>Delete</button><button  class=\'view\' >view</button></td>';
+            htmlForTableData += coursesName + '</td>'
+
+            if (roleUser === true) {
+                htmlForTableData += '<td class=\'buttonContainer\'><button  class=\'view\' >view more</button></td>';
+            } else {
+                htmlForTableData += '<td class=\'buttonContainer\'><button class=\'edit\'>Edit</button>&nbsp;&nbsp;<button  class=\'delete\' id=' + json[i].id + '>Delete</button><button  class=\'view\' >view more</button></td>';
             }
 
-            htmlForTableData+='</tr>';
+            htmlForTableData += '</tr>';
 
 
         }
@@ -269,34 +263,107 @@ function showStudentTable() {
 };
 
 
+$(document).delegate('#delete_details_button', 'click', function() {
 
+    var rollno = $('#delete_rollno').val();
+
+    $.ajax({
+        type: "DELETE",
+        url: "/student/delete/" + rollno,
+        cache: false,
+        success: function() {
+            showStudentTable();
+            $('#delete_modal').modal('hide');
+        },
+        error: function(xhr) {
+            alert("Error: record delete");
+        }
+    });
+});
+$(document).delegate('.delete', 'click', function() {
+    let rollno, name;
+    var $row = $(this).closest("tr");
+
+    var $tds = $row.find("td:nth-child(2)");
+    $.each($tds, function() {
+        rollno = $(this).text();
+
+    });
+    var $tds = $row.find("td:nth-child(3)");
+    $.each($tds, function() {
+        name = $(this).text();
+    });
+    $('#delete_modal').modal('show')
+    $('#delete_name').val(name);
+    $('#delete_rollno').val(rollno);
+
+});
+
+
+$(document).on('hide.bs.modal', '#addModal', function(e) {
+    $('#add_student_form').each(function() {
+        this.reset();
+    });
+    $("#form_rollno").css("border-bottom", "none");
+    $("#form_name").css("border-bottom", "none");
+    $("#form_address").css("border-bottom", "none");
+    $("#form_phone").css("border-bottom", "none");
+    $("#name_error_message").hide();
+    $("#address_error_message").hide();
+    $("#phone_error_message").hide();
+    $("#rollno_error_message").hide();
+    $('input.add[type=checkbox]').prop('checked', false);
+});
+$(document).on('show.bs.modal', '#addModal', function(e) {
+    $('#add_student_form').each(function() {
+        this.reset();
+    });
+    addCoursesToModal();
+});
+function addCoursesToModal() {
+
+    $.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: "/course/list",
+        cache: false,
+        success: function(result) {
+            addCoursesFromJSONToAddModal(result);
+            return;
+        },
+        error: function() {
+            alert("Error: fetching courses");
+        }
+
+    });
+}
+function addCoursesFromJSONToAddModal(json) {
+    var htmlforCourseList = '<div class="form-check form-check-inline"><h5>Available Courses</h5>'
+
+    for (var i = 0; i < json.length; i++) {
+
+        let checkValue = '{' + '"courseId":"' + json[i].courseId + '"}';
+
+        htmlforCourseList += '<input class="form-check-input add" type="checkbox" id="' + json[i].courseName + '" value=' + checkValue + '>';
+        htmlforCourseList += '<label class="form-check-label" for="' + json[i].courseName + 'CheckBox">' + json[i].courseName + '</label><br>';
+
+    }
+    htmlforCourseList += '</div>';
+    $('.courseSelect').html(htmlforCourseList);
+
+
+}
 function addNewStudentToDB() {
     var name = $("#form_name").val();
     var address = $("#form_address").val();
     var phone = $("#form_phone").val();
     var rollno = $("#form_rollno").val();
-    var coursesArray=[];
+    var coursesArray = [];
 
-   if($("#mathematicsCheckBox").is(":checked")){
-        console.log("mathematicsCheckBox is selected");
-        let course= {
-                    "courseId": "RCAI852",
-                    "courseName": "Maths"
-                  }
-        coursesArray.push(course);
-   }
+    $("input.add[type=checkbox]:checked").each(function() {
+        coursesArray.push(JSON.parse($(this).val()));
 
-   if($("#DataStructuresCheckBox").is(":checked")){
-        console.log("DataStructuresCheckBox is selected");
-        let course= {
-            "courseId": "RCAI855",
-            "courseName": "Data Structures"
-                  }
-        coursesArray.push(course);
-   }
-
-
-
+    });
 
     $.ajax({
         type: "POST",
@@ -319,97 +386,13 @@ function addNewStudentToDB() {
 
             return true;
         },
-        error: function(err,xhr) {
+        error: function(err, xhr) {
             alert("Error: Roll no. already exists!!");
             return false;
         }
     });
 };
 
-$(document).delegate('#delete_details_button', 'click', function() {
-
-        var rollno=$('#delete_rollno').val();
-
-        $.ajax({
-            type: "DELETE",
-            url: "/student/delete/" + rollno,
-            cache: false,
-            success: function() {
-                showStudentTable();
-                $('#delete_modal').modal('hide');
-            },
-            error: function(xhr) {
-                alert("Error: record delete");
-            }
-        });
-});
-
-$(document).delegate('.delete', 'click', function() {
-    let rollno, name;
-    var $row = $(this).closest("tr");
-
-    var $tds = $row.find("td:nth-child(2)");
-    $.each($tds, function() {
-        rollno = $(this).text();
-
-    });
-    var $tds = $row.find("td:nth-child(3)");
-    $.each($tds, function() {
-        name = $(this).text();
-    });
-    $('#delete_modal').modal('show')
-    $('#delete_name').val(name);
-    $('#delete_rollno').val(rollno);
-
-});
-
-
-
-
-$(document).delegate('.edit', 'click', function() {
-    let sr, rollno, name, address, phone, courses;
-    var $row = $(this).closest("tr");
-    var $tds = $row.find("td:nth-child(1)");
-    $.each($tds, function() {
-        sr = $(this).text();
-    });
-    var $tds = $row.find("td:nth-child(2)");
-    $.each($tds, function() {
-        rollno = $(this).text();
-    });
-    var $tds = $row.find("td:nth-child(3)");
-    $.each($tds, function() {
-        name = $(this).text();
-    });
-    var $tds = $row.find("td:nth-child(4)");
-    $.each($tds, function() {
-        address = $(this).text();
-    });
-    var $tds = $row.find("td:nth-child(5)");
-    $.each($tds, function() {
-        phone = $(this).text();
-    });
-    var $tds = $row.find("td:nth-child(6)");
-        $.each($tds, function() {
-            courses = $(this).text();
-    });
-
-
-    $('#edit_modal').modal('show')
-    $('#edit_name').val(name);
-    $('#edit_address').val(address);
-    $('#edit_phone').val(phone);
-    $('#edit_sr').val(sr);
-    $('#edit_rollno').val(rollno);
-    console.log("I am "+ courses);
-    if(courses.includes("Data Structures")){
-    $('#editDataStructuresCheckBox').prop('checked',true);
-    }
-    if(courses.includes("Mathematics")){
-    $('#editmathematicsCheckBox').prop('checked',true);
-    }
-
-});
 
 function editStudentDetails() {
 
@@ -417,28 +400,11 @@ function editStudentDetails() {
     var address = $('#edit_address').val();
     var phone = $('#edit_phone').val();
     var rollno = $('#edit_rollno').val();
-    var coursesArray=[];
+    var coursesArray = [];
 
-       if($("#editmathematicsCheckBox").is(":checked")){
-            console.log("mathematicsCheckBox is selected");
-            let course= {
-                        "courseId": "RCAI852",
-                        "courseName": "Maths"
-                      }
-            coursesArray.push(course);
-       }
-
-       if($("#editDataStructuresCheckBox").is(":checked")){
-            console.log("DataStructuresCheckBox is selected");
-            let course= {
-                "courseId": "RCAI855",
-                "courseName": "Data Structures"
-                      }
-            coursesArray.push(course);
-       }
-
-
-
+    $("input.editcheckbox[type=checkbox]:checked ").each(function() {
+        coursesArray.push(JSON.parse($(this).val()));
+    });
 
     $.ajax({
         type: "PUT",
@@ -457,37 +423,112 @@ function editStudentDetails() {
             $('#edit_modal').modal('hide');
         },
         error: function() {
-           alert("Error: edit student data");
+            alert("Error: edit student data");
         }
     });
 }
- $(document).on('hide.bs.modal','#addModal',function(e){
-  $('#add_student_form').each(function() {
-  this.reset();
-  });
-    $("#form_rollno").css("border-bottom", "none");
-    $("#form_name").css("border-bottom", "none");
-    $("#form_address").css("border-bottom", "none");
-    $("#form_phone").css("border-bottom", "none");
-    $("#name_error_message").hide();
-    $("#address_error_message").hide();
-    $("#phone_error_message").hide();
-    $("#rollno_error_message").hide();
-    $('#DataStructuresCheckBox').prop('checked',false);
-         $("#mathematicsCheckBox").prop('checked',false);
- });
- $(document).on('hide.bs.modal','#edit_modal',function(e){
+$(document).delegate('.edit', 'click', function() {
 
-     $("#edit_name").css("border-bottom", "none");
-     $("#edit_address").css("border-bottom", "none");
-     $("#edit_phone").css("border-bottom", "none");
+            let sr,rollno;
+            var $row = $(this).closest("tr");
+            var $tds = $row.find("td:nth-child(1)");
+            $.each($tds, function() {
+                sr = $(this).text();
+            });
+            $('#edit_sr').val(sr);
+            var $tds = $row.find("td:nth-child(2)");
+            $.each($tds, function() {
+                rollno = $(this).text();
+            });
+            $('#edit_rollno').val(rollno);
 
-     $("#edit_name_error_message").hide();
-     $("#edit_address_error_message").hide();
-     $("#edit_phone_error_message").hide();
-     $('#editDataStructuresCheckBox').prop('checked',false);
-     $("#editmathematicsCheckBox").prop('checked',false);
-  });
+            addCoursesToEditModal(rollno);
+
+
+            function getAllDataforStudentinEditModal(rollno) {
+
+            $.ajax({
+                                type: "GET",
+                                url: "/student/" + rollno,
+                                cache: false,
+                                success: function(result) {
+                                    console.log(result);
+
+                                    $('#edit_name').val(result.name);
+                                    $('#edit_address').val(result.address);
+                                    $('#edit_phone').val(result.phone);
+
+                                    for (let i = 0; i < result.coursesList.length; i++) {
+                                        var valueCheckbox = JSON.stringify(result.coursesList[i].courseId).replaceAll('"', '');
+                                        var newVal='{"courseId":"'+valueCheckbox+'"}';
+                                        $("input.editcheckbox[type=checkbox]").each(function() {
+
+                                            var courseVal = $(this).val();
+                                            console.log( "from edit modal: "+courseVal);
+                                            if (courseVal === newVal) {
+                                                console.log("checked");
+                                                $(this).prop('checked',true);
+                                            }
+
+                                        });
+                                    }
+
+                                    $('#edit_modal').modal('show');
+                                    return true;
+
+                                },
+                                error: function(xhr) {
+                                    alert("Error: fetching details");
+                                    return false;
+                                }
+                            });
+
+            }
+            function addCoursesToEditModal(rollno) {
+
+                $.ajax({
+                    type: "GET",
+                    contentType: "application/json; charset=utf-8",
+                    url: "/course/list",
+                    cache: false,
+                    success: function(json) {
+                        var htmlforCourseList = '<div class="form-check form-check-inline"><h5>Available Courses</h5>'
+
+                            for (var i = 0; i < json.length; i++) {
+
+                                let checkValue = '{' + '"courseId":"' + json[i].courseId + '"}';
+                                htmlforCourseList += '<input class="editcheckbox form-check-input" type="checkbox" id="' + json[i].courseName + '" value=' + checkValue + '>';
+                                htmlforCourseList += '<label class="form-check-label" for="' + json[i].courseName + 'CheckBox">' + json[i].courseName + '</label><br>';
+
+                            }
+                            htmlforCourseList += '</div>';
+                            $('.courseSelectEdit').html(htmlforCourseList);
+
+                            getAllDataforStudentinEditModal(rollno);
+
+                        return true;
+                    },
+                    error: function() {
+                        alert("Error: fetching courses");
+                        return false;
+                    }
+
+                });
+            }
+
+});
+
+
+$(document).on('hide.bs.modal', '#edit_modal', function(e) {
+
+    $("#edit_name").css("border-bottom", "none");
+    $("#edit_address").css("border-bottom", "none");
+    $("#edit_phone").css("border-bottom", "none");
+    $('input.editcheckbox[type=checkbox]').prop('checked', false);
+    $("#edit_name_error_message").hide();
+    $("#edit_address_error_message").hide();
+    $("#edit_phone_error_message").hide();
+});
 
 
 $(document).delegate('.view', 'click', function() {
@@ -499,8 +540,5 @@ $(document).delegate('.view', 'click', function() {
         rollno = $(this).text();
     });
 
-    window.location = "/studentDetails/"+rollno;
+    window.location = "/studentDetails/" + rollno;
 });
-
-
-

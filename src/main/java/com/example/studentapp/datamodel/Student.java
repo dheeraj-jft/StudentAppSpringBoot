@@ -1,5 +1,8 @@
 package com.example.studentapp.datamodel;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +23,7 @@ public class Student {
     private String name;
     private String address;
     private String phone;
+    @JsonIgnoreProperties(value = "studentList" , allowSetters = true)
     @ManyToMany
     private Set<Course> coursesList;
 

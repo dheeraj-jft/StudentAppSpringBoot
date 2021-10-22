@@ -1,19 +1,14 @@
 package com.example.studentapp.controller;
 
 import com.example.studentapp.datamodel.Course;
-import com.example.studentapp.datamodel.Student;
-import com.example.studentapp.repositories.CourseRepository;
 import com.example.studentapp.service.CourseService;
-import com.example.studentapp.service.CourseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,6 +23,14 @@ public class CourseController {
         model.addAttribute("role", authentication.getAuthorities().toString());
         return "courses";
     }
+    @GetMapping("/courseDetails/{courseId}")
+    public String getStudentDetails(@PathVariable("courseId") String courseId, Model model, Authentication authentication) {
+        Course course= courseService.findByCourseId(courseId);
+        model.addAttribute("course",course);
+        model.addAttribute("role", authentication.getAuthorities().toString());
+        return "CourseDetails";
+    }
+
 
     @GetMapping("/course/list")
     public ResponseEntity<List<Course>> getCourses(){
@@ -37,6 +40,16 @@ public class CourseController {
     @PostMapping("/course/save")
     public ResponseEntity<Void> addCourse(@RequestBody Course course) {
         courseService.addCourse(course);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+    @PutMapping("/course/save")
+    public ResponseEntity<Void> updateCourse(@RequestBody Course course) {
+        courseService.updateCourse(course);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+    @DeleteMapping("/course/{courseId}")
+    public ResponseEntity<Void> addCourse(@PathVariable String courseId) {
+        courseService.deleteCourse(courseId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 }

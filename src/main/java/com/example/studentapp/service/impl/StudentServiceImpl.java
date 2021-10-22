@@ -1,9 +1,10 @@
-package com.example.studentapp.service;
+package com.example.studentapp.service.impl;
 
 import com.example.studentapp.datamodel.Course;
 import com.example.studentapp.datamodel.Student;
 import com.example.studentapp.repositories.CourseRepository;
 import com.example.studentapp.repositories.StudentRepository;
+import com.example.studentapp.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;

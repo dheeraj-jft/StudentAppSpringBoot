@@ -3,7 +3,7 @@ package com.example.studentapp.controller;
 
 import com.example.studentapp.datamodel.User;
 
-import com.example.studentapp.service.UserServiceImpl;
+import com.example.studentapp.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

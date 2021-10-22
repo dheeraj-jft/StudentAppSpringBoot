@@ -2,7 +2,7 @@ package com.example.studentapp.controller;
 
 import com.example.studentapp.datamodel.Student;
 import com.example.studentapp.repositories.StudentRepository;
-import com.example.studentapp.service.StudentServiceImpl;
+import com.example.studentapp.service.impl.StudentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +34,12 @@ public class StudentController {
         return "StudentDetails";
     }
 
+    @GetMapping("/student/{rollno}")
+    public ResponseEntity<Student> getStudent(@PathVariable("rollno") Integer rollno) {
+        Student student= studentService.findStudentByRollno(rollno);
+        return new ResponseEntity<>(student,HttpStatus.OK);
+    }
+
     @PostMapping("/student/save")
     public ResponseEntity<Void> addStudent(@RequestBody Student student) {
         studentService.addStudent(student);
@@ -52,13 +58,6 @@ public class StudentController {
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    @GetMapping("/student/{rollo}")
-    public ResponseEntity<Void> deleteStuden(@PathVariable Integer rollno) {
-        studentRepository.findByRollno(rollno).getCoursesList().forEach(course -> {
-            System.out.println(course.getCourseName());
-        });
-        return new ResponseEntity<Void>(HttpStatus.OK);
-    }
 
 
 

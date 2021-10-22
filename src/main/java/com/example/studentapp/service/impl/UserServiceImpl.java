@@ -1,7 +1,8 @@
-package com.example.studentapp.service;
+package com.example.studentapp.service.impl;
 
 import com.example.studentapp.datamodel.User;
 import com.example.studentapp.repositories.UserRepository;
+import com.example.studentapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
