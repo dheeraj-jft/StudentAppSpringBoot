@@ -1,17 +1,16 @@
 package com.example.studentapp.datamodel;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Getter @Setter
+@Getter @Setter @NoArgsConstructor
 public class Student {
 
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -20,9 +19,9 @@ public class Student {
     @Column(nullable = false, unique = true)
     private int rollno;
 
-    private String name;
-    private String address;
-    private String phone;
+    private @NonNull String name;
+    private @NonNull String address;
+    private @NonNull String phone;
     @JsonIgnoreProperties(value = "studentList" , allowSetters = true)
     @ManyToMany
     private Set<Course> coursesList;

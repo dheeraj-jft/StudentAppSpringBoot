@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Set;
+import lombok.val;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -32,7 +33,7 @@ public class StudentServiceImpl implements StudentService {
         Student student= studentRepository.findByRollno(rollno);
         student.getCoursesList().forEach(course ->{
             Course course1=courseRepository.findByCourseId(course.getCourseId());
-            Set<Student> studentSet=course1.getStudentList();
+            val studentSet=course1.getStudentList();
             studentSet.remove(student);
             course1.setStudentList(studentSet);
             courseRepository.save(course1);

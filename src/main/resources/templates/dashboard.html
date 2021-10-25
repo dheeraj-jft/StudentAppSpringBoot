@@ -184,12 +184,25 @@
     <button type="button" id="addButton" class="btn" data-toggle="modal" data-target="#addModal"><i class="fa fa-home"></i>add student</button>
 
 <!--Table div    -->
-<div  id="tableContainer">
-<!--table data    -->
-    <table id="studentTable">
 
-    </table>
-</div>
+    <div id="container">
+        <span id="role" style="display: none;" th:text="${role}"></span>
+        <table class="table" id="studentTable">
+            <thead>
+            <tr><th>Sr.no. </th>
+
+                <th>Roll.no.</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Phone no.</th>
+                <th>Courses Enrolled</th>
+                <th>Actions</th>
+
+            </tr>
+            </thead>
+
+        </table>
+    </div>
 </div>
 </body>
 </html>

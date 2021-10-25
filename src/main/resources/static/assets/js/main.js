@@ -1,7 +1,8 @@
 var roleUser = false;
 
 $(document).ready(function() {
-    checkRoleforUser();
+    console.log("check user");
+    updateTable();
 });
 
 $(function() {
@@ -185,82 +186,65 @@ $(function() {
     });
 });
 
-function checkRoleforUser() {
-    $.ajax({
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        url: "/userrole",
-        cache: false,
-        success: function(result) {
-            if (result.includes("[USER]")) {
-                roleUser = true;
-                $(".buttonContainer").hide();
-                $("#addButton").hide();
-                $("#actionshead").hide();
-            }
-            showStudentTable();
-            return true;
+
+function updateTable(){
+        var role=$('#role').text();
+                 console.log(role);
+
+var t= $('#studentTable').dataTable({
+        "ajax":{
+        "url": "/studentlist",
+         "dataSrc": ""
         },
-        error: function(err, xhr) {
-            alert("Error: checking role");
-            return false;
-        }
+        "columns": [
+                    {"data":   "id" ,
+                       render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                         }
+                         },
+                    { "data": "rollno" },
+                    { "data": "name" },
+                    { "data": "address" },
+                    { "data": "phone" },
+                    { "data": "coursesList[]",
+                        render: function(data,row){
+                            var output='';
+                            $.each(data,function(index,item){
+                               output+=data[index].courseName+", ";
 
-    });
+                            });
+                            if(output.length>30){
+                                output= output.substring(0,27)+ '...';
+                            }
+                            else if(output===''){
+                            output='<span style="color:red">Not enrolled in any course</span>';
+                            }
+                            return output;
+                        }
+                     },
+                    {  "mRender": function(data, type, full) {
+                       if(role==='[USER]'){
+                       return '<div class="buttonContainer"><button class="view">View More</button></div>';
 
-}
-function showStudentTable() {
+                       }else{
+                            return '<div class="buttonContainer"><button class="edit">Edit</button><button class="delete">Delete</button><button class="view">View More</button></div>';
 
-    $("#studentTableData").remove();
-    $("#studentTableData_wrapper").remove();
-
-    htmlForTable = '<table class ="table" id="studentTableData"><thead><tr><th>Sr.</th><th>Roll no.</th><th>Student Name</th><th>Address</th><th>Phone</th><th>Courses Enrolled</th><th id="actionshead">Actions</th></tr></thead><tbody>';
-
-    htmlForTableData = '';
-    $.getJSON('/studentlist', function(json) {
-
-        for (var i = 0; i < json.length; i++) {
-            var sr = i + 1;
-            htmlForTableData += '<tr>' + '<td>' + sr + '</td>' + '<td>' + json[i].rollno + '</td>' + '<td>' + json[i].name + '</td>' + '<td>' + json[i].address + '</td>' + '<td>' + json[i].phone + '</td>';
-
-            var coursesName = "";
-
-            if (json[i].coursesList.length == 0) {
-                coursesName = '<td style="color:red">' + "Not enrolled in any course."
-            } else {
-            coursesName = '<td>';
-                for(let j=0;j<json[i].coursesList.length;j++){
-                    if(j==0){
-                     coursesName+=json[i].coursesList[j].courseName;
+                       }
+                                     }
                      }
-                     else{
-                     coursesName+=', '+json[i].coursesList[j].courseName ;
-                     }
-                    if(coursesName.length>30){
-                        coursesName+=',..'
-                        break;
-                    }
-                }
-            }
-            htmlForTableData += coursesName + '</td>'
-
-            if (roleUser === true) {
-                htmlForTableData += '<td class=\'buttonContainer\'><button  class=\'view\' >view more</button></td>';
-            } else {
-                htmlForTableData += '<td class=\'buttonContainer\'><button class=\'edit\'>Edit</button>&nbsp;&nbsp;<button  class=\'delete\' id=' + json[i].id + '>Delete</button><button  class=\'view\' >view more</button></td>';
-            }
-
-            htmlForTableData += '</tr>';
-
+                ],
+            "bDestroy": true
 
         }
-        htmlForTable = htmlForTable + htmlForTableData + '</tbody></table>';
-        $('#tableContainer').append(htmlForTable);
-        $('#studentTableData').DataTable();
+        );
 
 
-    });
-};
+
+ }
+
+
+
+
 
 
 $(document).delegate('#delete_details_button', 'click', function() {
@@ -272,7 +256,7 @@ $(document).delegate('#delete_details_button', 'click', function() {
         url: "/student/delete/" + rollno,
         cache: false,
         success: function() {
-            showStudentTable();
+            updateTable();
             $('#delete_modal').modal('hide');
         },
         error: function(xhr) {
@@ -378,7 +362,7 @@ function addNewStudentToDB() {
         }),
         cache: false,
         success: function(result) {
-            showStudentTable();
+            updateTable();
             $('#addModal').modal('hide');
             $('#add_student_form').each(function() {
                 this.reset();
@@ -419,7 +403,7 @@ function editStudentDetails() {
             'coursesList': coursesArray
         }),
         success: function() {
-            showStudentTable();
+            updateTable();
             $('#edit_modal').modal('hide');
         },
         error: function() {

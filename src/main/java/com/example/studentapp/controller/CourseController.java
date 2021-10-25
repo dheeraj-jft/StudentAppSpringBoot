@@ -24,11 +24,11 @@ public class CourseController {
         return "courses";
     }
     @GetMapping("/courseDetails/{courseId}")
-    public String getStudentDetails(@PathVariable("courseId") String courseId, Model model, Authentication authentication) {
+    public String getCourseDetails(@PathVariable("courseId") String courseId, Model model, Authentication authentication) {
         Course course= courseService.findByCourseId(courseId);
         model.addAttribute("course",course);
         model.addAttribute("role", authentication.getAuthorities().toString());
-        return "CourseDetails";
+        return "courseDetails";
     }
 
 
@@ -48,7 +48,7 @@ public class CourseController {
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
     @DeleteMapping("/course/{courseId}")
-    public ResponseEntity<Void> addCourse(@PathVariable String courseId) {
+    public ResponseEntity<Void> deleteCourse(@PathVariable String courseId) {
         courseService.deleteCourse(courseId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }

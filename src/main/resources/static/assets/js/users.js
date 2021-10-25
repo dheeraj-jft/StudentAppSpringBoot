@@ -3,7 +3,6 @@ $(document).ready(function() {
 showUserTable();
 });
 
-
 function showUserTable() {
 
     $("#userTable").remove();

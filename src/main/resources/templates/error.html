@@ -14,7 +14,7 @@
 
   <div class="form">
     <div><h3>Error Page</h3> </div>
-    <span style="color:red">You are not allowed to access this url</span>
+    <span style="color:red" th:text="${errorMessage}">Bad Request</span>
     <br><br>
       <a th:href="@{/}">back to Home page</a>
   </div>

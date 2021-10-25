@@ -1,4 +1,4 @@
-package com.example.studentapp;
+package com.example.studentapp.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -28,7 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/assets/**").permitAll()
                 .antMatchers("/","/studentDetails/**","/studentlist","/courses","/course/list","courseDetails/**","/edit/profile").hasAnyAuthority("ADMIN","USER")
-                .antMatchers("/student/**","/users/**").hasAuthority("ADMIN")
+                .antMatchers("/student/**","/users/**","/course/**").hasAuthority("ADMIN")
                 .and()
                 .formLogin()
                 .loginPage("/login")
