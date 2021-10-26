@@ -197,7 +197,7 @@ var t= $('#studentTable').dataTable({
          "dataSrc": ""
         },
         "columns": [
-                    {"data":   "id" ,
+                    {"data":  null,
                        render: function (data, type, row, meta) {
                         return meta.row + meta.settings._iDisplayStart + 1;
                          }
@@ -222,7 +222,8 @@ var t= $('#studentTable').dataTable({
                             return output;
                         }
                      },
-                    {  "mRender": function(data, type, full) {
+                    {  "data": null,
+                         render: function(data, type, full) {
                        if(role==='[USER]'){
                        return '<div class="buttonContainer"><button class="view">View More</button></div>';
 
@@ -233,11 +234,13 @@ var t= $('#studentTable').dataTable({
                                      }
                      }
                 ],
-            "bDestroy": true
+            "bDestroy": true,
+            "responsive":true
 
         }
-        );
 
+        );
+new $.fn.dataTable.FixedHeader(t);
 
 
  }
@@ -266,14 +269,15 @@ $(document).delegate('#delete_details_button', 'click', function() {
 });
 $(document).delegate('.delete', 'click', function() {
     let rollno, name;
-    var $row = $(this).closest("tr");
-
-    var $tds = $row.find("td:nth-child(2)");
-    $.each($tds, function() {
+    var $current_row = $(this).parents('tr');
+      if ($current_row.hasClass('child')) {
+         $current_row = $current_row.prev();
+       }
+    var $tds = $current_row.find("td:nth-child(2)");
+        $.each($tds, function() {
         rollno = $(this).text();
-
-    });
-    var $tds = $row.find("td:nth-child(3)");
+      });
+    var $tds = $current_row.find("td:nth-child(3)");
     $.each($tds, function() {
         name = $(this).text();
     });
@@ -414,16 +418,18 @@ function editStudentDetails() {
 $(document).delegate('.edit', 'click', function() {
 
             let sr,rollno;
-            var $row = $(this).closest("tr");
-            var $tds = $row.find("td:nth-child(1)");
-            $.each($tds, function() {
-                sr = $(this).text();
-            });
-            $('#edit_sr').val(sr);
-            var $tds = $row.find("td:nth-child(2)");
-            $.each($tds, function() {
-                rollno = $(this).text();
-            });
+            var $current_row = $(this).parents('tr');
+            if ($current_row.hasClass('child')) {
+                $current_row = $current_row.prev();
+            }
+            var $tds = $current_row.find("td:nth-child(1)");
+                 $.each($tds, function() {
+                  sr = $(this).text();
+               });
+            var $tds = $current_row.find("td:nth-child(2)");
+                     $.each($tds, function() {
+                         rollno = $(this).text();
+                     });
             $('#edit_rollno').val(rollno);
 
             addCoursesToEditModal(rollno);
@@ -436,7 +442,6 @@ $(document).delegate('.edit', 'click', function() {
                                 url: "/student/" + rollno,
                                 cache: false,
                                 success: function(result) {
-                                    console.log(result);
 
                                     $('#edit_name').val(result.name);
                                     $('#edit_address').val(result.address);
@@ -448,9 +453,7 @@ $(document).delegate('.edit', 'click', function() {
                                         $("input.editcheckbox[type=checkbox]").each(function() {
 
                                             var courseVal = $(this).val();
-                                            console.log( "from edit modal: "+courseVal);
                                             if (courseVal === newVal) {
-                                                console.log("checked");
                                                 $(this).prop('checked',true);
                                             }
 
@@ -517,12 +520,14 @@ $(document).on('hide.bs.modal', '#edit_modal', function(e) {
 
 $(document).delegate('.view', 'click', function() {
     let rollno;
-    var $row = $(this).closest("tr");
-
-    var $tds = $row.find("td:nth-child(2)");
-    $.each($tds, function() {
-        rollno = $(this).text();
-    });
+     var $current_row = $(this).parents('tr');//Get the current row
+        if ($current_row.hasClass('child')) {//Check if the current row is a child row
+            $current_row = $current_row.prev();//If it is, then point to the row before it (its 'parent')
+        }
+     var $tds = $current_row.find("td:nth-child(2)");
+         $.each($tds, function() {
+             rollno = $(this).text();
+         });
 
     window.location = "/student/details/" + rollno;
 });

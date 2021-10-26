@@ -39,7 +39,7 @@ public class UserController {
 
     @PostMapping("/users/register")
     public ResponseEntity<Void> addUser(@RequestBody UserDto userDto) {
-        User user= convertor.dtoToEntityConvertor(userDto);
+        User user = convertor.dtoToEntityConvertor(userDto);
         userService.addUser(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }

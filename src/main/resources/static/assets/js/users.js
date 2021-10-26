@@ -18,8 +18,10 @@ function showUserTable() {
         }
         htmlForTable = htmlForTable + htmlForTableData + '</tbody></table>';
         $('#tableContainer').append(htmlForTable);
-        $('#userTable').DataTable();
-
+        var t= $('#userTable').DataTable({
+        "responsive":true
+        });
+        new $.fn.dataTable.FixedHeader(t);
 
     });
 }

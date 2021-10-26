@@ -29,7 +29,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void deleteStudent(Integer rollno) {
+    public void deleteStudent(String rollno) {
         Student student = studentRepository.findByRollno(rollno);
         student.getCoursesList().forEach(course -> {
             Course course1 = courseRepository.findByCourseId(course.getCourseId());
@@ -52,12 +52,12 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student findStudentByRollno(Integer rollno) {
+    public Student findStudentByRollno(String rollno) {
         return studentRepository.findByRollno(rollno);
     }
 
     @Override
-    public Boolean isStudentExists(Integer rollno) {
+    public Boolean isStudentExists(String rollno) {
         return studentRepository.existsById(rollno);
     }
 }

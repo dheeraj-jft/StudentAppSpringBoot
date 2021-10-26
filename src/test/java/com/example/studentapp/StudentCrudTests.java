@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class StudentCrudTests {
 
-    final Integer STUDENT_ROLL_NO = 1234567;
+    final String STUDENT_ROLL_NO = "1234567";
     @Autowired
     StudentService studentService;
 

@@ -31,7 +31,7 @@ public class StudentController {
     }
 
     @GetMapping("/details/{rollno}")
-    public String getStudentDetails(@PathVariable("rollno") Integer rollno, Model model, Authentication authentication) {
+    public String getStudentDetails(@PathVariable("rollno") String rollno, Model model, Authentication authentication) {
         Student student = studentService.findStudentByRollno(rollno);
         StudentDto studentDto = convertor.entityToDtoConvertor(student);
         model.addAttribute("student", studentDto);
@@ -40,7 +40,7 @@ public class StudentController {
     }
 
     @GetMapping("/{rollno}")
-    public ResponseEntity<StudentDto> getStudent(@PathVariable("rollno") Integer rollno) {
+    public ResponseEntity<StudentDto> getStudent(@PathVariable("rollno") String rollno) {
         Student student = studentService.findStudentByRollno(rollno);
         StudentDto studentDto = convertor.entityToDtoConvertor(student);
         return new ResponseEntity<>(studentDto, HttpStatus.OK);
@@ -61,7 +61,7 @@ public class StudentController {
     }
 
     @DeleteMapping("/delete/{rollno}")
-    public ResponseEntity<Void> deleteStudent(@PathVariable Integer rollno) {
+    public ResponseEntity<Void> deleteStudent(@PathVariable String rollno) {
         studentService.deleteStudent(rollno);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }

@@ -9,11 +9,11 @@ public interface StudentService {
 
     void addStudent(Student student);
 
-    void deleteStudent(Integer rollno);
+    void deleteStudent(String rollno);
 
     void updateStudent(Student student);
 
-    Student findStudentByRollno(Integer rollno);
+    Student findStudentByRollno(String rollno);
 
-    Boolean isStudentExists(Integer rollno);
+    Boolean isStudentExists(String rollno);
 }

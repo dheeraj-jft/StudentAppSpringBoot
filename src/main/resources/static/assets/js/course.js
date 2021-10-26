@@ -166,14 +166,15 @@ var t= $('#coursesTable').dataTable({
          "dataSrc": ""
         },
         "columns": [
-                    {"data":   "id" ,
+                    {"data":   null ,
                        render: function (data, type, row, meta) {
                         return meta.row + meta.settings._iDisplayStart + 1;
                          }
                          },
                     { "data": "courseId" },
                     { "data": "courseName" },
-                    {  "mRender": function(data, type, full) {
+                    {  "data": null,
+                        render: function(data, type, full) {
                        if(role==='[USER]'){
                        return '<div class="buttonContainer"><button class="view">View More</button></div>';
 
@@ -186,7 +187,9 @@ var t= $('#coursesTable').dataTable({
                                      }
                      }
                 ],
-            "bDestroy": true
+            "bDestroy": true,
+            "responsive":true
+
 
         }
         );

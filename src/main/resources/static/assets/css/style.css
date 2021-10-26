@@ -178,7 +178,6 @@ text-align: center;
 }
 .navbar-header {
     float: left;
-    padding: 15px;
     text-align: center;
 
 }
@@ -207,5 +206,5 @@ body {
 }
 @media screen and (max-width: 800px) {
    table {
-    width: auto; /* The width is 100%, when the viewport is 800px or smaller */
+    width: 100%; /* The width is 100%, when the viewport is 800px or smaller */
   }

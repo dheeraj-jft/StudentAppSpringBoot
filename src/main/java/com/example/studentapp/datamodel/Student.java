@@ -3,7 +3,6 @@ package com.example.studentapp.datamodel;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -19,7 +18,7 @@ public class Student {
     private Long id;
 
     @Id
-    private int rollno;
+    private String rollno;
 
     @Column(nullable = false)
     private String name;

@@ -1,20 +1,21 @@
 package com.example.studentapp.dto;
 
-import com.example.studentapp.datamodel.Student;
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Set;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@NoArgsConstructor
 public class CourseDto {
 
     private String courseId;
 
     private String courseName;
 
-    private Set<Student> studentList;
+    @JsonIgnoreProperties(value = "coursesList", allowSetters = true)
+    private Set<StudentDto> studentList;
 }
