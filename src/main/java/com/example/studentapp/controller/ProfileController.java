@@ -1,6 +1,8 @@
 package com.example.studentapp.controller;
 
+import com.example.studentapp.convertor.UserConvertor;
 import com.example.studentapp.datamodel.User;
+import com.example.studentapp.dto.UserDto;
 import com.example.studentapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,9 @@ public class ProfileController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    UserConvertor convertor;
 
     @GetMapping("/login")
     public String login() {
@@ -39,7 +44,8 @@ public class ProfileController {
     }
 
     @PutMapping("/edit/profile")
-    public ResponseEntity<Void> editUserDetails(@RequestBody User user, Principal principal) {
+    public ResponseEntity<Void> editUserDetails(@RequestBody UserDto userDto, Principal principal) {
+        User user = convertor.dtoToEntityConvertor(userDto);
         userService.updateUser(user, principal.getName());
         return new ResponseEntity<>(HttpStatus.OK);
     }

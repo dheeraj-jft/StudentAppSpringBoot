@@ -1,4 +1,4 @@
-package com.example.studentapp.controller;
+package com.example.studentapp.controller.error;
 
 import lombok.NonNull;
 import org.springframework.boot.web.servlet.error.ErrorController;

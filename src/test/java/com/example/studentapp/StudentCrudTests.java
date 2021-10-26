@@ -1,71 +1,62 @@
 package com.example.studentapp;
 
-import com.example.studentapp.controller.ProfileController;
 import com.example.studentapp.datamodel.Course;
-import com.example.studentapp.service.CourseService;
-import org.junit.jupiter.api.*;
+import com.example.studentapp.datamodel.Student;
+import com.example.studentapp.service.StudentService;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
+import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class StudentCRUDTests {
-	 final String COURSEID="RCAI551";
-	@Autowired
-	ProfileController controller;
-	@Test
-	@Order(1)
-	void contextLoads() {
-		assertNotNull(controller);
-	}
-	@Autowired
-	CourseService courseService;
-	@Test
-	@Order(2)
-	void testCreateCourse(){
+class StudentCrudTests {
 
-		Course course1 = new Course();
-		course1.setCourseName("MySQL");
-		course1.setCourseId(COURSEID);
-		courseService.addCourse(course1);
-		assertNotNull(courseService.findByCourseId(COURSEID));
-	}
-	@Test
-	@Order(3)
-	void testReadAllCourses(){
-		List<Course> courseList=courseService.getCourseList();
-		Assertions.assertTrue(courseList.size()>1);
-	}
-	@Test
-	@Order(4)
-	void checkCourseName(){
-		Course course = courseService.findByCourseId(COURSEID);
-		assert course !=null;
-		assertEquals("MySQL",course.getCourseName());
-	}
-	@Test
-	@Order(5)
-	void checkupdateCourseName(){
-		Course course =courseService.findByCourseId(COURSEID);
-		assert course!=null;
-		course.setCourseName("MySql");
-		courseService.updateCourse(course);
-		assertEquals("MySql",courseService.findByCourseId(COURSEID).getCourseName());
+    final Integer STUDENT_ROLL_NO = 1234567;
+    @Autowired
+    StudentService studentService;
 
-	}
-	@Test
-	@Order(6)
-	void checkDeleteCourse(){
-		courseService.deleteCourse(COURSEID);
-		Assertions.assertFalse(courseService.isExists(COURSEID));
-	}
+    @Test
+    @Order(1)
+    void createStudent() {
+        Student student = new Student();
+        student.setRollno(STUDENT_ROLL_NO);
+        student.setAddress("New Malviya nagar, Jaipur");
+        student.setName("Abraim sufi");
+        student.setPhone("9100090092");
+        studentService.addStudent(student);
+        assertNotNull(studentService.findStudentByRollno(STUDENT_ROLL_NO));
+    }
 
+    @Test
+    @Order(2)
+    void updateStudentPhone() {
+        String newPhoneno = "9100190010";
+        Student student = studentService.findStudentByRollno(STUDENT_ROLL_NO);
+        student.setPhone(newPhoneno);
+        studentService.updateStudent(student);
+        assertEquals(newPhoneno, studentService.findStudentByRollno(STUDENT_ROLL_NO).getPhone());
+    }
 
+    @Test
+    @Order(3)
+    void getCoursesListforStudent() {
+        Student student = studentService.findStudentByRollno(STUDENT_ROLL_NO);
+        Set<Course> courseList = student.getCoursesList();
+        assertEquals(0, courseList.size());
+    }
 
+    @Test
+    @Order(4)
+    void DeleteStudent() {
+        studentService.deleteStudent(STUDENT_ROLL_NO);
+        assertFalse(studentService.isStudentExists(STUDENT_ROLL_NO));
+    }
 
 }

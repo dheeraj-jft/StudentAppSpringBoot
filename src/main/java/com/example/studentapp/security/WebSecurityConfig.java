@@ -27,12 +27,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/assets/**").permitAll()
-                .antMatchers("/","/studentDetails/**","/studentlist","/courses","/course/list","courseDetails/**","/edit/profile").hasAnyAuthority("ADMIN","USER")
-                .antMatchers("/student/**","/users/**","/course/**").hasAuthority("ADMIN")
+                .antMatchers("/"
+                        , "/student/details/**"
+                        , "/student/list"
+                        , "/course"
+                        ,"/course/list"
+                        , "/course/details/**"
+                        ,"/edit/profile").hasAnyAuthority("ADMIN", "USER")
+                .antMatchers("/student/**", "/users/**", "/course/**").hasAuthority("ADMIN")
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/",true)
+                .defaultSuccessUrl("/", true)
                 .permitAll()
                 .and()
                 .logout()
@@ -47,14 +53,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    AuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider provider= new DaoAuthenticationProvider();
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
+
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 

@@ -193,7 +193,7 @@ function updateTable(){
 
 var t= $('#studentTable').dataTable({
         "ajax":{
-        "url": "/studentlist",
+        "url": "/student/list",
          "dataSrc": ""
         },
         "columns": [
@@ -524,5 +524,5 @@ $(document).delegate('.view', 'click', function() {
         rollno = $(this).text();
     });
 
-    window.location = "/studentDetails/" + rollno;
+    window.location = "/student/details/" + rollno;
 });

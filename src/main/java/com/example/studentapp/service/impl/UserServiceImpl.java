@@ -3,7 +3,6 @@ package com.example.studentapp.service.impl;
 import com.example.studentapp.datamodel.User;
 import com.example.studentapp.repositories.UserRepository;
 import com.example.studentapp.service.UserService;
-import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,15 +17,15 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public User addUser(User user){
-        User userModel =popluateData(user);
+    public User addUser(User user) {
+        User userModel = popluateData(user);
         return userRepository.save(userModel);
     }
 
     @Override
-    public void updateUser(User user,String oldName){
-        User user1= userRepository.findByUsername(oldName);
-        user1=popluateData(user,user1);
+    public void updateUser(User user, String oldName) {
+        User user1 = userRepository.findByUsername(oldName);
+        user1 = popluateData(user, user1);
         userRepository.save(user1);
     }
 
@@ -36,13 +35,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser( String username) {
-        User user =userRepository.findByUsername(username);
+    public void deleteUser(String username) {
+        User user = userRepository.findByUsername(username);
         userRepository.delete(user);
     }
 
     private User popluateData(User user) {
-        User userModel =new User();
+        User userModel = new User();
         userModel.setPassword(passwordEncoder.encode(user.getPassword()));
         userModel.setUsername(user.getUsername());
         userModel.setRole(user.getRole());
@@ -50,11 +49,11 @@ public class UserServiceImpl implements UserService {
     }
 
     private User popluateData(User user, User user1) {
-        if(user.getPassword()!="")
+        if (user.getPassword() != "")
             user1.setPassword(passwordEncoder.encode(user.getPassword()));
-        if(user.getUsername()!="" && user.getUsername()!=user1.getUsername())
+        if (user.getUsername() != "" && user.getUsername() != user1.getUsername())
             user1.setUsername(user.getUsername());
-        if(user.getRole()!="" && user.getRole()!=user1.getRole())
+        if (user.getRole() != "" && user.getRole() != user1.getRole())
             user1.setRole(user.getRole());
         return user1;
     }

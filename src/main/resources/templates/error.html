@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
-  <title>Student Dashboard Error Page </title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" th:href="@{/assets/css/login.css}" />
+    <title>Student Dashboard Error Page </title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{/assets/css/login.css}"/>
 </head>
 
 <body>
 
 <div class="login-page">
 
-  <div class="form">
-    <div><h3>Error Page</h3> </div>
-    <span style="color:red" th:text="${errorMessage}">Bad Request</span>
-    <br><br>
-      <a th:href="@{/}">back to Home page</a>
-  </div>
+    <div class="form">
+        <div><h3>Error Page</h3></div>
+        <span style="color:red" th:text="${errorMessage}">Bad Request</span>
+        <br><br>
+        <a th:href="@{/}">back to Home page</a>
+    </div>
 </div>
 </body>
 </html>

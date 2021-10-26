@@ -1,26 +1,30 @@
 package com.example.studentapp.convertor;
 
-import com.example.studentapp.datamodel.Student;
-import com.example.studentapp.dto.StudentDto;
+import com.example.studentapp.datamodel.Course;
+import com.example.studentapp.dto.CourseDto;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
-public class StudentConvertor {
-    public Student dtoToEntityConvertor( @NonNull StudentDto studentDto){
-        Student studentEntity= new Student();
-        studentEntity.setRollno(studentDto.getRollno());
-        studentEntity.setName(studentDto.getName());
-        studentEntity.setAddress(studentDto.getAddress());
-        studentEntity.setPhone(studentDto.getPhone());
-        studentEntity.setCoursesList(studentDto.getCoursesList());
-        return studentEntity;
+public class CourseConvertor {
+    public Course dtoToEntityConvertor(@NonNull CourseDto courseDto) {
+        Course courseEntity = new Course();
+        courseEntity.setCourseName(courseDto.getCourseName());
+        courseEntity.setCourseId(courseDto.getCourseId());
+        courseEntity.setStudentList(courseDto.getStudentList());
+        return courseEntity;
     }
-    public StudentDto EntityToDtoConvertor(@NonNull Student student){
-        return new StudentDto(
-                student.getRollno(), student.getName(),
-                student.getAddress(), student.getPhone(),
-                student.getCoursesList()
+
+    public CourseDto entityToDtoConvertor(@NonNull Course course) {
+        return new CourseDto(course.getCourseId(), course.getCourseName()
+                , course.getStudentList()
         );
+    }
+
+    public List<CourseDto> entityToDtoListConvertor(@NonNull List<Course> courseList) {
+        return courseList.stream().map(this::entityToDtoConvertor).collect(Collectors.toList());
     }
 }

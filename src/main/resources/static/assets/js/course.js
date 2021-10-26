@@ -158,6 +158,7 @@ $("#edit_details_button").click(function() {
     function updateTable(){
         var role=$('#role').text();
                  console.log(role);
+         console.log(role)
 
 var t= $('#coursesTable').dataTable({
         "ajax":{
@@ -217,7 +218,7 @@ $(document).delegate('.view', 'click', function() {
         courseId = $(this).text();
     });
 
-    window.location = "/courseDetails/"+courseId;
+    window.location = "/course/details/"+courseId;
 });
 
 $(document).delegate('.delete', 'click', function() {
@@ -245,7 +246,7 @@ $(document).delegate('#delete_details_button', 'click', function() {
         console.log("Delete "+ courseId);
         $.ajax({
             type: "DELETE",
-            url: "/course/" + courseId,
+            url: "/course/delete/" + courseId,
             cache: false,
             success: function() {
                 updateTable();

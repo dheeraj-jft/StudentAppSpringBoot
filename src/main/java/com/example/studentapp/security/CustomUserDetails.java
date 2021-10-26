@@ -1,4 +1,6 @@
-package com.example.studentapp.datamodel;
+package com.example.studentapp.security;
+
+import com.example.studentapp.datamodel.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,9 +10,10 @@ import java.util.Collections;
 
 public class CustomUserDetails implements UserDetails {
     private User user;
-    public CustomUserDetails(User user){
+
+    public CustomUserDetails(User user) {
         super();
-        this.user=user;
+        this.user = user;
     }
 
     @Override

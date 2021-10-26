@@ -1,73 +1,79 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
-  <title>Student Details </title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" th:href="@{/assets/css/style.css}" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <title>Student Details </title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
 </head>
 
 <body>
 <nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" th:href="@{/}" style="align:center">Student DashBoard</a>
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" style="align:center" th:href="@{/}">Student DashBoard</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="inactive"><a th:href="@{/}">Home</a></li>
+            <li class="inactive" id="coursesControl"><a th:href="@{/courses}">Courses</a></li>
+            <li class="inactive" id="usersControl" th:if="${role}==[ADMIN]"><a th:href="@{/users}">Users</a></li>
+
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+
+            <li>
+                <a class=" inactive dropdown-item" id="editprofile" th:href="@{/edit/profile}"><span
+                        class="glyphicon glyphicon-user"></span> Edit profile</a>
+            </li>
+            <li class="inactive"><a th:href="@{/mylogout}"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+            </li>
+        </ul>
     </div>
-    <ul class="nav navbar-nav">
-      <li class="inactive"><a th:href="@{/}">Home</a></li>
-      <li id ="coursesControl"  class="inactive"><a th:href="@{/courses}">Courses</a></li>
-      <li id ="usersControl" th:if="${role}==[ADMIN]" class="inactive"><a th:href="@{/users}">Users</a></li>
-
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-
-      <li>
-        <a  id="editprofile" class=" inactive dropdown-item" th:href="@{/edit/profile}"><span class="glyphicon glyphicon-user"></span> Edit profile</a>
-      </li>
-      <li class="inactive"><a th:href="@{/mylogout}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-    </ul>
-  </div>
 </nav>
-  <div class="container">
+<div class="container">
     <div class="form">
-    <div><h3>Student Details</h3> </div>
-    <div class="form-group">
-        <label>Roll no.</label>
-        <input type="text" class="form-controll" id="rollno" th:value="${student.rollno}" placeholder="rollno" name="rollno" readonly>
-    </div>
+        <div><h3>Student Details</h3></div>
+        <div class="form-group">
+            <label>Roll no.</label>
+            <input class="form-controll" id="rollno" name="rollno" placeholder="rollno" readonly
+                   th:value="${student.rollno}" type="text">
+        </div>
 
-    <div class="form-group">
-      <label>Name</label>
-      <input type="text" class="form-controll"  id="name" th:value="${student.name}" placeholder="name" name="name" readonly>
-    </div>
+        <div class="form-group">
+            <label>Name</label>
+            <input class="form-controll" id="name" name="name" placeholder="name" readonly th:value="${student.name}"
+                   type="text">
+        </div>
 
-    <div class="form-group">
-      <label>Address</label>
-      <input type="text" class="form-controll" id="address" th:value="${student.address}" placeholder="address" name="address" readonly>
-    </div>
-    <div class="form-group">
-      <label>Phone</label>
-      <input type="text" class="form-controll" id="phone" th:value="${student.phone}" placeholder="phone" name="phone" readonly>
-    </div>
+        <div class="form-group">
+            <label>Address</label>
+            <input class="form-controll" id="address" name="address" placeholder="address" readonly
+                   th:value="${student.address}" type="text">
+        </div>
+        <div class="form-group">
+            <label>Phone</label>
+            <input class="form-controll" id="phone" name="phone" placeholder="phone" readonly
+                   th:value="${student.phone}" type="text">
+        </div>
 
-    <h3>Current Enrolled Courses</h3>
+        <h3>Current Enrolled Courses</h3>
 
-    <table class="table">
-      <tr>
-        <th>Sr. no.</th>
-        <th>Course Id</th>
-        <th>Course Name</th>
-      </tr>
-      <tr th:each="course : ${student.coursesList}">
-        <td th:text="${courseStat.count}"></td>
-        <td th:text="${course.courseId}"></td>
-        <td th:text="${course.courseName}"></td>
-      </tr>
-    </table>
+        <table class="table">
+            <tr>
+                <th>Sr. no.</th>
+                <th>Course Id</th>
+                <th>Course Name</th>
+            </tr>
+            <tr th:each="course : ${student.coursesList}">
+                <td th:text="${courseStat.count}"></td>
+                <td th:text="${course.courseId}"></td>
+                <td th:text="${course.courseName}"></td>
+            </tr>
+        </table>
     </div>
-  </div>
+</div>
 
 </body>
 </html>

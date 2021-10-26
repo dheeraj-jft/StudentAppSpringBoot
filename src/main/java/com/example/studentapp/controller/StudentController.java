@@ -1,6 +1,8 @@
 package com.example.studentapp.controller;
 
+import com.example.studentapp.convertor.StudentConvertor;
 import com.example.studentapp.datamodel.Student;
+import com.example.studentapp.dto.StudentDto;
 import com.example.studentapp.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,52 +11,59 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @Controller
+@RequestMapping("student")
 public class StudentController {
 
     @Autowired
     StudentService studentService;
 
-    @GetMapping("/studentlist")
-    public ResponseEntity<List<Student>> getStudentList() {
-        return new ResponseEntity<>(studentService.getStudentsList(), HttpStatus.OK);
+    @Autowired
+    StudentConvertor convertor;
+
+    @GetMapping("/list")
+    public ResponseEntity<List<StudentDto>> getStudentList() {
+        List<StudentDto> studentDtoList = convertor.entityToDtoListConvertor(studentService.getStudentsList());
+        return new ResponseEntity<>(studentDtoList, HttpStatus.OK);
     }
 
-    @GetMapping("/studentDetails/{rollno}")
+    @GetMapping("/details/{rollno}")
     public String getStudentDetails(@PathVariable("rollno") Integer rollno, Model model, Authentication authentication) {
-        Student student= studentService.findStudentByRollno(rollno);
-        model.addAttribute("student",student);
+        Student student = studentService.findStudentByRollno(rollno);
+        StudentDto studentDto = convertor.entityToDtoConvertor(student);
+        model.addAttribute("student", studentDto);
         model.addAttribute("role", authentication.getAuthorities().toString());
         return "studentDetails";
     }
 
-    @GetMapping("/student/{rollno}")
-    public ResponseEntity<Student> getStudent(@PathVariable("rollno") Integer rollno) {
-        Student student= studentService.findStudentByRollno(rollno);
-        return new ResponseEntity<>(student,HttpStatus.OK);
+    @GetMapping("/{rollno}")
+    public ResponseEntity<StudentDto> getStudent(@PathVariable("rollno") Integer rollno) {
+        Student student = studentService.findStudentByRollno(rollno);
+        StudentDto studentDto = convertor.entityToDtoConvertor(student);
+        return new ResponseEntity<>(studentDto, HttpStatus.OK);
     }
 
-    @PostMapping("/student/save")
-    public ResponseEntity<Void> addStudent(@RequestBody Student student) {
-        studentService.addStudent(student);
+    @PostMapping("/save")
+    public ResponseEntity<Void> addStudent(@RequestBody StudentDto studentDto) {
+        Student studentEntity = convertor.dtoToEntityConvertor(studentDto);
+        studentService.addStudent(studentEntity);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    @PutMapping("/student/save")
-    public ResponseEntity<Void> updateStudent(@RequestBody Student student) {
-        studentService.updateStudent(student);
+    @PutMapping("/save")
+    public ResponseEntity<Void> updateStudent(@RequestBody StudentDto studentDto) {
+        Student studentEntity = convertor.dtoToEntityConvertor(studentDto);
+        studentService.updateStudent(studentEntity);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/student/delete/{rollno}")
+    @DeleteMapping("/delete/{rollno}")
     public ResponseEntity<Void> deleteStudent(@PathVariable Integer rollno) {
         studentService.deleteStudent(rollno);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
-
-
-
 
 }
