@@ -1,15 +1,17 @@
 package com.example.studentapp.service;
 
-import com.example.studentapp.datamodel.User;
+import com.example.studentapp.dto.UserDto;
 
 import java.util.List;
 
 public interface UserService {
-    User addUser(User user);
+    void addUser(UserDto userDto);
 
-    void updateUser(User user, String oldName);
+    void updateUser(UserDto userDto, String oldName);
 
-    List<User> getUsersList();
+    List<UserDto> getUsersList();
 
     void deleteUser(String username);
+
+    boolean isExists(String username);
 }

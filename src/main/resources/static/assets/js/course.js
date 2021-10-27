@@ -106,14 +106,15 @@ $("#edit_details_button").click(function() {
     $.ajax({
             type: "PUT",
             contentType: "application/json; charset=utf-8",
-            url: "/course/save",
+            url: "/course",
             data: JSON.stringify({
                 'courseId': courseId,
                 'courseName': courseName
             }),
             cache: false,
-            success: function(result) {
-
+            success: function(data) {
+                $('#successBlock').html(data);
+                $('#successModal').modal('show');
                 $('#edit_modal').modal('hide');
                 updateTable();
                 return true;
@@ -134,14 +135,15 @@ $("#edit_details_button").click(function() {
    $.ajax({
            type: "POST",
            contentType: "application/json; charset=utf-8",
-           url: "/course/save",
+           url: "/course",
            data: JSON.stringify({
                'courseId': courseId,
                'courseName': courseName,
            }),
            cache: false,
-           success: function(result) {
-
+           success: function(data) {
+                $('#successBlock').html(data);
+                $('#successModal').modal('show');
                $('#addModal').modal('hide');
                $('#add_student_form').each(function() {
                    this.reset();
@@ -158,7 +160,6 @@ $("#edit_details_button").click(function() {
     function updateTable(){
         var role=$('#role').text();
                  console.log(role);
-         console.log(role)
 
 var t= $('#coursesTable').dataTable({
         "ajax":{
@@ -193,7 +194,7 @@ var t= $('#coursesTable').dataTable({
 
         }
         );
-
+         new $.fn.dataTable.FixedHeader(t);
 
 
  }
@@ -249,9 +250,11 @@ $(document).delegate('#delete_details_button', 'click', function() {
         console.log("Delete "+ courseId);
         $.ajax({
             type: "DELETE",
-            url: "/course/delete/" + courseId,
+            url: "/course/" + courseId,
             cache: false,
-            success: function() {
+            success: function(data) {
+                $('#successBlock').html(data);
+                $('#successModal').modal('show');
                 updateTable();
                 $('#delete_modal').modal('hide');
             },

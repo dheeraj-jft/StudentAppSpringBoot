@@ -1,7 +1,5 @@
 package com.example.studentapp.controller;
 
-import com.example.studentapp.convertor.UserConvertor;
-import com.example.studentapp.datamodel.User;
 import com.example.studentapp.dto.UserDto;
 import com.example.studentapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,46 +13,42 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-
+@RequestMapping("users")
 public class UserController {
 
     @Autowired
     UserService userService;
 
-    @Autowired
-    UserConvertor convertor;
-
-    @GetMapping("/users")
+    @GetMapping
     public String userDashBoard(Model model, Authentication authentication) {
         String roleString = authentication.getAuthorities().toString();
         model.addAttribute("role", roleString);
+        model.addAttribute("username", authentication.getName());
         return "users";
     }
 
-    @GetMapping("/users/userslist")
+    @GetMapping("/userslist")
     public ResponseEntity<List<UserDto>> getUserList() {
-        List<UserDto> userDtoList = convertor.entityToDtoListConvertor(userService.getUsersList());
+        List<UserDto> userDtoList = userService.getUsersList();
         return new ResponseEntity<>(userDtoList, HttpStatus.OK);
     }
 
-    @PostMapping("/users/register")
-    public ResponseEntity<Void> addUser(@RequestBody UserDto userDto) {
-        User user = convertor.dtoToEntityConvertor(userDto);
-        userService.addUser(user);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @PostMapping
+    public String addUser(@RequestBody UserDto userDto) {
+        userService.addUser(userDto);
+        return "fragments/successmodal :: successModalFragment(value='User added successfully')";
     }
 
-    @PutMapping("/users/register/{oldname}")
-    public ResponseEntity<Void> updateUser(@RequestBody UserDto userDto, @PathVariable("oldname") String oldname) {
-        User user = convertor.dtoToEntityConvertor(userDto);
-        userService.updateUser(user, oldname);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @PutMapping("/{oldname}")
+    public String updateUser(@RequestBody UserDto userDto, @PathVariable("oldname") String oldname) {
+        userService.updateUser(userDto, oldname);
+        return "fragments/successmodal :: successModalFragment(value='User updated successfully')";
     }
 
-    @DeleteMapping("users/delete/{username}")
-    public ResponseEntity<Void> deleteUser(@PathVariable("username") String username) {
+    @DeleteMapping("/{username}")
+    public String deleteUser(@PathVariable("username") String username) {
         userService.deleteUser(username);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return "fragments/successmodal :: successModalFragment(value='User with username: "+username+" deleted successfully')";
     }
 
 }

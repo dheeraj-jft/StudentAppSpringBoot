@@ -1,7 +1,7 @@
 package com.example.studentapp.controller;
 
-import com.example.studentapp.convertor.StudentConvertor;
 import com.example.studentapp.datamodel.Student;
+import com.example.studentapp.dto.CourseDto;
 import com.example.studentapp.dto.StudentDto;
 import com.example.studentapp.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +11,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("student")
@@ -21,19 +21,26 @@ public class StudentController {
     @Autowired
     StudentService studentService;
 
-    @Autowired
-    StudentConvertor convertor;
-
     @GetMapping("/list")
     public ResponseEntity<List<StudentDto>> getStudentList() {
-        List<StudentDto> studentDtoList = convertor.entityToDtoListConvertor(studentService.getStudentsList());
+        List<StudentDto> studentDtoList = studentService.getStudentsList();
         return new ResponseEntity<>(studentDtoList, HttpStatus.OK);
     }
 
     @GetMapping("/details/{rollno}")
     public String getStudentDetails(@PathVariable("rollno") String rollno, Model model, Authentication authentication) {
         Student student = studentService.findStudentByRollno(rollno);
-        StudentDto studentDto = convertor.entityToDtoConvertor(student);
+        StudentDto studentDto= new StudentDto();
+        studentDto.setRollno(student.getRollno());
+        studentDto.setPhone(student.getPhone());
+        studentDto.setAddress(student.getAddress());
+        studentDto.setName(student.getName());
+        studentDto.setCoursesList(student.getCoursesList().stream().map(course -> {
+            CourseDto courseDto = new CourseDto();
+            courseDto.setCourseId(course.getCourseId());
+            courseDto.setCourseName(course.getCourseName());
+            return courseDto;
+        }).collect(Collectors.toSet()));
         model.addAttribute("student", studentDto);
         model.addAttribute("role", authentication.getAuthorities().toString());
         return "studentDetails";
@@ -42,28 +49,36 @@ public class StudentController {
     @GetMapping("/{rollno}")
     public ResponseEntity<StudentDto> getStudent(@PathVariable("rollno") String rollno) {
         Student student = studentService.findStudentByRollno(rollno);
-        StudentDto studentDto = convertor.entityToDtoConvertor(student);
+        StudentDto studentDto=new StudentDto();
+        studentDto.setRollno(student.getRollno());
+        studentDto.setPhone(student.getPhone());
+        studentDto.setAddress(student.getAddress());
+        studentDto.setName(student.getName());
+        studentDto.setCoursesList(student.getCoursesList().stream().map(course -> {
+            CourseDto courseDto = new CourseDto();
+            courseDto.setCourseId(course.getCourseId());
+            courseDto.setCourseName(course.getCourseName());
+            return courseDto;
+        }).collect(Collectors.toSet()));
         return new ResponseEntity<>(studentDto, HttpStatus.OK);
     }
 
-    @PostMapping("/save")
-    public ResponseEntity<Void> addStudent(@RequestBody StudentDto studentDto) {
-        Student studentEntity = convertor.dtoToEntityConvertor(studentDto);
-        studentService.addStudent(studentEntity);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+    @PostMapping
+    public String addStudent(@RequestBody StudentDto studentDto) {
+        studentService.addStudent(studentDto);
+        return "fragments/successmodal :: successModalFragment(value='Student Added Successfully')";
     }
 
-    @PutMapping("/save")
-    public ResponseEntity<Void> updateStudent(@RequestBody StudentDto studentDto) {
-        Student studentEntity = convertor.dtoToEntityConvertor(studentDto);
-        studentService.updateStudent(studentEntity);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+    @PutMapping
+    public String updateStudent(@RequestBody StudentDto studentDto) {
+        studentService.updateStudent(studentDto);
+        return "fragments/successmodal :: successModalFragment(value='Student Updated Successfully')";
     }
 
-    @DeleteMapping("/delete/{rollno}")
-    public ResponseEntity<Void> deleteStudent(@PathVariable String rollno) {
+    @DeleteMapping("/{rollno}")
+    public String deleteStudent(@PathVariable String rollno) {
         studentService.deleteStudent(rollno);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return "fragments/successmodal :: successModalFragment(value='Student with Roll No: "+rollno+" is deleted Successfully')";
     }
 
 }

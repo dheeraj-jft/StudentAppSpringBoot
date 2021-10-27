@@ -1,15 +1,16 @@
 package com.example.studentapp.service;
 
 import com.example.studentapp.datamodel.Course;
+import com.example.studentapp.dto.CourseDto;
 
 import java.util.List;
 
 public interface CourseService {
-    void addCourse(Course course);
+    void addCourse(CourseDto course);
 
-    void updateCourse(Course course);
+    void updateCourse(CourseDto courseDto);
 
-    List<Course> getCourseList();
+    List<CourseDto> getCourseList();
 
     void deleteCourse(String courseId);
 

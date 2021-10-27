@@ -97,7 +97,7 @@ $(function() {
                cache: false,
                success: function(result) {
                   alert("Details updated Successfully");
-                  window.location = "http://localhost:8080/";
+                  window.location = "/";
                   return true;
                },
                error: function(err,xhr) {

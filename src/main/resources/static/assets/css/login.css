@@ -60,6 +60,13 @@
 .far fa-eye{
     cursor: pointer;
 }
+ .field-icon{
+  float: right;
+  margin-left: -28px;
+  margin-top: 19px;
+  position: fixed;
+  z-index: 2;
+ }
 .container {
   position: relative;
   z-index: 1;

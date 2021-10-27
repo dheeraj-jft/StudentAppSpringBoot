@@ -1,8 +1,8 @@
 package com.example.studentapp.controller;
 
-import com.example.studentapp.convertor.CourseConvertor;
 import com.example.studentapp.datamodel.Course;
 import com.example.studentapp.dto.CourseDto;
+import com.example.studentapp.dto.StudentDto;
 import com.example.studentapp.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("course")
@@ -21,10 +22,7 @@ public class CourseController {
     @Autowired
     CourseService courseService;
 
-    @Autowired
-    CourseConvertor convertor;
-
-    @GetMapping()
+    @GetMapping
     public String getAllCourses(Model model, Authentication authentication) {
         model.addAttribute("role", authentication.getAuthorities().toString());
         return "courses";
@@ -33,7 +31,18 @@ public class CourseController {
     @GetMapping("/details/{courseId}")
     public String getCourseDetails(@PathVariable("courseId") String courseId, Model model, Authentication authentication) {
         Course course = courseService.findByCourseId(courseId);
-        CourseDto courseDto = convertor.entityToDtoConvertor(course);
+        CourseDto courseDto = new CourseDto();
+        courseDto.setCourseId(course.getCourseId());
+        courseDto.setCourseName(course.getCourseName());
+        courseDto.setStudentList(course.getStudentList().stream()
+                .map(student -> {
+                    StudentDto studentDto = new StudentDto();
+                    studentDto.setRollno(student.getRollno());
+                    studentDto.setName(student.getName());
+                    studentDto.setAddress(student.getAddress());
+                    studentDto.setPhone(student.getPhone());
+                    return studentDto;
+                }).collect(Collectors.toSet()));
         model.addAttribute("course", courseDto);
         model.addAttribute("role", authentication.getAuthorities().toString());
         return "courseDetails";
@@ -41,27 +50,25 @@ public class CourseController {
 
     @GetMapping("/list")
     public ResponseEntity<List<CourseDto>> getCourses() {
-        List<CourseDto> courseDtoList = convertor.entityToDtoListConvertor(courseService.getCourseList());
+        List<CourseDto> courseDtoList =courseService.getCourseList();
         return new ResponseEntity<>(courseDtoList, HttpStatus.OK);
     }
 
-    @PostMapping("/save")
-    public ResponseEntity<Void> addCourse(@RequestBody CourseDto courseDto) {
-        Course course = convertor.dtoToEntityConvertor(courseDto);
-        courseService.addCourse(course);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+    @PostMapping
+    public String addCourse(@RequestBody CourseDto courseDto) {
+        courseService.addCourse(courseDto);
+        return "fragments/successmodal :: successModalFragment(value='Course added successfully')";
     }
 
-    @PutMapping("/save")
-    public ResponseEntity<Void> updateCourse(@RequestBody CourseDto courseDto) {
-        Course course = convertor.dtoToEntityConvertor(courseDto);
-        courseService.updateCourse(course);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+    @PutMapping
+    public String updateCourse(@RequestBody CourseDto courseDto) {
+        courseService.updateCourse(courseDto);
+        return "fragments/successmodal :: successModalFragment(value='Course updated successfully')";
     }
 
-    @DeleteMapping("/delete/{courseId}")
-    public ResponseEntity<Void> deleteCourse(@PathVariable String courseId) {
+    @DeleteMapping("/{courseId}")
+    public String deleteCourse(@PathVariable String courseId) {
         courseService.deleteCourse(courseId);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return "fragments/successmodal :: successModalFragment(value='Course with courseId: "+courseId+" deleted successfully')";
     }
 }

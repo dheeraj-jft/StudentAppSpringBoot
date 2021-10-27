@@ -4,26 +4,32 @@ showUserTable();
 });
 
 function showUserTable() {
-
-    $("#userTable").remove();
-    $("#userTable_wrapper").remove();
-
-    var  htmlForTable = '<table class ="table" id="userTable"><thead><tr><th>sr.</th><th>User Name</th><th>Role</th><th id="actionshead">Actions</th></tr></thead><tbody>';
-    htmlForTableData = '';
-    $.getJSON('/users/userslist', function(json) {
-
-        for (var i = 0; i < json.length; i++) {
-            var sr = i + 1;
-                htmlForTableData += '<tr>' + '<td>' + sr + '</td>' + '<td>' + json[i].username + '</td>' + '<td>' + json[i].role + '</td>' +'<td class=\'buttonContainer\'><button class=\'edit\'>Edit</button>&nbsp;&nbsp;<button  class=\'delete\' id=' + json[i].id + '>Delete</button></td>' + '</tr>';
+    var role=$('#role').text();
+    var t= $('#userTable').dataTable({
+        "ajax":{
+        "url": "/users/userslist",
+         "dataSrc": ""
+        },
+        "columns": [
+                    {"data":   null ,
+                       render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                         }
+                         },
+                    { "data": "username" },
+                    { "data": "role" },
+                    {  "data": null,
+                        render: function(data, type, full) {
+                            return '<div class="buttonContainer"><button class="edit">Edit</button><button class="delete">Delete</button></div>';                                }
+                     }
+                ],
+            "bDestroy": true,
+            "responsive":true
         }
-        htmlForTable = htmlForTable + htmlForTableData + '</tbody></table>';
-        $('#tableContainer').append(htmlForTable);
-        var t= $('#userTable').DataTable({
-        "responsive":true
-        });
+        );
+
         new $.fn.dataTable.FixedHeader(t);
 
-    });
 }
 
 $(function() {
@@ -112,15 +118,16 @@ $(function() {
         $.ajax({
             type: "POST",
             contentType: "application/json; charset=utf-8",
-            url: "http://localhost:8080/users/register",
+            url: "/users",
             cache: false,
             data: JSON.stringify({
                 'username': username,
                 'password': password,
                 'role': role
             }),
-            success: function(result) {
-                alert("Successful Registeration");
+            success: function(data) {
+                $('#successBlock').html(data);
+                $('#successModal').modal('show');
                 showUserTable();
                 $('#addModal_form').modal('hide');
                  $('#registerUserform').each(function() {
@@ -250,7 +257,7 @@ $(function() {
         $.ajax({
             type: "PUT",
             contentType: "application/json; charset=utf-8",
-            url: "http://localhost:8080/users/register/"+oldname,
+            url: "/users/"+oldname,
             cache: false,
             data: JSON.stringify({
                 'username': username,
@@ -258,8 +265,9 @@ $(function() {
                 'role': role,
                 'oldname':oldname
             }),
-            success: function(result) {
-                alert("User details saved successfully");
+            success: function(data) {
+                $('#successBlock').html(data);
+                $('#successModal').modal('show');
                 showUserTable();
                 $('#edit_modal_form').modal('hide');
                  $('#edit_user_form').each(function() {
@@ -320,14 +328,24 @@ $(document).delegate('.edit', 'click', function() {
 $(document).delegate('#delete_details_button', 'click', function() {
 
         var username=$('#delete_username').val();
+        var self_delete=false;
+        var currentUsername = $('#username').text();
+        if(currentUsername === username){
+         alert("Deleting self user, you will be logout after this operation.");
+            self_delete=true;
+        }
 
         $.ajax({
             type: "DELETE",
-            url: "http://localhost:8080/users/delete/" +username,
+            url: "/users/" +username,
             cache: false,
-            success: function() {
+            success: function(data) {
+                $('#successBlock').html(data);
+                $('#successModal').modal('show');
                 showUserTable();
                 $('#delete_modal').modal('hide');
+                if(self_delete === true)
+                    window.location = "/login?logout";
             },
             error: function(xhr) {
                 alert("Error: record delete");
@@ -353,6 +371,7 @@ $(document).delegate('.delete', 'click', function() {
     $('#delete_role').val(role);
 
 });
+
 
 
 

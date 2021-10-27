@@ -1,6 +1,7 @@
 package com.example.studentapp.service.impl;
 
 import com.example.studentapp.datamodel.User;
+import com.example.studentapp.dto.UserDto;
 import com.example.studentapp.repositories.UserRepository;
 import com.example.studentapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -17,21 +19,27 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public User addUser(User user) {
-        User userModel = popluateData(user);
-        return userRepository.save(userModel);
+    public void addUser(UserDto userDto) {
+        User userModel = popluateData(userDto);
+        userRepository.save(userModel);
     }
 
     @Override
-    public void updateUser(User user, String oldName) {
-        User user1 = userRepository.findByUsername(oldName);
-        user1 = popluateData(user, user1);
-        userRepository.save(user1);
+    public void updateUser(UserDto userDto, String oldName) {
+        User user = userRepository.findByUsername(oldName);
+        popluateData(userDto, user);
+        userRepository.save(user);
     }
 
     @Override
-    public List<User> getUsersList() {
-        return userRepository.findAll();
+    public List<UserDto> getUsersList() {
+
+        return userRepository.findAll().stream().map(user -> {
+            UserDto userDto= new UserDto();
+            userDto.setUsername(user.getUsername());
+            userDto.setRole(user.getRole());
+            return userDto;
+        }).collect(Collectors.toList());
     }
 
     @Override
@@ -40,21 +48,27 @@ public class UserServiceImpl implements UserService {
         userRepository.delete(user);
     }
 
-    private User popluateData(User user) {
+    @Override
+    public boolean isExists(String username) {
+        User user= userRepository.findByUsername(username);
+        return user != null;
+    }
+
+    private User popluateData(UserDto userDto) {
         User userModel = new User();
-        userModel.setPassword(passwordEncoder.encode(user.getPassword()));
-        userModel.setUsername(user.getUsername());
-        userModel.setRole(user.getRole());
+        userModel.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        userModel.setUsername(userDto.getUsername());
+        userModel.setRole(userDto.getRole());
         return userModel;
     }
 
-    private User popluateData(User user, User user1) {
-        if (user.getPassword() != "")
-            user1.setPassword(passwordEncoder.encode(user.getPassword()));
-        if (user.getUsername() != "" && user.getUsername() != user1.getUsername())
-            user1.setUsername(user.getUsername());
-        if (user.getRole() != "" && user.getRole() != user1.getRole())
-            user1.setRole(user.getRole());
-        return user1;
+    private User popluateData(UserDto userDto, User user) {
+        if (!userDto.getPassword().equals(""))
+            user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        if (!userDto.getUsername().equals("") && !userDto.getUsername().equals(user.getUsername()))
+            user.setUsername(userDto.getUsername());
+        if (!userDto.getRole().equals("") && !userDto.getRole().equals(user.getRole()))
+            user.setRole(userDto.getRole());
+        return user;
     }
 }

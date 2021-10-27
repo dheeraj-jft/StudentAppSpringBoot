@@ -2,6 +2,8 @@ package com.example.studentapp.service.impl;
 
 import com.example.studentapp.datamodel.Course;
 import com.example.studentapp.datamodel.Student;
+import com.example.studentapp.dto.CourseDto;
+import com.example.studentapp.dto.StudentDto;
 import com.example.studentapp.repositories.CourseRepository;
 import com.example.studentapp.repositories.StudentRepository;
 import com.example.studentapp.service.StudentService;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -19,12 +22,37 @@ public class StudentServiceImpl implements StudentService {
     private CourseRepository courseRepository;
 
     @Override
-    public List<Student> getStudentsList() {
-        return studentRepository.findAll();
+    public List<StudentDto> getStudentsList() {
+        return studentRepository.findAll().stream().map(student -> {
+            StudentDto studentDto=new StudentDto();
+            studentDto.setName(student.getName());
+            studentDto.setPhone(student.getPhone());
+            studentDto.setAddress(student.getAddress());
+            studentDto.setRollno(student.getRollno());
+            studentDto.setCoursesList(student.getCoursesList().stream().map(course -> {
+                CourseDto courseDto = new CourseDto();
+                courseDto.setCourseId(course.getCourseId());
+                courseDto.setCourseName(course.getCourseName());
+                return courseDto;
+            }).collect(Collectors.toSet()));
+            return studentDto;
+        }).collect(Collectors.toList());
     }
 
     @Override
-    public void addStudent(Student student) {
+    public void addStudent(StudentDto studentDto) {
+        Student student=new Student();
+        student.setRollno(studentDto.getRollno());
+        student.setPhone(studentDto.getPhone());
+        student.setAddress(studentDto.getAddress());
+        student.setName(studentDto.getName());
+        student.setCoursesList(studentDto.getCoursesList().stream().map(courseDto ->
+        {
+            Course course=new Course();
+            course.setCourseId(courseDto.getCourseId());
+            return course;
+        }).collect(Collectors.toSet()));
+
         studentRepository.save(student);
     }
 
@@ -42,13 +70,17 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void updateStudent(Student student) {
-        Student student1 = studentRepository.findByRollno(student.getRollno());
-        student1.setName(student.getName());
-        student1.setAddress(student.getAddress());
-        student1.setPhone(student.getPhone());
-        student1.setCoursesList(student.getCoursesList());
-        studentRepository.save(student1);
+    public void updateStudent(StudentDto studentDto) {
+        Student student = studentRepository.findByRollno(studentDto.getRollno());
+        student.setName(studentDto.getName());
+        student.setAddress(studentDto.getAddress());
+        student.setPhone(studentDto.getPhone());
+        student.setCoursesList(studentDto.getCoursesList().stream().map(courseDto -> {
+            Course course=new Course();
+            course.setCourseId(courseDto.getCourseId());
+            return course;
+        }).collect(Collectors.toSet()));
+        studentRepository.save(student);
     }
 
     @Override

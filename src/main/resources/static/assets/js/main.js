@@ -256,9 +256,11 @@ $(document).delegate('#delete_details_button', 'click', function() {
 
     $.ajax({
         type: "DELETE",
-        url: "/student/delete/" + rollno,
+        url: "/student/" + rollno,
         cache: false,
-        success: function() {
+        success: function(data) {
+            $('#successBlock').html(data);
+            $('#successModal').modal('show');
             updateTable();
             $('#delete_modal').modal('hide');
         },
@@ -356,7 +358,7 @@ function addNewStudentToDB() {
     $.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: "/student/save",
+        url: "/student",
         data: JSON.stringify({
             'name': name,
             'rollno': rollno,
@@ -365,12 +367,15 @@ function addNewStudentToDB() {
             'coursesList': coursesArray
         }),
         cache: false,
-        success: function(result) {
+        success: function(data) {
+            $('#successBlock').html(data);
+            $('#successModal').modal('show');
             updateTable();
             $('#addModal').modal('hide');
             $('#add_student_form').each(function() {
                 this.reset();
             });
+
 
             return true;
         },
@@ -397,7 +402,7 @@ function editStudentDetails() {
     $.ajax({
         type: "PUT",
         contentType: "application/json; charset=utf-8",
-        url: "/student/save",
+        url: "/student",
         cache: false,
         data: JSON.stringify({
             'name': name,
@@ -406,7 +411,9 @@ function editStudentDetails() {
             'phone': phone,
             'coursesList': coursesArray
         }),
-        success: function() {
+        success: function(data) {
+            $('#successBlock').html(data);
+            $('#successModal').modal('show');
             updateTable();
             $('#edit_modal').modal('hide');
         },
@@ -417,15 +424,10 @@ function editStudentDetails() {
 }
 $(document).delegate('.edit', 'click', function() {
 
-            let sr,rollno;
             var $current_row = $(this).parents('tr');
             if ($current_row.hasClass('child')) {
                 $current_row = $current_row.prev();
             }
-            var $tds = $current_row.find("td:nth-child(1)");
-                 $.each($tds, function() {
-                  sr = $(this).text();
-               });
             var $tds = $current_row.find("td:nth-child(2)");
                      $.each($tds, function() {
                          rollno = $(this).text();
@@ -520,9 +522,9 @@ $(document).on('hide.bs.modal', '#edit_modal', function(e) {
 
 $(document).delegate('.view', 'click', function() {
     let rollno;
-     var $current_row = $(this).parents('tr');//Get the current row
-        if ($current_row.hasClass('child')) {//Check if the current row is a child row
-            $current_row = $current_row.prev();//If it is, then point to the row before it (its 'parent')
+     var $current_row = $(this).parents('tr');
+        if ($current_row.hasClass('child')) {
+            $current_row = $current_row.prev();
         }
      var $tds = $current_row.find("td:nth-child(2)");
          $.each($tds, function() {

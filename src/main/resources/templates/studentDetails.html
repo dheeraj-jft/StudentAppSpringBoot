@@ -2,18 +2,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
     <title>Student Details </title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <div th:replace="fragments/header :: allHeader"></div>
     <link rel="stylesheet" th:href="@{/assets/css/style.css}"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
 </head>
 
 <body>
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" style="align:center" th:href="@{/}">Student DashBoard</a>
+            <a class="navbar-brand" th:href="@{/}">Student DashBoard</a>
         </div>
         <ul class="nav navbar-nav">
             <li class="inactive"><a th:href="@{/}">Home</a></li>
@@ -57,7 +54,7 @@
             <input class="form-controll" id="phone" name="phone" placeholder="phone" readonly
                    th:value="${student.phone}" type="text">
         </div>
-
+        <div th:unless="${#lists.isEmpty(student.coursesList)}">
         <h3>Current Enrolled Courses</h3>
 
         <table class="table">
@@ -66,12 +63,13 @@
                 <th>Course Id</th>
                 <th>Course Name</th>
             </tr>
-            <tr th:each="course : ${student.coursesList}">
+            <tr  th:each="course : ${student.coursesList}">
                 <td th:text="${courseStat.count}"></td>
                 <td th:text="${course.courseId}"></td>
                 <td th:text="${course.courseName}"></td>
             </tr>
         </table>
+        </div>
     </div>
 </div>
 

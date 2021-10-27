@@ -1,13 +1,10 @@
 package com.example.studentapp.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@NoArgsConstructor
 public class UserDto {
 
     private @NonNull String username;
