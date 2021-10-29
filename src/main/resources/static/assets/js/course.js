@@ -174,6 +174,9 @@ var t= $('#coursesTable').dataTable({
                          },
                     { "data": "courseId" },
                     { "data": "courseName" },
+                    { "data": "teacher.teacherId",
+                      "defaultContent":"No Teacher Alloted"
+                    },
                     {  "data": null,
                         render: function(data, type, full) {
                        if(role==='[USER]'){

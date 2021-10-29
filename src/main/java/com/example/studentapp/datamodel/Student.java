@@ -1,5 +1,6 @@
 package com.example.studentapp.datamodel;
 
+import com.example.studentapp.util.UuidGenerator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,8 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class Student {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private String id= UuidGenerator.uuid();
 
     @Column(nullable = false, unique = true)
     private String rollno;

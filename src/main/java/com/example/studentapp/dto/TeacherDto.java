@@ -21,6 +21,6 @@ public class TeacherDto {
 
     private String address;
 
-    private Set<CourseDto> courseDtos;
+    private Set<CourseDto> courseSet;
 
 }

@@ -27,14 +27,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/assets/**").permitAll()
-                .antMatchers("/teachers"
+                .antMatchers("/","/teachers"
                         , "/student/details/**"
                         , "/student/list"
                         , "/course"
                         , "/course/list"
                         , "/course/details/**"
                         , "/edit/profile").hasAnyAuthority("ADMIN", "USER")
-                .antMatchers("/student/**", "/users/**", "/course/**").hasAuthority("ADMIN")
+                .antMatchers("/student/**", "/users/**", "/course/**", "/teachers/**").hasAuthority("ADMIN")
                 .and()
                 .formLogin()
                 .loginPage("/login")

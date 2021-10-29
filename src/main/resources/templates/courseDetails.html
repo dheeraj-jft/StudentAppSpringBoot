@@ -44,8 +44,32 @@
         <input class="form-controll" id="name" name="name" placeholder="name" readonly
                th:value="${course.courseName}" type="text">
     </div>
+<div >
+    <h3>Assigned Teacher Details</h3>
+    <div class="form-group">
+        <label> Teacher Id</label>
+        <input class="form-controll" id="teacherId" name="name" placeholder="name" readonly
+               th:value="${course.teacher.teacherId}" type="text">
+    </div>
+    <div class="form-group">
+        <label> Teacher Name</label>
+        <input class="form-controll" id="teacherName" name="name" placeholder="name" readonly
+               th:value="${course.teacher.firstName+course.teacher.lastName}" type="text">
+    </div>
+    <div class="form-group">
+        <label> Teacher Address</label>
+        <input class="form-controll" id="teacherAddress" name="name" placeholder="name" readonly
+               th:value="${course.teacher.address}" type="text">
+    </div>
+    <div class="form-group">
+        <label> Teacher Phone</label>
+        <input class="form-controll" id="teacherPhone" name="name" placeholder="name" readonly
+               th:value="${course.teacher.phone}" type="text">
+    </div>
+</div>
+
     <div th:unless="${#lists.isEmpty(course.studentList)}">
-        <h5>Current Enrolled Students</h5>
+        <h3>Current Enrolled Students</h3>
         <table class="table">
             <tr>
                 <th>Sr. no.</th>
@@ -63,6 +87,9 @@
             </tr>
         </table>
     </div>
+
+
+
 </div>
 
 </body>

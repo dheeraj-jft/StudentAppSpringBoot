@@ -1,5 +1,7 @@
 package com.example.studentapp.datamodel;
 
+import com.example.studentapp.util.UuidGenerator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -10,13 +12,11 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Getter
-@Setter
+@Getter @Setter
 @NoArgsConstructor
 public class Teacher {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private String uuid= UuidGenerator.uuid();
 
     @Column(nullable = false, unique = true)
     private @NonNull String teacherId;
@@ -33,7 +33,8 @@ public class Teacher {
     @Column(nullable = false)
     private @NonNull String address;
 
-    @OneToMany
+    @JsonIgnoreProperties(value = "teacher", allowSetters = true)
+    @OneToMany(mappedBy = "teacher")
     private Set<Course> courseSet;
 
 

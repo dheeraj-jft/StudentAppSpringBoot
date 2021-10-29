@@ -18,4 +18,6 @@ public class CourseDto {
 
     @JsonIgnoreProperties(value = "coursesList", allowSetters = true)
     private Set<StudentDto> studentList;
+
+    private TeacherDto teacherDto;
 }

@@ -1,44 +1,65 @@
-<div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="edit_modal_form"
-     role="dialog"
-     tabindex="-1">
+<div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="edit_modal" role="dialog"
+     tabindex="-1" xmlns:th="http://www.w3.org/1999/xhtml">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal" type="button">&times;</button>
-                <h4 class="modal-title">Edit User Details</h4>
+                <h4 class="modal-title">Edit Teacher Details</h4>
             </div>
 
             <div class="modal-body">
-                <form id="edit_user_form">
-
+                <form id="edit_form">
                     <div class="form-group">
-                        <label for="editName">User Name</label>
-                        <input class="form-control" id="editName" name="username" placeholder="Enter username."
+                        <label for="edit_teacherId">Teacher Id</label>
+                        <input class="form-control" id="edit_teacherId" name="username"
+                               placeholder="Enter TeacherId." readonly type="text">
+                        <span class="error_form" id="edit_teacherId_error_message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_firstName">First Name</label>
+                        <input class="form-control" id="edit_firstName" name="firstName"
+                               placeholder="Enter First Name"
                                type="text">
-                        <span class="error_form" id="edit_name_error_message"></span>
+                        <span class="error_form" id="edit_firstName_error_message"></span>
                     </div>
                     <div class="form-group">
-                        <label for="editPassword">Password:</label>
-                        <input class="form-control" id="editPassword" name="password"
-                               placeholder="Enter Password"
-                               type="password">
-                        <span class="error_form" id="edit_password_error_message"></span>
+                        <label for="edit_lastName">Last Name</label>
+                        <input class="form-control" id="edit_lastName" name="lastName"
+                               placeholder="Enter Last Name"
+                               type="text">
+                        <span class="error_form" id="edit_lastName_error_message"></span>
                     </div>
                     <div class="form-group">
-                        <label for="editRetypePassword">Retype Password</label>
-                        <input class="form-control" id="editRetypePassword" name="retypePassword"
-                               placeholder="Enter Password Again" type="password">
-                        <span class="error_form" id="edit_retype_password_error_message"></span>
+                        <label for="edit_address">Address</label>
+                        <input class="form-control" id="edit_address" name="address"
+                               placeholder="Enter Address" type="text">
+                        <span class="error_form" id="edit_address_error_message"></span>
                     </div>
                     <div class="form-group">
-                        <label for="editRole">select a role:</label>
-                        <select id="editRole" name="role">
-                            <option value="ADMIN">ADMIN</option>
-                            <option selected value="USER">USER</option>
-                        </select>
+                        <label for="edit_phone">Phone</label>
+                        <input class="form-control" id="edit_phone" name="phone"
+                               placeholder="Enter Phone no."
+                               type="number">
+                        <span class="error_form" id="edit_phone_error_message"></span>
                     </div>
+                    <div class="form-group">
+                        <div class="courseSelectEdit">
+                            <div class="form-check form-check-inline">
+                                <h5>Available Courses</h5>
+                                <div th:each="course : ${courseList}">
+                                    <input class="form-check-input editcheckbox" th:id="${course.courseName}"
+                                           th:value="${course.courseId}"
+                                           type="checkbox"/>
+                                    <label class="form-check-label" th:for="${course.courseName}"
+                                           th:text="${course.courseName}"></label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
                     <div class="modal-footer">
-                        <button class="save-btn" id="edit_user_button" type="button">Save</button>
+                        <button class="save" id="edit_details_button" type="button">Save</button>
                         <button class="close-btn" data-dismiss="modal" type="button">Close</button>
                     </div>
                 </form>

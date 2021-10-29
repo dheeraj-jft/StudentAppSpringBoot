@@ -151,7 +151,7 @@ $(function() {
         }
     }
 
-    $("#add_form_button").click(function() {
+    $("#add_button").click(function() {
         error_name = false;
         error_address = false;
         error_phone = false;
@@ -229,7 +229,11 @@ var t= $('#studentTable').dataTable({
                         render: function(data,row){
                             var output='';
                             $.each(data,function(index,item){
-                               output+=data[index].courseName+", ";
+                               if(index!=0)
+                                 output+=data[index].courseName+", ";
+                                else{
+                                   output+=data[index].courseName;
+                                  }
 
                             });
                             if(output.length>30){

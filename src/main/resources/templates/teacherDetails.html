@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Student Details </title>
+    <div th:replace="fragments/header :: allHeader"></div>
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}"/>
+</head>
+
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/}">Student DashBoard</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="inactive"><a th:href="@{/}">Home</a></li>
+            <li class="inactive" id="coursesControl"><a th:href="@{/courses}">Courses</a></li>
+            <li class="inactive" id="usersControl" th:if="${role}==[ADMIN]"><a th:href="@{/users}">Users</a></li>
+            <li class="inactive" id="teachersControl" ><a th:href="@{/teachers}">Teachers</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+
+            <li>
+                <a class=" inactive dropdown-item" id="editprofile" th:href="@{/users/profile}"><span
+                        class="glyphicon glyphicon-user"></span> Edit profile</a>
+            </li>
+            <li class="inactive"><a th:href="@{/mylogout}"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+<div class="container">
+
+    <div >
+        <h3>Teacher Details</h3>
+        <div class="form-group">
+            <label> Teacher Id</label>
+            <input class="form-controll" id="teacherId" name="name" placeholder="name" readonly
+                   th:value="${teacher.teacherId}" type="text">
+        </div>
+        <div class="form-group">
+            <label> Teacher Name</label>
+            <input class="form-controll" id="teacherName" name="name" placeholder="name" readonly
+                   th:value="${teacher.firstName+teacher.lastName}" type="text">
+        </div>
+        <div class="form-group">
+            <label> Teacher Address</label>
+            <input class="form-controll" id="teacherAddress" name="name" placeholder="name" readonly
+                   th:value="${teacher.address}" type="text">
+        </div>
+        <div class="form-group">
+            <label> Teacher Phone</label>
+            <input class="form-controll" id="teacherPhone" name="name" placeholder="name" readonly
+                   th:value="${teacher.phone}" type="text">
+        </div>
+    </div>
+
+    <div th:unless="${#lists.isEmpty(teacher.courseSet)}">
+        <h3>Assigned Courses</h3>
+        <table class="table">
+            <tr>
+                <th>Sr. no.</th>
+                <th>CourseId.</th>
+                <th>Course Name</th>
+            </tr>
+            <tr th:each="course : ${teacher.courseSet}">
+                <td th:text="${courseStat.count}"></td>
+                <td th:text="${course.courseId}"></td>
+                <td th:text="${course.courseName}"></td>
+            </tr>
+
+        </table>
+    </div>
+
+
+
+</div>
+
+</body>
+</html>

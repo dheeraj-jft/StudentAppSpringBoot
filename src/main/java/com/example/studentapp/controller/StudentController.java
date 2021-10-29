@@ -47,20 +47,9 @@ public class StudentController {
     }
 
     @GetMapping("/{rollno}")
-    public ResponseEntity<StudentDto> getStudent(@PathVariable("rollno") String rollno) {
+    public ResponseEntity<Student> getStudent(@PathVariable("rollno") String rollno) {
         Student student = studentService.findStudentByRollno(rollno);
-        StudentDto studentDto = new StudentDto();
-        studentDto.setRollno(student.getRollno());
-        studentDto.setPhone(student.getPhone());
-        studentDto.setAddress(student.getAddress());
-        studentDto.setName(student.getName());
-        studentDto.setCoursesList(student.getCoursesList().stream().map(course -> {
-            CourseDto courseDto = new CourseDto();
-            courseDto.setCourseId(course.getCourseId());
-            courseDto.setCourseName(course.getCourseName());
-            return courseDto;
-        }).collect(Collectors.toSet()));
-        return new ResponseEntity<>(studentDto, HttpStatus.OK);
+        return new ResponseEntity<>(student, HttpStatus.OK);
     }
 
     @PostMapping

@@ -1,7 +1,9 @@
 package com.example.studentapp.service.impl;
 
+import com.example.studentapp.datamodel.Course;
 import com.example.studentapp.datamodel.Teacher;
 import com.example.studentapp.dto.TeacherDto;
+import com.example.studentapp.exception.DuplicateTeacherException;
 import com.example.studentapp.repositories.CourseRepository;
 import com.example.studentapp.repositories.TeacherRepository;
 import com.example.studentapp.service.TeacherService;
@@ -21,17 +23,30 @@ public class TeacherServiceImpl implements TeacherService {
     CourseRepository courseRepository;
 
     @Override
-    public void addTeacher(TeacherDto teacherDto) {
-        Teacher teacher = new Teacher();
-        teacher.setTeacherId(teacherDto.getTeacherId());
-        teacher.setFirstName(teacherDto.getFirstName());
-        teacher.setLastName(teacherDto.getLastName());
-        teacher.setAddress(teacherDto.getAddress());
-        teacher.setPhone(teacherDto.getPhone());
-        teacher.setCourseSet(teacherDto.getCourseDtos().stream().map(
-                courseDto -> courseRepository.findByCourseId(courseDto.getCourseId())
-        ).collect(Collectors.toSet()));
-        teacherRepository.save(teacher);
+    public void addTeacher(TeacherDto teacherDto){
+        Teacher teacher = teacherRepository.findByTeacherId(teacherDto.getTeacherId());
+        if(teacher != null){
+            throw new DuplicateTeacherException(teacher.getTeacherId()+" is already present, use different id");
+        }else {
+            teacher = new Teacher();
+            teacher.setTeacherId(teacherDto.getTeacherId());
+            teacher.setFirstName(teacherDto.getFirstName());
+            teacher.setLastName(teacherDto.getLastName());
+            teacher.setAddress(teacherDto.getAddress());
+            teacher.setPhone(teacherDto.getPhone());
+            Teacher finalTeacher = teacher;
+            teacher.setCourseSet(teacherDto.getCourseSet().stream().map(
+                    courseDto ->
+                    {
+                        Course course = courseRepository.findByCourseId(courseDto.getCourseId());
+                        course.setTeacher(finalTeacher);
+                        courseRepository.save(course);
+                        return course;
+                    }
+            ).collect(Collectors.toSet()));
+            teacherRepository.save(teacher);
+        }
+
 
     }
 
@@ -42,8 +57,18 @@ public class TeacherServiceImpl implements TeacherService {
         teacher.setLastName(teacherDto.getLastName());
         teacher.setPhone(teacherDto.getPhone());
         teacher.setAddress(teacherDto.getAddress());
-        teacher.setCourseSet(teacherDto.getCourseDtos().stream().map(courseDto ->
-                courseRepository.findByCourseId(courseDto.getCourseId())).collect(Collectors.toSet()));
+        teacher.getCourseSet().stream().map(course -> {
+            course.setTeacher(null);
+            courseRepository.saveAndFlush(course);
+            return course;
+        }).collect(Collectors.toList());
+        teacher.setCourseSet(teacherDto.getCourseSet().stream().map(courseDto -> {
+            Course course = courseRepository.findByCourseId(courseDto.getCourseId());
+            course.setTeacher(teacher);
+            return course;
+                }
+        ).collect(Collectors.toSet()));
+        teacherRepository.save(teacher);
     }
 
     @Override
@@ -53,7 +78,14 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public void deleteTeacher(String teacherId) {
-        teacherRepository.delete(teacherRepository.findByTeacherId(teacherId));
+        Teacher teacher= teacherRepository.findByTeacherId(teacherId);
+        teacher.getCourseSet().stream().map(course -> {
+            Course course1= courseRepository.findByCourseId(course.getCourseId());
+            course1.setTeacher(null);
+            courseRepository.saveAndFlush(course1);
+            return course;
+        }).collect(Collectors.toList());
+        teacherRepository.delete(teacher);
     }
 
 }
