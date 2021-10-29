@@ -6,7 +6,7 @@ import com.example.studentapp.dto.StudentDto;
 import java.util.List;
 
 public interface StudentService {
-    List<StudentDto> getStudentsList();
+    List<Student> getStudentsList();
 
     void addStudent(StudentDto studentDto);
 

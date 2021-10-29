@@ -12,10 +12,11 @@
                 <li class="active"><a href="#">Home</a></li>
                 <li class="inactive" id="coursesControl"><a th:href="@{/course}">Courses</a></li>
                 <li class="inactive" id="usersControl" th:if="${role}==[ADMIN]"><a th:href="@{/users}">Users</a></li>
+                <li class="inactive" id="teachersControl" ><a th:href="@{/teachers}">Teachers</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a class="dropdown-item" id="editprofile" th:href="@{/edit/profile}"><span
+                    <a class="dropdown-item" id="editprofile" th:href="@{/users/profile}"><span
                             class="glyphicon glyphicon-user"></span> Edit profile</a>
                 </li>
                 <li>

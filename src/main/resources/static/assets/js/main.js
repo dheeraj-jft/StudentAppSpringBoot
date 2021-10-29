@@ -1,7 +1,9 @@
 var roleUser = false;
+var name, address,phone;
+var courseCheckedSet;
 
 $(document).ready(function() {
-    console.log("check user");
+
     updateTable();
 });
 
@@ -174,23 +176,40 @@ $(function() {
         error_edit_address = false;
         error_edit_phone = false;
 
+        var updatedName = $('#edit_name').val();
+        var updatedAddress = $('#edit_address').val();
+        var updatedPhone = $('#edit_phone').val();
+        var updatedCourseSet= new Set();
+         $("input.editcheckbox[type=checkbox]:checked ").each(function() {
+                var courseId=$(this).val();
+                updatedCourseSet.add(courseId);
+        });
         check_edit_name();
         check_edit_address();
         check_edit_phone();
+
+
         if (error_edit_name === false && error_edit_address === false && error_edit_phone === false) {
-            editStudentDetails();
+            if(updatedName === name && updatedAddress === address && updatedPhone === phone && eqSet(updatedCourseSet,courseCheckedSet)){
+                    alert("Nothing to update!!");
+                }else{
+                        editStudentDetails();
+                    }
         } else {
             alert("Please Fill the form Correctly to save details");
             return false;
         }
     });
+    function eqSet(as, bs) {
+        if (as.size !== bs.size) return false;
+        for (var a of as) if (!bs.has(a)) return false;
+        return true;
+    }
 });
 
 
 function updateTable(){
-        var role=$('#role').text();
-                 console.log(role);
-
+var role=$('#role').text();
 var t= $('#studentTable').dataTable({
         "ajax":{
         "url": "/student/list",
@@ -308,41 +327,8 @@ $(document).on('show.bs.modal', '#addModal', function(e) {
     $('#add_student_form').each(function() {
         this.reset();
     });
-    addCoursesToModal();
 });
-function addCoursesToModal() {
 
-    $.ajax({
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        url: "/course/list",
-        cache: false,
-        success: function(result) {
-            addCoursesFromJSONToAddModal(result);
-            return;
-        },
-        error: function() {
-            alert("Error: fetching courses");
-        }
-
-    });
-}
-function addCoursesFromJSONToAddModal(json) {
-    var htmlforCourseList = '<div class="form-check form-check-inline"><h5>Available Courses</h5>'
-
-    for (var i = 0; i < json.length; i++) {
-
-        let checkValue = '{' + '"courseId":"' + json[i].courseId + '"}';
-
-        htmlforCourseList += '<input class="form-check-input add" type="checkbox" id="' + json[i].courseName + '" value=' + checkValue + '>';
-        htmlforCourseList += '<label class="form-check-label" for="' + json[i].courseName + 'CheckBox">' + json[i].courseName + '</label><br>';
-
-    }
-    htmlforCourseList += '</div>';
-    $('.courseSelect').html(htmlforCourseList);
-
-
-}
 function addNewStudentToDB() {
     var name = $("#form_name").val();
     var address = $("#form_address").val();
@@ -351,8 +337,8 @@ function addNewStudentToDB() {
     var coursesArray = [];
 
     $("input.add[type=checkbox]:checked").each(function() {
-        coursesArray.push(JSON.parse($(this).val()));
-
+        var courseId={courseId: $(this).val()};
+        coursesArray.push(courseId);
     });
 
     $.ajax({
@@ -396,7 +382,8 @@ function editStudentDetails() {
     var coursesArray = [];
 
     $("input.editcheckbox[type=checkbox]:checked ").each(function() {
-        coursesArray.push(JSON.parse($(this).val()));
+        var courseId={courseId: $(this).val()};
+        coursesArray.push(courseId);
     });
 
     $.ajax({
@@ -433,10 +420,7 @@ $(document).delegate('.edit', 'click', function() {
                          rollno = $(this).text();
                      });
             $('#edit_rollno').val(rollno);
-
-            addCoursesToEditModal(rollno);
-
-
+            getAllDataforStudentinEditModal(rollno);
             function getAllDataforStudentinEditModal(rollno) {
 
             $.ajax({
@@ -448,19 +432,24 @@ $(document).delegate('.edit', 'click', function() {
                                     $('#edit_name').val(result.name);
                                     $('#edit_address').val(result.address);
                                     $('#edit_phone').val(result.phone);
+                                    name=result.name;
+                                    address=result.address;
+                                    phone=result.phone;
+                                   const courseSet= new Set();
+                                   courseCheckedSet=new Set();
 
                                     for (let i = 0; i < result.coursesList.length; i++) {
-                                        var valueCheckbox = JSON.stringify(result.coursesList[i].courseId).replaceAll('"', '');
-                                        var newVal='{"courseId":"'+valueCheckbox+'"}';
-                                        $("input.editcheckbox[type=checkbox]").each(function() {
-
-                                            var courseVal = $(this).val();
-                                            if (courseVal === newVal) {
-                                                $(this).prop('checked',true);
-                                            }
-
-                                        });
+                                    var valueCourse = JSON.stringify(result.coursesList[i].courseId).replaceAll('"', '');
+                                      courseSet.add(valueCourse);
                                     }
+                                        $("input.editcheckbox[type=checkbox]").each(function() {
+                                            var courseVal = $(this).val();
+                                            if (courseSet.has(courseVal)) {
+                                                $(this).prop('checked',true);
+                                                courseCheckedSet.add(courseVal);
+                                            }
+                                        });
+
 
                                     $('#edit_modal').modal('show');
                                     return true;
@@ -472,37 +461,6 @@ $(document).delegate('.edit', 'click', function() {
                                 }
                             });
 
-            }
-            function addCoursesToEditModal(rollno) {
-
-                $.ajax({
-                    type: "GET",
-                    contentType: "application/json; charset=utf-8",
-                    url: "/course/list",
-                    cache: false,
-                    success: function(json) {
-                        var htmlforCourseList = '<div class="form-check form-check-inline"><h5>Available Courses</h5>'
-
-                            for (var i = 0; i < json.length; i++) {
-
-                                let checkValue = '{' + '"courseId":"' + json[i].courseId + '"}';
-                                htmlforCourseList += '<input class="editcheckbox form-check-input" type="checkbox" id="' + json[i].courseName + '" value=' + checkValue + '>';
-                                htmlforCourseList += '<label class="form-check-label" for="' + json[i].courseName + 'CheckBox">' + json[i].courseName + '</label><br>';
-
-                            }
-                            htmlforCourseList += '</div>';
-                            $('.courseSelectEdit').html(htmlforCourseList);
-
-                            getAllDataforStudentinEditModal(rollno);
-
-                        return true;
-                    },
-                    error: function() {
-                        alert("Error: fetching courses");
-                        return false;
-                    }
-
-                });
             }
 
 });

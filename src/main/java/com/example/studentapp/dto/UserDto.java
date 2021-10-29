@@ -1,6 +1,9 @@
 package com.example.studentapp.dto;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Setter;
 
 @Getter
 @Setter

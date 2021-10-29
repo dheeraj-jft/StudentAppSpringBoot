@@ -14,11 +14,10 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 public class Course {
-
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Id
     @Column(nullable = false, unique = true)
     private @NonNull String courseId;
 

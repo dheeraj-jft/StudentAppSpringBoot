@@ -13,11 +13,11 @@ public class StudentDto {
 
     @NonNull String rollno;
 
-    @NonNull String name;
+    String name;
 
-    @NonNull String address;
+    String address;
 
-    @NonNull String phone;
+    String phone;
 
     @JsonIgnoreProperties(value = "studentList", allowSetters = true)
     Set<CourseDto> coursesList;

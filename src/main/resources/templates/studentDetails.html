@@ -16,12 +16,13 @@
             <li class="inactive"><a th:href="@{/}">Home</a></li>
             <li class="inactive" id="coursesControl"><a th:href="@{/courses}">Courses</a></li>
             <li class="inactive" id="usersControl" th:if="${role}==[ADMIN]"><a th:href="@{/users}">Users</a></li>
+            <li class="inactive" id="teachersControl" ><a th:href="@{/teachers}">Teachers</a></li>
 
         </ul>
         <ul class="nav navbar-nav navbar-right">
 
             <li>
-                <a class=" inactive dropdown-item" id="editprofile" th:href="@{/edit/profile}"><span
+                <a class=" inactive dropdown-item" id="editprofile" th:href="@{/users/profile}"><span
                         class="glyphicon glyphicon-user"></span> Edit profile</a>
             </li>
             <li class="inactive"><a th:href="@{/mylogout}"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
@@ -55,20 +56,20 @@
                    th:value="${student.phone}" type="text">
         </div>
         <div th:unless="${#lists.isEmpty(student.coursesList)}">
-        <h3>Current Enrolled Courses</h3>
+            <h3>Current Enrolled Courses</h3>
 
-        <table class="table">
-            <tr>
-                <th>Sr. no.</th>
-                <th>Course Id</th>
-                <th>Course Name</th>
-            </tr>
-            <tr  th:each="course : ${student.coursesList}">
-                <td th:text="${courseStat.count}"></td>
-                <td th:text="${course.courseId}"></td>
-                <td th:text="${course.courseName}"></td>
-            </tr>
-        </table>
+            <table class="table">
+                <tr>
+                    <th>Sr. no.</th>
+                    <th>Course Id</th>
+                    <th>Course Name</th>
+                </tr>
+                <tr th:each="course : ${student.coursesList}">
+                    <td th:text="${courseStat.count}"></td>
+                    <td th:text="${course.courseId}"></td>
+                    <td th:text="${course.courseName}"></td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>

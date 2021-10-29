@@ -11,15 +11,15 @@
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
-<div th:replace="fragments/studentmodals :: addStudentModal"></div>
-<div th:replace="fragments/studentmodals :: editStudentModal"></div>
-<div th:replace="fragments/studentmodals :: deleteStudentModal"></div>
+<div th:replace="fragments/student/addmodal"></div>
+<div th:replace="fragments/student/editmodal"></div>
+<div th:replace="fragments/student/deletemodal"></div>
 <div id="successBlock"></div>
 
 <div class="container">
     <div><h3>Students</h3></div>
     <button class="btn" data-target="#addModal" data-toggle="modal" id="addButton" type="button"><i
-            th:if="${role}==[ADMIN]" class="fa fa-add"></i>add student
+            class="fa fa-add" th:if="${role}==[ADMIN]"></i>add student
     </button>
 
     <div id="container">

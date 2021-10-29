@@ -16,12 +16,12 @@
             <li class="inactive"><a th:href="@{/}">Home</a></li>
             <li class="inactive" id="coursesControl"><a th:href="@{/courses}">Courses</a></li>
             <li class="inactive" id="usersControl" th:if="${role}==[ADMIN]"><a th:href="@{/users}">Users</a></li>
-
+            <li class="inactive" id="teachersControl" ><a th:href="@{/teachers}">Teachers</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
 
             <li>
-                <a class=" inactive dropdown-item" id="editprofile" th:href="@{/edit/profile}"><span
+                <a class=" inactive dropdown-item" id="editprofile" th:href="@{/users/profile}"><span
                         class="glyphicon glyphicon-user"></span> Edit profile</a>
             </li>
             <li class="inactive"><a th:href="@{/mylogout}"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
@@ -45,23 +45,23 @@
                th:value="${course.courseName}" type="text">
     </div>
     <div th:unless="${#lists.isEmpty(course.studentList)}">
-    <h5>Current Enrolled Students</h5>
-    <table class="table">
-        <tr>
-            <th>Sr. no.</th>
-            <th>Roll no.</th>
-            <th>Name</th>
-            <th>Address</th>
-            <th>Phone</th>
-        </tr>
-        <tr th:each="student : ${course.studentList}">
-            <td th:text="${studentStat.count}"></td>
-            <td th:text="${student.rollno}"></td>
-            <td th:text="${student.name}"></td>
-            <td th:text="${student.address}"></td>
-            <td th:text="${student.phone}"></td>
-        </tr>
-    </table>
+        <h5>Current Enrolled Students</h5>
+        <table class="table">
+            <tr>
+                <th>Sr. no.</th>
+                <th>Roll no.</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Phone</th>
+            </tr>
+            <tr th:each="student : ${course.studentList}">
+                <td th:text="${studentStat.count}"></td>
+                <td th:text="${student.rollno}"></td>
+                <td th:text="${student.name}"></td>
+                <td th:text="${student.address}"></td>
+                <td th:text="${student.phone}"></td>
+            </tr>
+        </table>
     </div>
 </div>
 

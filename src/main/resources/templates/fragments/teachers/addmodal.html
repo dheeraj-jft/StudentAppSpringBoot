@@ -1,0 +1,72 @@
+<div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="addModal" role="dialog"
+     tabindex="-1" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal" type="button">&times;</button>
+                <h4 class="modal-title">Add Teacher Details</h4>
+            </div>
+            <div class="modal-body">
+                <div id="err"></div>
+                <form id="registerTeacherform">
+                    <div class="form-group">
+                        <label for="teacherId">Teacher Id</label>
+                        <input class="form-control" id="teacherId" name="username"
+                               placeholder="Enter TeacherId."
+                               type="text">
+                        <span class="error_form" id="teacherId_error_message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input class="form-control" id="firstName" name="firstName"
+                               placeholder="Enter First Name"
+                               type="text">
+                        <span class="error_form" id="firstName_error_message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input class="form-control" id="lastName" name="lastName"
+                               placeholder="Enter First Name"
+                               type="text">
+                        <span class="error_form" id="lastName_error_message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input class="form-control" id="address" name="address"
+                               placeholder="Enter Address" type="text">
+                        <span class="error_form" id="address_error_message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input class="form-control" id="phone" name="phone"
+                               placeholder="Enter Phone no."
+                               type="number">
+                        <span class="error_form" id="phone_error_message"></span>
+                    </div>
+                    <div class="form-group">
+                        <div class="courseSelect">
+                            <div class="form-check form-check-inline">
+                                <h5>Available Courses</h5>
+                                <div th:each="course : ${courseList}">
+                                    <input class="form-check-input add" th:id="${course.courseName}" th:value="${course.courseId}"
+                                           type="checkbox"/>
+                                    <label class="form-check-label" th:for="${course.courseName}"
+                                           th:text="${course.courseName}"></label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button class="save-btn" id="createUser" type="button">Submit</button>
+                        <button class="close-btn" data-dismiss="modal" type="button">Close</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>

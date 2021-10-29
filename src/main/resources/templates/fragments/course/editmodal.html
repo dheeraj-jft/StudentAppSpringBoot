@@ -1,0 +1,34 @@
+<div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="edit_modal" role="dialog"
+     tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal" type="button">&times;</button>
+                <h4 class="modal-title">Edit Course Details</h4>
+            </div>
+            <div class="modal-body">
+                <form id="edit_course_form">
+
+                    <div class="form-group">
+                        <label>Course ID</label>
+                        <input class="form-control" id="edit_id" name="courseID" placeholder="Course Id"
+                               readonly
+                               type="text">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_name">Course Name:</label>
+                        <input class="form-control" id="edit_name" name="name" placeholder="Name" type="text">
+                        <span class="error_form" id="edit_name_error_message"></span>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="save" id="edit_details_button" type="button">Save</button>
+                        <button class="close-btn" data-dismiss="modal" type="button">Close</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+</div>

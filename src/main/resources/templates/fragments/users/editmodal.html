@@ -1,0 +1,50 @@
+<div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="edit_modal_form"
+     role="dialog"
+     tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal" type="button">&times;</button>
+                <h4 class="modal-title">Edit User Details</h4>
+            </div>
+
+            <div class="modal-body">
+                <form id="edit_user_form">
+
+                    <div class="form-group">
+                        <label for="editName">User Name</label>
+                        <input class="form-control" id="editName" name="username" placeholder="Enter username."
+                               type="text">
+                        <span class="error_form" id="edit_name_error_message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="editPassword">Password:</label>
+                        <input class="form-control" id="editPassword" name="password"
+                               placeholder="Enter Password"
+                               type="password">
+                        <span class="error_form" id="edit_password_error_message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="editRetypePassword">Retype Password</label>
+                        <input class="form-control" id="editRetypePassword" name="retypePassword"
+                               placeholder="Enter Password Again" type="password">
+                        <span class="error_form" id="edit_retype_password_error_message"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="editRole">select a role:</label>
+                        <select id="editRole" name="role">
+                            <option value="ADMIN">ADMIN</option>
+                            <option selected value="USER">USER</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="save-btn" id="edit_user_button" type="button">Save</button>
+                        <button class="close-btn" data-dismiss="modal" type="button">Close</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+</div>

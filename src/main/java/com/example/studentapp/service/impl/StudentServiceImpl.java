@@ -2,11 +2,11 @@ package com.example.studentapp.service.impl;
 
 import com.example.studentapp.datamodel.Course;
 import com.example.studentapp.datamodel.Student;
-import com.example.studentapp.dto.CourseDto;
 import com.example.studentapp.dto.StudentDto;
 import com.example.studentapp.repositories.CourseRepository;
 import com.example.studentapp.repositories.StudentRepository;
 import com.example.studentapp.service.StudentService;
+import lombok.NonNull;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,36 +22,23 @@ public class StudentServiceImpl implements StudentService {
     private CourseRepository courseRepository;
 
     @Override
-    public List<StudentDto> getStudentsList() {
-        return studentRepository.findAll().stream().map(student -> {
-            StudentDto studentDto=new StudentDto();
-            studentDto.setName(student.getName());
-            studentDto.setPhone(student.getPhone());
-            studentDto.setAddress(student.getAddress());
-            studentDto.setRollno(student.getRollno());
-            studentDto.setCoursesList(student.getCoursesList().stream().map(course -> {
-                CourseDto courseDto = new CourseDto();
-                courseDto.setCourseId(course.getCourseId());
-                courseDto.setCourseName(course.getCourseName());
-                return courseDto;
-            }).collect(Collectors.toSet()));
-            return studentDto;
-        }).collect(Collectors.toList());
+    public List<Student> getStudentsList() {
+        return studentRepository.findAll();
     }
 
     @Override
     public void addStudent(StudentDto studentDto) {
-        Student student=new Student();
+        Student student = new Student();
         student.setRollno(studentDto.getRollno());
         student.setPhone(studentDto.getPhone());
         student.setAddress(studentDto.getAddress());
         student.setName(studentDto.getName());
-        student.setCoursesList(studentDto.getCoursesList().stream().map(courseDto ->
-        {
-            Course course=new Course();
-            course.setCourseId(courseDto.getCourseId());
-            return course;
-        }).collect(Collectors.toSet()));
+        if (studentDto.getCoursesList() != null)
+            student.setCoursesList(studentDto.getCoursesList().stream().map(courseDto ->
+            {
+                Course course = courseRepository.findByCourseId(courseDto.getCourseId());
+                return course;
+            }).collect(Collectors.toSet()));
 
         studentRepository.save(student);
     }
@@ -66,20 +53,23 @@ public class StudentServiceImpl implements StudentService {
             course1.setStudentList(studentSet);
             courseRepository.save(course1);
         });
-        studentRepository.deleteById(rollno);
+        studentRepository.delete(student);
     }
 
     @Override
-    public void updateStudent(StudentDto studentDto) {
+    public void updateStudent(@NonNull StudentDto studentDto) {
         Student student = studentRepository.findByRollno(studentDto.getRollno());
-        student.setName(studentDto.getName());
-        student.setAddress(studentDto.getAddress());
-        student.setPhone(studentDto.getPhone());
-        student.setCoursesList(studentDto.getCoursesList().stream().map(courseDto -> {
-            Course course=new Course();
-            course.setCourseId(courseDto.getCourseId());
-            return course;
-        }).collect(Collectors.toSet()));
+        if (studentDto.getName() != null)
+            student.setName(studentDto.getName());
+        if (studentDto.getAddress() != null)
+            student.setAddress(studentDto.getAddress());
+        if (studentDto.getPhone() != null)
+            student.setPhone(studentDto.getPhone());
+        if (studentDto.getCoursesList() != null)
+            student.setCoursesList(studentDto.getCoursesList().stream().map(courseDto -> {
+                Course course = courseRepository.findByCourseId(courseDto.getCourseId());
+                return course;
+            }).collect(Collectors.toSet()));
         studentRepository.save(student);
     }
 
@@ -90,6 +80,6 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Boolean isStudentExists(String rollno) {
-        return studentRepository.existsById(rollno);
+        return studentRepository.existsById(studentRepository.findByRollno(rollno).getId());
     }
 }

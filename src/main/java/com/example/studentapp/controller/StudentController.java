@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,15 +23,14 @@ public class StudentController {
     StudentService studentService;
 
     @GetMapping("/list")
-    public ResponseEntity<List<StudentDto>> getStudentList() {
-        List<StudentDto> studentDtoList = studentService.getStudentsList();
-        return new ResponseEntity<>(studentDtoList, HttpStatus.OK);
+    public ResponseEntity<List<Student>> getStudentList() {
+        return new ResponseEntity<>(studentService.getStudentsList(), HttpStatus.OK);
     }
 
     @GetMapping("/details/{rollno}")
     public String getStudentDetails(@PathVariable("rollno") String rollno, Model model, Authentication authentication) {
         Student student = studentService.findStudentByRollno(rollno);
-        StudentDto studentDto= new StudentDto();
+        StudentDto studentDto = new StudentDto();
         studentDto.setRollno(student.getRollno());
         studentDto.setPhone(student.getPhone());
         studentDto.setAddress(student.getAddress());
@@ -49,7 +49,7 @@ public class StudentController {
     @GetMapping("/{rollno}")
     public ResponseEntity<StudentDto> getStudent(@PathVariable("rollno") String rollno) {
         Student student = studentService.findStudentByRollno(rollno);
-        StudentDto studentDto=new StudentDto();
+        StudentDto studentDto = new StudentDto();
         studentDto.setRollno(student.getRollno());
         studentDto.setPhone(student.getPhone());
         studentDto.setAddress(student.getAddress());
@@ -78,7 +78,7 @@ public class StudentController {
     @DeleteMapping("/{rollno}")
     public String deleteStudent(@PathVariable String rollno) {
         studentService.deleteStudent(rollno);
-        return "fragments/successmodal :: successModalFragment(value='Student with Roll No: "+rollno+" is deleted Successfully')";
+        return "fragments/successmodal :: successModalFragment(value='Student with Roll No: " + rollno + " is deleted Successfully')";
     }
 
 }

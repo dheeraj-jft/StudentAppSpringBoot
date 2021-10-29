@@ -1,5 +1,6 @@
 package com.example.studentapp.service;
 
+import com.example.studentapp.datamodel.User;
 import com.example.studentapp.dto.UserDto;
 
 import java.util.List;
@@ -9,7 +10,7 @@ public interface UserService {
 
     void updateUser(UserDto userDto, String oldName);
 
-    List<UserDto> getUsersList();
+    List<User> getUsersList();
 
     void deleteUser(String username);
 

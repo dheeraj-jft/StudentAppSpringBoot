@@ -1,36 +1,40 @@
 package com.example.studentapp.datamodel;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class Student {
+public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private UUID id;
 
     @Column(nullable = false, unique = true)
-    private String rollno;
+    private @NonNull String teacherId;
 
     @Column(nullable = false)
-    private String name;
+    private @NonNull String firstName;
+
+    @Column
+    private @NonNull String lastName;
 
     @Column(nullable = false)
-    private String address;
+    private @NonNull String phone;
 
     @Column(nullable = false)
-    private String phone;
+    private @NonNull String address;
 
-    @JsonIgnoreProperties(value = "studentList", allowSetters = true)
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Course> coursesList;
+    @OneToMany
+    private Set<Course> courseSet;
+
 
 }

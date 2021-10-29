@@ -2,6 +2,7 @@ package com.example.studentapp;
 
 import com.example.studentapp.datamodel.Course;
 import com.example.studentapp.datamodel.Student;
+import com.example.studentapp.dto.StudentDto;
 import com.example.studentapp.service.StudentService;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -25,22 +26,23 @@ class StudentCrudTests {
     @Test
     @Order(1)
     void createStudent() {
-//        Student student = new Student();
-//        student.setRollno(STUDENT_ROLL_NO);
-//        student.setAddress("New Malviya nagar, Jaipur");
-//        student.setName("Abraim sufi");
-//        student.setPhone("9100090092");
-//        studentService.addStudent(student);
-//        assertNotNull(studentService.findStudentByRollno(STUDENT_ROLL_NO));
+        StudentDto student = new StudentDto();
+        student.setRollno(STUDENT_ROLL_NO);
+        student.setAddress("New Malviya nagar, Jaipur");
+        student.setName("Abraim sufi");
+        student.setPhone("9100090092");
+        studentService.addStudent(student);
+        assertNotNull(studentService.findStudentByRollno(STUDENT_ROLL_NO));
     }
 
     @Test
     @Order(2)
     void updateStudentPhone() {
         String newPhoneno = "9100190010";
-        Student student = studentService.findStudentByRollno(STUDENT_ROLL_NO);
-        student.setPhone(newPhoneno);
-//        studentService.updateStudent(student);
+        StudentDto studentDto = new StudentDto();
+        studentDto.setRollno(STUDENT_ROLL_NO);
+        studentDto.setPhone(newPhoneno);
+        studentService.updateStudent(studentDto);
         assertEquals(newPhoneno, studentService.findStudentByRollno(STUDENT_ROLL_NO).getPhone());
     }
 

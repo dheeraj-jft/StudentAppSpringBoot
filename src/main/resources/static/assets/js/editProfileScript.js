@@ -84,11 +84,10 @@ $(function() {
     event.preventDefault();
            var username = $("#changeUsername").val();
            var password = $("#changePassword").val();
-
            $.ajax({
                type: "PUT",
                contentType: "application/json; charset=utf-8",
-               url: "http://localhost:8080/edit/profile",
+               url: "/users/"+oldName,
                data: JSON.stringify({
                    'password': password,
                    'username': username,

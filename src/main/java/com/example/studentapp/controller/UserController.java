@@ -1,5 +1,6 @@
 package com.example.studentapp.controller;
 
+import com.example.studentapp.datamodel.User;
 import com.example.studentapp.dto.UserDto;
 import com.example.studentapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +29,8 @@ public class UserController {
     }
 
     @GetMapping("/userslist")
-    public ResponseEntity<List<UserDto>> getUserList() {
-        List<UserDto> userDtoList = userService.getUsersList();
-        return new ResponseEntity<>(userDtoList, HttpStatus.OK);
+    public ResponseEntity<List<User>> getUserList() {
+        return new ResponseEntity<>(userService.getUsersList(), HttpStatus.OK);
     }
 
     @PostMapping
@@ -48,7 +48,14 @@ public class UserController {
     @DeleteMapping("/{username}")
     public String deleteUser(@PathVariable("username") String username) {
         userService.deleteUser(username);
-        return "fragments/successmodal :: successModalFragment(value='User with username: "+username+" deleted successfully')";
+        return "fragments/successmodal :: successModalFragment(value='User with username: " + username + " deleted successfully')";
+    }
+
+    @GetMapping("/profile")
+    public String editProfile(Model model, Authentication authentication) {
+        model.addAttribute("username", authentication.getName());
+        model.addAttribute("role", authentication.getAuthorities().toString());
+        return "editprofile";
     }
 
 }

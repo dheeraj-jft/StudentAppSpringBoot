@@ -9,7 +9,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -32,14 +31,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getUsersList() {
-
-        return userRepository.findAll().stream().map(user -> {
-            UserDto userDto= new UserDto();
-            userDto.setUsername(user.getUsername());
-            userDto.setRole(user.getRole());
-            return userDto;
-        }).collect(Collectors.toList());
+    public List<User> getUsersList() {
+        return userRepository.findAll();
     }
 
     @Override
@@ -50,7 +43,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isExists(String username) {
-        User user= userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username);
         return user != null;
     }
 
@@ -62,13 +55,12 @@ public class UserServiceImpl implements UserService {
         return userModel;
     }
 
-    private User popluateData(UserDto userDto, User user) {
+    private void popluateData(UserDto userDto, User user) {
         if (!userDto.getPassword().equals(""))
             user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         if (!userDto.getUsername().equals("") && !userDto.getUsername().equals(user.getUsername()))
             user.setUsername(userDto.getUsername());
         if (!userDto.getRole().equals("") && !userDto.getRole().equals(user.getRole()))
             user.setRole(userDto.getRole());
-        return user;
     }
 }

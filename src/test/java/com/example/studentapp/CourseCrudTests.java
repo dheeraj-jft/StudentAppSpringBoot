@@ -34,7 +34,7 @@ class CourseCrudTests {
     @Test
     @Order(2)
     void testReadAllCourses() {
-        List<CourseDto> courseList = courseService.getCourseList();
+        List<Course> courseList = courseService.getCourseList();
         Assertions.assertTrue(courseList.size() > 1);
     }
 
@@ -49,11 +49,11 @@ class CourseCrudTests {
     @Test
     @Order(4)
     void checkupdateCourseName() {
-//        Course course = courseService.findByCourseId(COURSEID);
-//        assert course != null;
-//        course.setCourseName("MySql");
-//        courseService.updateCourse(course);
-//        assertEquals("MySql", courseService.findByCourseId(COURSEID).getCourseName());
+        CourseDto courseDto = new CourseDto();
+        courseDto.setCourseId(COURSEID);
+        courseDto.setCourseName("MySql");
+        courseService.updateCourse(courseDto);
+        assertEquals("MySql", courseService.findByCourseId(COURSEID).getCourseName());
 
     }
 
