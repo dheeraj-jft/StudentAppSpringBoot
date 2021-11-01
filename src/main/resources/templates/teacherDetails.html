@@ -61,7 +61,7 @@
 
     <div th:unless="${#lists.isEmpty(teacher.courseSet)}">
         <h3>Assigned Courses</h3>
-        <table  id="teacherCourseTable" class="table table-striped table-bordered nowrap hover">
+        <table class="table table-striped table-bordered nowrap hover" id="teacherCourseTable">
             <thead>
             <tr>
                 <th>Sr. no.</th>
@@ -89,5 +89,6 @@
     $(document).ready(function() {
     $('#teacherCourseTable').DataTable();
 } );
+
 </script>
 </html>

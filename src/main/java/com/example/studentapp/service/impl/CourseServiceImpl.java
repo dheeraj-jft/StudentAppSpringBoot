@@ -1,7 +1,6 @@
 package com.example.studentapp.service.impl;
 
 import com.example.studentapp.datamodel.Course;
-import com.example.studentapp.datamodel.Student;
 import com.example.studentapp.dto.CourseDto;
 import com.example.studentapp.repositories.CourseRepository;
 import com.example.studentapp.repositories.StudentRepository;
@@ -51,7 +50,6 @@ public class CourseServiceImpl implements CourseService {
         course.getStudentList().forEach(student -> student.getCoursesList().remove(course));
         course.getTeacher().getCourseSet().remove(course);
         courseRepository.delete(course);
-
     }
 
     @Override

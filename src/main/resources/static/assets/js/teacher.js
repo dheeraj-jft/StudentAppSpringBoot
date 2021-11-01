@@ -69,7 +69,6 @@ var t= $('#teachersTable').dataTable({
 
 
  }
-
 $(function() {
     $("teacherId_error_message").hide();
     $("firstName_error_message").hide();
@@ -305,8 +304,7 @@ $(function() {
         return true;
     }
 });
-
- $(document).on('hide.bs.modal','#addModal',function(e){
+$(document).on('hide.bs.modal','#addModal',function(e){
   $('#registerTeacherform').each(function() {
   this.reset();
   });
@@ -322,7 +320,6 @@ $(function() {
     $("#address_error_message").hide();
     $("#phone_error_message").hide();
  });
-
 function addNewTeacherToDB(){
 
     var firstName = $("#firstName").val();
@@ -367,7 +364,6 @@ function addNewTeacherToDB(){
         }
     });
 }
-
 function editTeacherDetails() {
 
     var firstName = $('#edit_firstName').val();
@@ -408,7 +404,6 @@ function editTeacherDetails() {
                      }
     });
 }
-
 $(document).delegate('.edit', 'click', function() {
 
             var $current_row = $(this).parents('tr');
@@ -469,7 +464,6 @@ $(document).delegate('.edit', 'click', function() {
             }
 
 });
-
 $(document).on('hide.bs.modal', '#edit_modal', function(e) {
 
     $("#edit_firstName").css("border-bottom", "none");
@@ -482,7 +476,6 @@ $(document).on('hide.bs.modal', '#edit_modal', function(e) {
     $("#edit_address_error_message").hide();
     $("#edit_phone_error_message").hide();
 });
-
 $(document).delegate('#delete_details_button', 'click', function() {
 
     var teacherId = $('#delete_teacherId').val();
@@ -517,7 +510,6 @@ $(document).delegate('.delete', 'click', function() {
     $('#delete_teacherId').val(teacherId);
 
 });
-
 $(document).delegate('.view', 'click', function() {
     let teacherId;
      var $current_row = $(this).parents('tr');

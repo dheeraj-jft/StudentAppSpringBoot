@@ -99,7 +99,7 @@ $("#edit_details_button").click(function() {
 
 
  });
- function editCourse(){
+function editCourse(){
 
     let courseName=$("#edit_name").val().trim();
     let courseId=$("#edit_id").val().trim();
@@ -125,10 +125,7 @@ $("#edit_details_button").click(function() {
             }
         });
 }
-
-
-
-   function addCourse(){
+function addCourse(){
 
    let courseId=$("#form_courseId").val().trim();
    let courseName=$("#form_courseName").val().trim();
@@ -157,7 +154,7 @@ $("#edit_details_button").click(function() {
            }
        });
     }
-    function updateTable(){
+function updateTable(){
         var role=$('#role').text();
                  console.log(role);
 
@@ -201,10 +198,7 @@ var t= $('#coursesTable').dataTable({
 
 
  }
-
-
-
- $(document).on('hide.bs.modal','#addModal',function(e){
+$(document).on('hide.bs.modal','#addModal',function(e){
   $('#add_student_form').each(function() {
   this.reset();
   });
@@ -214,8 +208,6 @@ var t= $('#coursesTable').dataTable({
     $("#courseName_error_message").hide();
     $("#courseId_error_message").hide();
  });
-
-
 $(document).delegate('.view', 'click', function() {
     let courseId;
 
@@ -232,7 +224,6 @@ $(document).delegate('.view', 'click', function() {
 
     window.location = "/course/details/"+courseId;
 });
-
 $(document).delegate('.delete', 'click', function() {
     let id, name;
     var $row = $(this).closest("tr");
@@ -251,7 +242,6 @@ $(document).delegate('.delete', 'click', function() {
     $('#delete_courseId').val(id);
 
 });
-
 $(document).delegate('#delete_details_button', 'click', function() {
 
         var courseId=$('#delete_courseId').val();
@@ -271,7 +261,6 @@ $(document).delegate('#delete_details_button', 'click', function() {
             }
         });
 });
-
 $(document).delegate('.edit', 'click', function() {
     let id, name;
     var $row = $(this).closest("tr");
@@ -289,10 +278,6 @@ $(document).delegate('.edit', 'click', function() {
     $('#edit_id').val(id);
 
 });
-
-
-
-
 $(document).on('hide.bs.modal','#edit_modal',function(e){
 
      $("#edit_name").css("border-bottom", "none");

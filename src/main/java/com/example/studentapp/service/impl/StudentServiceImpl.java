@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImpl implements StudentService {
+
     @Autowired
     private StudentRepository studentRepository;
     @Autowired
@@ -29,9 +30,9 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void addStudent(StudentDto studentDto) {
-        Student student= studentRepository.findByRollno(studentDto.getRollno());
-        if(student!=null){
-            throw new RollnoAlreadyExistsException("Rollno: "+studentDto.getRollno()+" is already present in records, use different rollno for new student.");
+        Student student = studentRepository.findByRollno(studentDto.getRollno());
+        if (student != null) {
+            throw new RollnoAlreadyExistsException("Rollno: " + studentDto.getRollno() + " is already present in records, use different rollno for new student.");
         }
         student = new Student();
         student.setRollno(studentDto.getRollno());
@@ -41,7 +42,6 @@ public class StudentServiceImpl implements StudentService {
         if (studentDto.getCoursesList() != null)
             student.setCoursesList(studentDto.getCoursesList().stream().map(courseDto ->
                     courseRepository.findByCourseId(courseDto.getCourseId())).collect(Collectors.toSet()));
-
         studentRepository.save(student);
     }
 

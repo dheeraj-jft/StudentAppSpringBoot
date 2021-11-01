@@ -31,7 +31,6 @@ function showUserTable() {
         new $.fn.dataTable.FixedHeader(t);
 
 }
-
 $(function() {
     $("register_name_error_message").hide();
     $("register_password_error_message").hide();
@@ -142,7 +141,6 @@ $(function() {
       }
 
   });
-
 $(document).on('hide.bs.modal','#addModal_form',function(e){
   $('#registerUserform').each(function() {
   this.reset();
@@ -163,11 +161,6 @@ $(document).on('hide.bs.modal','#addModal_form',function(e){
        $("#registerName").css("border-bottom", "none");
        $("#registerRetypePassword").css("border-bottom", "none");
   });
-
-
-
-
-
 $(function() {
     $("edit_name_error_message").hide();
     $("edit_password_error_message").hide();
@@ -282,7 +275,7 @@ $(function() {
       }
 
   });
-  $(document).on('hide.bs.modal','#edit_modal_form',function(e){
+$(document).on('hide.bs.modal','#edit_modal_form',function(e){
     $('#edit_user_form').each(function() {
     this.reset();
     });
@@ -294,7 +287,6 @@ $(function() {
       $("#editName").css("border-bottom", "none");
       $("#editRetypePassword").css("border-bottom", "none");
    });
-
 var oldname,oldrole;
 $(document).delegate('.edit', 'click', function() {
     let name, role;
@@ -319,12 +311,6 @@ $(document).delegate('.edit', 'click', function() {
 
 
 });
-
-
-
-
-
-
 $(document).delegate('#delete_details_button', 'click', function() {
 
         var username=$('#delete_username').val();
@@ -352,7 +338,6 @@ $(document).delegate('#delete_details_button', 'click', function() {
             }
         });
 });
-
 $(document).delegate('.delete', 'click', function() {
     let  name, role;
     var $row = $(this).closest("tr");

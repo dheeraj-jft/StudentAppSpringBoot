@@ -9,7 +9,7 @@ $(function() {
     var error_retype_password=false;
 
 });
-    function check_name() {
+function check_name() {
         var pattern = /^[a-zA-Z ]*$/;
         var name = $("#changeUsername").val().trim();
         if (pattern.test(name) && name !== '') {
@@ -22,8 +22,7 @@ $(function() {
             error_name = true;
         }
     }
-
-    function check_password() {
+function check_password() {
         var pattern = /^[a-zA-Z0-9,.@:;! ]*$/;
         var password = $("#changePassword").val();
         if (pattern.test(password) && password !== '') {
@@ -36,7 +35,7 @@ $(function() {
             error_password = true;
         }
     }
-    function check_retype_password() {
+function check_retype_password() {
             var password=$("#changePassword").val();
             var retypepassword = $("#changeRetypePassword").val();
             if (retypepassword === password ) {
@@ -49,9 +48,7 @@ $(function() {
                 error_retype_password = true;
             }
         }
-
-
-     $(document).delegate('#updateDetails', 'click', function() {
+$(document).delegate('#updateDetails', 'click', function() {
             error_name = false;
             error_password = false;
             error_retype_password=false;
@@ -79,8 +76,7 @@ $(function() {
             }
 
         });
-
-    function updateDetails(){
+function updateDetails(){
     event.preventDefault();
            var username = $("#changeUsername").val();
            var password = $("#changePassword").val();
@@ -105,6 +101,6 @@ $(function() {
                }
            });
   }
-  $(document).ready(function() {
-        $("#changePassword").val("");
-  });
+$(document).ready(function() {
+    $("#changePassword").val("");
+});

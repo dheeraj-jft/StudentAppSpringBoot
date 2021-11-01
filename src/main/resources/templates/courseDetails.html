@@ -48,7 +48,7 @@
 
     <div th:unless="${#lists.isEmpty(course.studentList)}">
         <h3>Current Enrolled Students</h3>
-        <table  id="courseStudentTable" class="table table-striped table-bordered nowrap hover">
+        <table class="table table-striped table-bordered nowrap hover" id="courseStudentTable">
             <thead>
             <tr>
                 <th>Sr. no.</th>
@@ -103,5 +103,6 @@
     $(document).ready(function() {
     $('#courseStudentTable').DataTable();
 } );
+
 </script>
 </html>

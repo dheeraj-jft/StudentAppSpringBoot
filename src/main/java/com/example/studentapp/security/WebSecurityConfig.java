@@ -28,8 +28,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/assets/**").permitAll()
                 .antMatchers("/", "/teachers"
-                        ,"/teachers/list"
-                        ,"/teachers/details/**"
+                        , "/teachers/list"
+                        , "/teachers/details/**"
                         , "/student/details/**"
                         , "/student/list"
                         , "/course"

@@ -21,11 +21,9 @@ public class CustomErrorController implements ErrorController {
             model.addAttribute("errorMessage", "404, Page not found");
         } else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
             model.addAttribute("errorMessage", "500, Internal Server Error");
-
         } else {
             model.addAttribute("errorMessage", statusCode);
         }
-
         return "error";
     }
 }

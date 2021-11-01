@@ -15,6 +15,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 public class Teacher {
+
     @Id
     private String uuid = UuidGenerator.uuid();
 

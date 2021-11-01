@@ -35,108 +35,6 @@ body:not(.modal-open){
   font-size: 14px;
 }
 
-.btn {
-  font-family: "Roboto", sans-serif;
-  text-transform: uppercase;
-  outline: 0;
-  background: #4CAF50;
-  border: 0;
-  padding: 15px;
-  color: #FFFFFF;
-  font-size: 14px;
-  -webkit-transition: all 0.3 ease;
-  transition: all 0.3 ease;
-  cursor: pointer;
-}
-
-.edit{
-  font-family: "Roboto", sans-serif;
-  text-transform: uppercase;
-  outline: 0;
-  background: #2B89AE;
-  border: 0;
-  margin: 3px;
-  color: #FFFFFF;
-  font-size: 14px;
-  -webkit-transition: all 0.3 ease;
-  transition: all 0.3 ease;
-  cursor: pointer;
-}
-.delete {
-  font-family: "Roboto", sans-serif;
-  text-transform: uppercase;
-  outline: 0;
-  background: #AE2B2B;
-  border: 0;
-  margin: 3px;
-  color: #FFFFFF;
-  font-size: 14px;
-  -webkit-transition: all 0.3 ease;
-  transition: all 0.3 ease;
-  cursor: pointer;
-}
-.view {
-  font-family: "Roboto", sans-serif;
-  text-transform: uppercase;
-  outline: 0;
-  background: #6c694b;
-  margin: 3px;
-
-  border: 0;
-  color: #FFFFFF;
-  font-size: 14px;
-  -webkit-transition: all 0.3 ease;
-  transition: all 0.3 ease;
-  cursor: pointer;
-}
-
-.close-btn {
-  font-family: "Roboto", sans-serif;
-  text-transform: uppercase;
-  outline: 0;
-  background: #AE2B2B;
-  width: 48%;
-  border: 0;
-  padding: 15px;
-  color: #FFFFFF;
-  font-size: 14px;
-  -webkit-transition: all 0.3 ease;
-  transition: all 0.3 ease;
-  cursor: pointer;
-}
-.save, .save-btn{
-  font-family: "Roboto", sans-serif;
-  text-transform: uppercase;
-  outline: 0;
-  background: #4CAF50;
-  width: 48%;
-  border: 0;
-  padding: 15px;
-  color: #FFFFFF;
-  font-size: 14px;
-  -webkit-transition: all 0.3 ease;
-  transition: all 0.3 ease;
-  cursor: pointer;
-}
-.form button:hover,.form button:active,.form button:focus {
-  background: #43A047;
-}
-.btn:hover,.btn:active,.btn:focus {
-  background: #43A047;
-}
-.form .message {
-  margin: 15px 0 0;
-  color: #b3b3b3;
-  font-size: 12px;
-}
-.form .message a {
-  color: #4CAF50;
-  text-decoration: none;
-}
-.form .register-form {
-  display: none;
-}
-
 .container:before, .container:after {
   content: "";
   display: block;
@@ -153,18 +51,12 @@ body:not(.modal-open){
   font-weight: 300;
   color: #1a1a1a;
 }
-.buttonContainer{
-  cursor: pointer; /* Pointer/hand icon */
-  float: center; /* Float the buttons side by side */
-}
 
 .container .info span {
   color: #4d4d4d;
   font-size: 12px;
 }
-th{
-text-align: center;
-}
+
 .container .info span a {
   color: #000000;
   text-decoration: none;

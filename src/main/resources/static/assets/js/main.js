@@ -3,7 +3,6 @@ var name, address,phone;
 var courseCheckedSet;
 
 $(document).ready(function() {
-
     updateTable();
 });
 
@@ -206,8 +205,6 @@ $(function() {
         return true;
     }
 });
-
-
 function updateTable(){
 var role=$('#role').text();
 var t= $('#studentTable').dataTable({
@@ -267,12 +264,6 @@ new $.fn.dataTable.FixedHeader(t);
 
 
  }
-
-
-
-
-
-
 $(document).delegate('#delete_details_button', 'click', function() {
 
     var rollno = $('#delete_rollno').val();
@@ -311,8 +302,6 @@ $(document).delegate('.delete', 'click', function() {
     $('#delete_rollno').val(rollno);
 
 });
-
-
 $(document).on('hide.bs.modal', '#addModal', function(e) {
     $('#add_student_form').each(function() {
         this.reset();
@@ -332,7 +321,6 @@ $(document).on('show.bs.modal', '#addModal', function(e) {
         this.reset();
     });
 });
-
 function addNewStudentToDB() {
     var name = $("#form_name").val();
     var address = $("#form_address").val();
@@ -375,8 +363,6 @@ function addNewStudentToDB() {
         }
     });
 };
-
-
 function editStudentDetails() {
 
     var name = $('#edit_name').val();
@@ -468,8 +454,6 @@ $(document).delegate('.edit', 'click', function() {
             }
 
 });
-
-
 $(document).on('hide.bs.modal', '#edit_modal', function(e) {
 
     $("#edit_name").css("border-bottom", "none");
@@ -480,8 +464,6 @@ $(document).on('hide.bs.modal', '#edit_modal', function(e) {
     $("#edit_address_error_message").hide();
     $("#edit_phone_error_message").hide();
 });
-
-
 $(document).delegate('.view', 'click', function() {
     let rollno;
      var $current_row = $(this).parents('tr');
