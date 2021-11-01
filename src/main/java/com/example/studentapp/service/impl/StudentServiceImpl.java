@@ -3,6 +3,7 @@ package com.example.studentapp.service.impl;
 import com.example.studentapp.datamodel.Course;
 import com.example.studentapp.datamodel.Student;
 import com.example.studentapp.dto.StudentDto;
+import com.example.studentapp.exception.RollnoAlreadyExistsException;
 import com.example.studentapp.repositories.CourseRepository;
 import com.example.studentapp.repositories.StudentRepository;
 import com.example.studentapp.service.StudentService;
@@ -28,17 +29,18 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void addStudent(StudentDto studentDto) {
-        Student student = new Student();
+        Student student= studentRepository.findByRollno(studentDto.getRollno());
+        if(student!=null){
+            throw new RollnoAlreadyExistsException("Rollno: "+studentDto.getRollno()+" is already present in records, use different rollno for new student.");
+        }
+        student = new Student();
         student.setRollno(studentDto.getRollno());
         student.setPhone(studentDto.getPhone());
         student.setAddress(studentDto.getAddress());
         student.setName(studentDto.getName());
         if (studentDto.getCoursesList() != null)
             student.setCoursesList(studentDto.getCoursesList().stream().map(courseDto ->
-            {
-                Course course = courseRepository.findByCourseId(courseDto.getCourseId());
-                return course;
-            }).collect(Collectors.toSet()));
+                    courseRepository.findByCourseId(courseDto.getCourseId())).collect(Collectors.toSet()));
 
         studentRepository.save(student);
     }
@@ -51,7 +53,6 @@ public class StudentServiceImpl implements StudentService {
             val studentSet = course1.getStudentList();
             studentSet.remove(student);
             course1.setStudentList(studentSet);
-            courseRepository.save(course1);
         });
         studentRepository.delete(student);
     }
@@ -66,10 +67,7 @@ public class StudentServiceImpl implements StudentService {
         if (studentDto.getPhone() != null)
             student.setPhone(studentDto.getPhone());
         if (studentDto.getCoursesList() != null)
-            student.setCoursesList(studentDto.getCoursesList().stream().map(courseDto -> {
-                Course course = courseRepository.findByCourseId(courseDto.getCourseId());
-                return course;
-            }).collect(Collectors.toSet()));
+            student.setCoursesList(studentDto.getCoursesList().stream().map(courseDto -> courseRepository.findByCourseId(courseDto.getCourseId())).collect(Collectors.toSet()));
         studentRepository.save(student);
     }
 

@@ -30,7 +30,7 @@ public class Student {
     private String phone;
 
     @JsonIgnoreProperties(value = "studentList", allowSetters = true)
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private Set<Course> coursesList;
 
 }

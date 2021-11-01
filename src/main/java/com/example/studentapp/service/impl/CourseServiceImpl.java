@@ -28,10 +28,7 @@ public class CourseServiceImpl implements CourseService {
         courseEntity.setCourseId(courseDto.getCourseId());
         if (courseDto.getStudentList() != null)
             courseEntity.setStudentList(courseDto.getStudentList().stream()
-                    .map(studentDto -> {
-                        Student student = studentRepository.findByRollno(studentDto.getRollno());
-                        return student;
-                    })
+                    .map(studentDto -> studentRepository.findByRollno(studentDto.getRollno()))
                     .collect(Collectors.toSet()));
         courseRepository.save(courseEntity);
     }
@@ -51,10 +48,8 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public void deleteCourse(String courseId) {
         Course course = courseRepository.findByCourseId(courseId);
-        course.getStudentList().forEach(student -> {
-            student.getCoursesList().remove(course);
-            studentRepository.save(student);
-        });
+        course.getStudentList().forEach(student -> student.getCoursesList().remove(course));
+        course.getTeacher().getCourseSet().remove(course);
         courseRepository.delete(course);
 
     }

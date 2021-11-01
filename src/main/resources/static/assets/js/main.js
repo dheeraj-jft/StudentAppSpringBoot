@@ -370,7 +370,7 @@ function addNewStudentToDB() {
             return true;
         },
         error: function(err, xhr) {
-            alert("Error: Roll no. already exists!!");
+            alert("Error:"+ err.responseText);
             return false;
         }
     });

@@ -3,7 +3,8 @@
 <head>
     <title>Student Details </title>
     <div th:replace="fragments/header :: allHeader"></div>
-    <link rel="stylesheet" th:href="@{/assets/css/style.css}"/>
+    <div th:replace="fragments/header :: DetailsDataTableHeaders"></div>
+    <link rel="stylesheet" th:href="@{/assets/css/detailsPage.css}"/>
 </head>
 
 <body>
@@ -58,21 +59,31 @@
         <div th:unless="${#lists.isEmpty(student.coursesList)}">
             <h3>Current Enrolled Courses</h3>
 
-            <table class="table">
+            <table id="studentCourseTable" class="table table-striped table-bordered nowrap hover">
+                <thead>
                 <tr>
                     <th>Sr. no.</th>
                     <th>Course Id</th>
                     <th>Course Name</th>
                 </tr>
+                </thead>
+                <tbody>
                 <tr th:each="course : ${student.coursesList}">
                     <td th:text="${courseStat.count}"></td>
                     <td th:text="${course.courseId}"></td>
                     <td th:text="${course.courseName}"></td>
                 </tr>
+                </tbody>
             </table>
         </div>
     </div>
 </div>
 
 </body>
+
+<script>
+    $(document).ready(function() {
+    $('#studentCourseTable').DataTable();
+} );
+</script>
 </html>

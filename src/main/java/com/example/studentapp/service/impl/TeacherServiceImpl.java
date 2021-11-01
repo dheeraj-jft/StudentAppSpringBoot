@@ -58,7 +58,6 @@ public class TeacherServiceImpl implements TeacherService {
         teacher.setAddress(teacherDto.getAddress());
         teacher.getCourseSet().stream().map(course -> {
             course.setTeacher(null);
-            courseRepository.saveAndFlush(course);
             return course;
         }).collect(Collectors.toList());
         teacher.setCourseSet(teacherDto.getCourseSet().stream().map(courseDto -> {

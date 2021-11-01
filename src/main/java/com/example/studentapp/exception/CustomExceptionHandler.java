@@ -20,12 +20,13 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorMessageDescription, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(value = SQLIntegrityConstraintViolationException.class)
-    public ResponseEntity<Object> handleCourseTeacherAssociationException(SQLIntegrityConstraintViolationException ex, WebRequest webRequest) {
+    @ExceptionHandler(value = RollnoAlreadyExistsException.class)
+    public ResponseEntity<Object> handleRollnoAlreadyExistsException(RollnoAlreadyExistsException ex, WebRequest webRequest) {
         String errorMessageDescription = ex.getLocalizedMessage();
         if (errorMessageDescription == null)
             errorMessageDescription = ex.toString();
         return new ResponseEntity<>(errorMessageDescription, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
 }
