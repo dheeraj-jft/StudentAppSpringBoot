@@ -15,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class Student {
     @Id
-    private String id= UuidGenerator.uuid();
+    private String id = UuidGenerator.uuid();
 
     @Column(nullable = false, unique = true)
     private String rollno;

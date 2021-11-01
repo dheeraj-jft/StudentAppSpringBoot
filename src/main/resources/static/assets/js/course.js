@@ -152,7 +152,7 @@ $("#edit_details_button").click(function() {
                return true;
            },
            error: function(err,xhr) {
-               alert("Error: Roll no. already exists!!");
+               alert("Error: Course Id. already exists!!");
                return false;
            }
        });
@@ -218,9 +218,14 @@ var t= $('#coursesTable').dataTable({
 
 $(document).delegate('.view', 'click', function() {
     let courseId;
-    var $row = $(this).closest("tr");
 
-    var $tds = $row.find("td:nth-child(2)");
+
+    var $current_row = $(this).parents('tr');
+            if ($current_row.hasClass('child')) {
+                $current_row = $current_row.prev();
+           }
+
+    var $tds = $current_row.find("td:nth-child(2)");
     $.each($tds, function() {
         courseId = $(this).text();
     });

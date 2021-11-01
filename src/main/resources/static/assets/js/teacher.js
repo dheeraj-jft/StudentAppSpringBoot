@@ -30,7 +30,7 @@ var t= $('#teachersTable').dataTable({
                                                 var output='';
                                                 $.each(data,function(index,item){
                                                 if(index!=0)
-                                                   output+=data[index].courseName+", ";
+                                                   output+=", "+data[index].courseName;
                                                  else{
                                                  output+=data[index].courseName;
                                                  }

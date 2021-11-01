@@ -9,14 +9,14 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 public class Teacher {
     @Id
-    private String uuid= UuidGenerator.uuid();
+    private String uuid = UuidGenerator.uuid();
 
     @Column(nullable = false, unique = true)
     private @NonNull String teacherId;
@@ -34,7 +34,7 @@ public class Teacher {
     private @NonNull String address;
 
     @JsonIgnoreProperties(value = "teacher", allowSetters = true)
-    @OneToMany(mappedBy = "teacher")
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
     private Set<Course> courseSet;
 
 

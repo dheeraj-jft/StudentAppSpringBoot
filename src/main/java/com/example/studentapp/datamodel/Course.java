@@ -16,7 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class Course {
     @Id
-    private String id= UuidGenerator.uuid();
+    private String id = UuidGenerator.uuid();
 
     @Column(nullable = false, unique = true)
     private @NonNull String courseId;
@@ -29,6 +29,6 @@ public class Course {
     private Set<Student> studentList;
 
     @JsonIgnoreProperties(value = "courseSet", allowSetters = true)
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Teacher teacher;
 }

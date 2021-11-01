@@ -23,11 +23,11 @@ public class TeacherServiceImpl implements TeacherService {
     CourseRepository courseRepository;
 
     @Override
-    public void addTeacher(TeacherDto teacherDto){
+    public void addTeacher(TeacherDto teacherDto) {
         Teacher teacher = teacherRepository.findByTeacherId(teacherDto.getTeacherId());
-        if(teacher != null){
-            throw new DuplicateTeacherException(teacher.getTeacherId()+" is already present, use different id");
-        }else {
+        if (teacher != null) {
+            throw new DuplicateTeacherException(teacher.getTeacherId() + " is already present, use different id");
+        } else {
             teacher = new Teacher();
             teacher.setTeacherId(teacherDto.getTeacherId());
             teacher.setFirstName(teacherDto.getFirstName());
@@ -40,7 +40,6 @@ public class TeacherServiceImpl implements TeacherService {
                     {
                         Course course = courseRepository.findByCourseId(courseDto.getCourseId());
                         course.setTeacher(finalTeacher);
-                        courseRepository.save(course);
                         return course;
                     }
             ).collect(Collectors.toSet()));
@@ -63,9 +62,9 @@ public class TeacherServiceImpl implements TeacherService {
             return course;
         }).collect(Collectors.toList());
         teacher.setCourseSet(teacherDto.getCourseSet().stream().map(courseDto -> {
-            Course course = courseRepository.findByCourseId(courseDto.getCourseId());
-            course.setTeacher(teacher);
-            return course;
+                    Course course = courseRepository.findByCourseId(courseDto.getCourseId());
+                    course.setTeacher(teacher);
+                    return course;
                 }
         ).collect(Collectors.toSet()));
         teacherRepository.save(teacher);
@@ -78,13 +77,14 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public void deleteTeacher(String teacherId) {
-        Teacher teacher= teacherRepository.findByTeacherId(teacherId);
+        Teacher teacher = teacherRepository.findByTeacherId(teacherId);
         teacher.getCourseSet().stream().map(course -> {
-            Course course1= courseRepository.findByCourseId(course.getCourseId());
+            Course course1 = courseRepository.findByCourseId(course.getCourseId());
             course1.setTeacher(null);
-            courseRepository.saveAndFlush(course1);
+            courseRepository.save(course);
             return course;
         }).collect(Collectors.toList());
+        teacher.setCourseSet(null);
         teacherRepository.delete(teacher);
     }
 

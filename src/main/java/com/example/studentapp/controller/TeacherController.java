@@ -36,24 +36,24 @@ public class TeacherController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<Teacher>>getAllTeachers(){
-        return  new ResponseEntity<>(teacherService.getTeacherList(), HttpStatus.OK);
+    public ResponseEntity<List<Teacher>> getAllTeachers() {
+        return new ResponseEntity<>(teacherService.getTeacherList(), HttpStatus.OK);
     }
 
     @GetMapping("/{teacherId}")
     public ResponseEntity<Teacher> getStudent(@PathVariable("teacherId") String teacherId) {
-        Teacher teacher= teacherRepository.findByTeacherId(teacherId);
+        Teacher teacher = teacherRepository.findByTeacherId(teacherId);
         return new ResponseEntity<>(teacher, HttpStatus.OK);
     }
 
     @GetMapping("/details/{teacherId}")
     public String getStudentDetails(@PathVariable("teacherId") String teacherId, Model model) {
-        model.addAttribute("teacher",teacherRepository.findByTeacherId(teacherId));
+        model.addAttribute("teacher", teacherRepository.findByTeacherId(teacherId));
         return "teacherDetails";
     }
 
     @PostMapping
-    public String addTeacher(@RequestBody TeacherDto teacherDto){
+    public String addTeacher(@RequestBody TeacherDto teacherDto) {
         teacherService.addTeacher(teacherDto);
         return "fragments/successmodal :: successModalFragment(value='Teacher added successfully')";
     }

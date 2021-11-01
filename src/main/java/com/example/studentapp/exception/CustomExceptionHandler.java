@@ -13,17 +13,18 @@ import java.sql.SQLIntegrityConstraintViolationException;
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = DuplicateTeacherException.class)
-    public ResponseEntity<Object> handleDuplicateTeacherIdException(DuplicateTeacherException ex, WebRequest webRequest){
+    public ResponseEntity<Object> handleDuplicateTeacherIdException(DuplicateTeacherException ex, WebRequest webRequest) {
         String errorMessageDescription = ex.getLocalizedMessage();
-        if(errorMessageDescription ==null )
-            errorMessageDescription=ex.toString();
+        if (errorMessageDescription == null)
+            errorMessageDescription = ex.toString();
         return new ResponseEntity<>(errorMessageDescription, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
     @ExceptionHandler(value = SQLIntegrityConstraintViolationException.class)
-public ResponseEntity<Object> handleCourseTeacherAssociationException(SQLIntegrityConstraintViolationException ex, WebRequest webRequest){
+    public ResponseEntity<Object> handleCourseTeacherAssociationException(SQLIntegrityConstraintViolationException ex, WebRequest webRequest) {
         String errorMessageDescription = ex.getLocalizedMessage();
-        if(errorMessageDescription ==null )
-            errorMessageDescription=ex.toString();
+        if (errorMessageDescription == null)
+            errorMessageDescription = ex.toString();
         return new ResponseEntity<>(errorMessageDescription, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
