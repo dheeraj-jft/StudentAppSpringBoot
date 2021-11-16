@@ -15,4 +15,6 @@ public class UserDto {
     private @NonNull String password;
 
     private @NonNull String role;
+
+    private String emailAddress;
 }

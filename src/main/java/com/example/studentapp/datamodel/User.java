@@ -1,8 +1,10 @@
 package com.example.studentapp.datamodel;
 
+import com.example.studentapp.enums.Provider;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -10,6 +12,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class User {
 
     @Id
@@ -24,5 +27,14 @@ public class User {
 
     @Column(nullable = false)
     private String role;
+
+    @Column(unique = true)
+    private String emailAddress;
+
+    @Column(nullable = false)
+    private boolean isOAuthEnabled = false;
+
+    @Enumerated(EnumType.STRING)
+    private Provider provider;
 
 }

@@ -19,6 +19,9 @@
             <div class="alert alert-error" style="color:red" th:if="${param.error}">
                 Check credentials.
             </div>
+            <div class="alert alert-error" style="color:red" th:if="${param.errorEmailId}">
+                EmailId not Registered, contact Admin.
+            </div>
             <div class="alert alert-error" style="color:red" th:if="${param.logout}">
                 You have been logged out.
             </div>
@@ -32,7 +35,7 @@
                 <span class="error_form" id="password_error_message"></span>
             </div>
             <button id="loginUser" type="button">login</button>
-
+            <h4><a th:href="@{/oauth2/authorization/google}">login with Google</a></h4>
         </form>
 
 

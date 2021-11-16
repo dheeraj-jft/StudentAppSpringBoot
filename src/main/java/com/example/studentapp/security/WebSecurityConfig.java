@@ -1,5 +1,7 @@
 package com.example.studentapp.security;
 
+import com.example.studentapp.oauth2.CustomOAuth2UserService;
+import com.example.studentapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,13 +23,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UserDetailsService userDetailsService;
 
+    @Autowired
+    CustomOAuth2UserService customOAuth2UserService;
+
+    @Autowired
+    UserService userService;
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http
                 .authorizeRequests()
-                .antMatchers("/assets/**").permitAll()
-                .antMatchers("/", "/teachers"
+                .antMatchers("/assets/**", "/oauth2/**").permitAll()
+                .antMatchers("/**", "/teachers"
                         , "/teachers/list"
                         , "/teachers/details/**"
                         , "/student/details/**"
@@ -35,7 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         , "/course"
                         , "/course/list"
                         , "/course/details/**"
-                        , "/users/profile").hasAnyAuthority("ADMIN", "USER")
+                        , "/users/profile").hasAnyAuthority("ADMIN", "USER", "ROLE_USER")
                 .antMatchers("/student/**", "/users/**", "/course/**", "/teachers/**").hasAuthority("ADMIN")
                 .and()
                 .formLogin()
@@ -46,6 +55,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutSuccessUrl("/login?logout")
                 .logoutUrl("/mylogout")
+                .permitAll()
+                .and()
+                .oauth2Login()
+                .loginPage("/login")
+                .userInfoEndpoint()
+                .userService(customOAuth2UserService)
+                .and()
+                .failureUrl("/login?errorEmailId")
+                .defaultSuccessUrl("/", true)
                 .permitAll();
     }
 
